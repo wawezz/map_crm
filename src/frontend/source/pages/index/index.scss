@@ -1,0 +1,66 @@
+@import './../../common/bootstrap/dist/css/bootstrap.min.css';
+@import './../../common/css/animate.css';
+@import './../../common/css/style.css';
+@import './../../common/css/colors/megna-dark.css'; 
+@import "./../../plugins/bower_components/sweetalert/sweetalert.css";
+
+.fRigh {
+    float: right;
+
+}
+
+.notes {
+  padding: 0;
+}
+.notes .note {
+  list-style: none;
+}
+
+/* LEAD STATUS STYLE */
+.lead__status{
+  padding: 3px 6px;
+  border-radius: 3px;
+  color: rgba(0,0,0,.5);
+}
+.lead__status__1{
+  background: #99ccff;
+}
+.lead__status__2{
+  background: #fffd7f;
+}
+.lead__status__3{
+  background: #ffff99; 
+}
+.lead__status__4{
+  background: #eb93ff;
+}
+.lead__status__5{
+  background: #99ccff;
+}
+.lead__status__6{
+  background: #ff8f92;
+}
+
+.form-group, .form-horizontal .form-group{
+  margin-bottom: 10px;
+}
+.bootstrap-datetimepicker-widget {
+  z-index: 1100!important;
+  position: relative!important;
+
+}
+
+.taskBlock{
+  display:flex;
+  flex-flow: wrap;
+  .taskBlock__item{
+    display:block;
+    width: calc(50% - 40px);
+    border: 2px red dashed;
+    margin: 20px;
+    padding: 20px;
+    &.active{
+      border-color: green;
+    }
+  }
+}

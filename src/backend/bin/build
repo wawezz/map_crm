@@ -1,0 +1,5 @@
+#!/bin/bash
+
+composer install --optimize-autoloader --prefer-dist
+console migrate --interactive 0
+console mongodb-migrate --interactive 0

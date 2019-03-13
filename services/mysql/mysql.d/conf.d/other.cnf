@@ -1,0 +1,7 @@
+[mysqldump]
+quick
+quote-names
+max_allowed_packet	= 16M
+
+[isamchk]
+key_buffer		= 32M

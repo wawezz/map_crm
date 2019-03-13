@@ -1,0 +1,7 @@
+{
+  "name": "@map-crm/admin",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "proprietary",
+  "private": true
+}

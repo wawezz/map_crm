@@ -1,0 +1,86 @@
+version: '2'
+
+services:
+
+  backend:
+    restart: "$DOCKER_RESTART"
+    build:
+      context: ./services/backend/
+      args:
+        _ENV: "$_ENV"
+        _UID: "$_UID"
+        _GID: "$_GID"
+        NEWRELIC_KEY: "$NEWRELIC_KEY"
+    volumes:
+      - "./src/backend/:/opt/www/backend/:cached"
+      - "./src/frontend/:/opt/www/frontend/:cached"
+    env_file: .env
+
+  frontend:
+    restart: "$DOCKER_RESTART"
+    build:
+      context: ./services/frontend/
+      args:
+        _UID: "$_UID"
+        _GID: "$_GID"
+    volumes:
+      - "./src/backend/:/opt/www/backend/:cached"
+      - "./src/frontend/:/opt/www/frontend/:cached"
+    env_file: .env
+
+  nginx:
+    restart: "$DOCKER_RESTART"
+    depends_on:
+      - frontend
+    build:
+      context: ./services/nginx/
+      args:
+        PROJECT: "$PROJECT"
+        HTTP_HOSTNAME: "$HTTP_HOSTNAME"
+    ports:
+      - "$HTTP_PORT:80"
+      - "$HTTPS_PORT:443"
+      - "$STREAM_PORT:8867"
+    volumes:
+      - "./src/backend/:/opt/www/backend/:cached"
+      - "./src/frontend/:/opt/www/frontend/:cached"
+
+  mysql:
+    restart: "$DOCKER_RESTART"
+    build:
+      context: ./services/mysql/
+      args:
+        MYSQL_USER: "$MYSQL_USER"
+        MYSQL_USER_PASSWORD: "$MYSQL_USER_PASSWORD"
+        MYSQL_DATABASE: "$MYSQL_DATABASE"
+    ports:
+      - "$MYSQL_PUBLIC_PORT:3306"
+    volumes:
+      - ./runtime/mysql/:/var/lib/mysql/:cached
+    environment:
+      MYSQL_ROOT_PASSWORD: "$MYSQL_ROOT_PASSWORD"
+      MYSQL_USER_PASSWORD: "$MYSQL_USER_PASSWORD"
+
+  mongo:
+    restart: "$DOCKER_RESTART"  
+    build:
+      context: ./services/mongo/
+    ports:
+      - "$MONGODB_PRIMARY_PORT:27017"
+      - "$MONGODB_PRIMARY_PORT_HTTP:28017"
+    volumes:
+      - "./runtime/mongo:/data/db"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "$MONGODB_ROOT_USERNAME"
+      MONGO_INITDB_ROOT_PASSWORD: "$MONGODB_ROOT_PASSWORD"
+      MONGO_INITDB_DATABASE: "$MONGODB_DATABASE"
+      MONGO_USERNAME: "$MONGODB_USERNAME"
+      MONGO_PASSWORD: "$MONGODB_PASSWORD"
+      MONGO_INIT_COLLECTION: "migration"
+
+  redis:
+    restart: "$DOCKER_RESTART"  
+    build:
+      context: ./services/redis/
+    volumes:
+      - "./runtime/redis:/data"
