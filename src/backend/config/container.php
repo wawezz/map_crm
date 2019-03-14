@@ -8,12 +8,14 @@ use backend\db\repositories\db\DbFileRepository;
 use backend\db\repositories\db\DbClientRepository; 
 use backend\db\repositories\db\DbProductRepository; 
 use backend\db\repositories\db\DbLeadRepository; 
+use backend\db\repositories\db\DbPlaceLeadRepository; 
 use backend\db\repositories\db\DbTaskRepository; 
 use backend\db\repositories\UserRepositoryInterface;
 use backend\db\repositories\FileRepositoryInterface;
 use backend\db\repositories\ClientRepositoryInterface;
 use backend\db\repositories\ProductRepositoryInterface;
 use backend\db\repositories\LeadRepositoryInterface;
+use backend\db\repositories\PlaceLeadRepositoryInterface;
 use backend\db\repositories\TaskRepositoryInterface;
 use backend\services\Session;
 use yii\db\Command as YiiSqlCommand;
@@ -31,6 +33,7 @@ $container->setDefinitions([
     ClientRepositoryInterface::class => DbClientRepository::class,
     ProductRepositoryInterface::class => DbProductRepository::class,
     LeadRepositoryInterface::class => DbLeadRepository::class,
+    PlaceLeadRepositoryInterface::class => DbPlaceLeadRepository::class,
     TaskRepositoryInterface::class => DbTaskRepository::class,
     FileRepositoryInterface::class => DbFileRepository::class,
 ]);

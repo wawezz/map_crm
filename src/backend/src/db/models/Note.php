@@ -8,22 +8,26 @@ use yii\helpers\Json;
 class Note
 {
 
-    public const ELEMENT_TYPE_CLIENT = 1; //Клиент
-    public const ELEMENT_TYPE_LEAD = 2; //Лид
-    public const ELEMENT_TYPE_TASK = 3; //Задача
-    public const NOTE_TYPE_LEAD_CREATED = 1; //Лид создана
-    public const NOTE_TYPE_LEAD_FIELD_UPDATE = 2; //Отредактировано поле лида
-    public const NOTE_TYPE_LEAD_STATUS_CHANGED = 3; //Статус лида изменен
-    public const NOTE_TYPE_CLIENT_CREATED = 4; //Клиент создан
-    public const NOTE_TYPE_CLIENT_FIELD_UPDATE = 5; //Отредактировано поле клиента
-    public const NOTE_TYPE_COMMON = 6; //Обычное примечание
-    public const NOTE_TYPE_CALL_IN = 7; //Входящий звонок
-    public const NOTE_TYPE_CALL_OUT = 8; //Исходящий звонок
-    public const NOTE_TYPE_TASK_CREATED = 9; //Задача создана
-    public const NOTE_TYPE_TASK_RESULT = 10; //Результат по задаче
-    public const NOTE_TYPE_SMS_IN = 11; //Входящее смс
-    public const NOTE_TYPE_SMS_OUT = 12; //Исходящее смс
-    public const NOTE_TYPE_SYSTEM = 25; //Системное сообщение
+    public const ELEMENT_TYPE_CLIENT = 1; //Client
+    public const ELEMENT_TYPE_LEAD = 2; //Lead
+    public const ELEMENT_TYPE_TASK = 3; //Task
+    public const ELEMENT_TYPE_PLACE_LEAD = 16; //Place Lead
+    public const NOTE_TYPE_LEAD_CREATED = 1; //Lead created
+    public const NOTE_TYPE_LEAD_FIELD_UPDATE = 2; //Lead field update
+    public const NOTE_TYPE_LEAD_STATUS_CHANGED = 3; //Lead status update
+    public const NOTE_TYPE_PLACE_LEAD_CREATED = 13; //Place Lead created
+    public const NOTE_TYPE_PLACE_LEAD_FIELD_UPDATE = 14; //Place Lead field update
+    public const NOTE_TYPE_PLACE_LEAD_STATUS_CHANGED = 15; //Place Lead status update
+    public const NOTE_TYPE_CLIENT_CREATED = 4; //Client created
+    public const NOTE_TYPE_CLIENT_FIELD_UPDATE = 5; //Client field update
+    public const NOTE_TYPE_COMMON = 6; //Common note
+    public const NOTE_TYPE_CALL_IN = 7; //Incoming call
+    public const NOTE_TYPE_CALL_OUT = 8; //Outgoing call
+    public const NOTE_TYPE_TASK_CREATED = 9; //Task created
+    public const NOTE_TYPE_TASK_RESULT = 10; //Task result
+    public const NOTE_TYPE_SMS_IN = 11; //Incoming SMS
+    public const NOTE_TYPE_SMS_OUT = 12; //Outgoing SMS
+    public const NOTE_TYPE_SYSTEM = 25; //System message
 
     /**
      * @var int

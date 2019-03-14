@@ -21,7 +21,7 @@
 							"formdata": [
 								{
 									"key": "form[email]",
-									"value": "test@map-crm.lc"
+									"value": "admin@gmail.com"
 								},
 								{
 									"key": "form[password]",
@@ -50,14 +50,7 @@
 					"name": "user registration",
 					"request": {
 						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hYmlyaXgtY3JtLmxjIiwiYXVkIjoiaHR0cDpcL1wvYWJpcml4LWNybS5sYyIsImlhdCI6MTUzNDg2NDk4MiwibmJmIjoxNTM0ODY0OTgyLCJleHAiOjE1MzQ4Njg1ODIsInR5cGUiOiJhY2Nlc3MiLCJ1aWQiOiI0NzhhODU1MC04MDYwLTExZTgtOWI5OS0wMjQyYWMxNjAwMDQifQ.7FUGIR6GcKf0Gkm_UprFslclAYq8SdTnGwVBi8F-Uhc",
-									"type": "string"
-								}
-							]
+							"type": "noauth"
 						},
 						"method": "POST",
 						"header": [],
@@ -66,16 +59,16 @@
 							"formdata": [
 								{
 									"key": "form[email]",
-									"value": "api@map-crm.lc"
+									"value": "admin@gmail.com"
 								},
 								{
 									"key": "form[name]",
-									"value": "API"
+									"value": "admin"
 								},
 								{
 									"key": "form[roleId]",
-									"value": "3",
-									"description": "1: admini, 2: manager, 3: api user"
+									"value": "1",
+									"description": "1: admin, 2: manager, 3: api user"
 								},
 								{
 									"key": "form[groupId]",
@@ -209,10 +202,7 @@
 						},
 						"method": "POST",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
+						"body": {},
 						"url": {
 							"raw": "http://map-crm.lc/api/v1/user/list?filter={\"roleId\":\"!=|3\"}&sort={\"createdAt\":  \"DESC\"}",
 							"protocol": "http",
@@ -609,10 +599,7 @@
 						},
 						"method": "POST",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
+						"body": {},
 						"url": {
 							"raw": "http://map-crm.lc/api/v1/client/get?id=9",
 							"protocol": "http",
@@ -740,7 +727,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9hYmlyaXgtY3JtLmxjIiwiYXVkIjoiaHR0cDpcL1wvYWJpcml4LWNybS5sYyIsImlhdCI6MTUzNDg2OTMwMiwibmJmIjoxNTM0ODY5MzAyLCJleHAiOjE1MzQ4NzI5MDIsInR5cGUiOiJhY2Nlc3MiLCJ1aWQiOiI0NzhhODU1MC04MDYwLTExZTgtOWI5OS0wMjQyYWMxNjAwMDQifQ.MlJtri_LAdkbhpz1iZhyyjzyipKYZkkpBzO1hPhfYPY",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9tYXAtY3JtLmxjIiwiYXVkIjoiaHR0cDpcL1wvbWFwLWNybS5sYyIsImlhdCI6MTU1MjYwMjczMiwibmJmIjoxNTUyNjAyNzMyLCJleHAiOjE1NTI2MDYzMzIsInR5cGUiOiJhY2Nlc3MiLCJ1aWQiOiJkNjNmN2Q2Ny00NjljLTExZTktODk1YS0wMjQyYzBhODUwMDQifQ.SwdHVaK4tc89GryrYKjM4WcQYVxZw8M3H2nkzyn9KEM",
 									"type": "string"
 								}
 							]
@@ -1026,7 +1013,7 @@
 								},
 								{
 									"key": "form[updatedBy]",
-									"value": "[{\"key\":\"form[responsible]\",\"value\":\"478a8550-8060-11e8-9b99-0242ac160004-a0cf6488eb77\",\"description\":\"\",\"type\":\"text\",\"enabled\":true}]",
+									"value": "478a8550-8060-11e8-9b99-0242ac160004-a0cf6488eb77",
 									"description": "if null current user id",
 									"type": "text",
 									"disabled": true
@@ -1172,6 +1159,412 @@
 								{
 									"key": "filter",
 									"value": "{\"client\":\"!=|1\"}",
+									"description": "{field: condition|value}. Condition is optional by default \"=\", example {\"client\":\"1\"}"
+								},
+								{
+									"key": "sort",
+									"value": "{\"createdAt\":  \"DESC\"}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "place lead",
+			"item": [
+				{
+					"name": "place lead add",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9tYXAtY3JtLmxjIiwiYXVkIjoiaHR0cDpcL1wvbWFwLWNybS5sYyIsImlhdCI6MTU1MjYwMjczMiwibmJmIjoxNTUyNjAyNzMyLCJleHAiOjE1NTI2MDYzMzIsInR5cGUiOiJhY2Nlc3MiLCJ1aWQiOiJkNjNmN2Q2Ny00NjljLTExZTktODk1YS0wMjQyYzBhODUwMDQifQ.SwdHVaK4tc89GryrYKjM4WcQYVxZw8M3H2nkzyn9KEM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "form[id]",
+									"value": "ChIJRb8LdWHOQIYRjdHWc_ZgjCo",
+									"type": "text"
+								},
+								{
+									"key": "form[name]",
+									"value": "place lead",
+									"type": "text"
+								},
+								{
+									"key": "form[address]",
+									"value": "address"
+								},
+								{
+									"key": "form[status]",
+									"value": "1",
+									"description": "1 - NEW PLACE LEAD"
+								},
+								{
+									"key": "form[phone]",
+									"value": "+3784565455",
+									"type": "text"
+								},
+								{
+									"key": "form[type]",
+									"value": "1",
+									"description": "place type id"
+								},
+								{
+									"key": "form[price]",
+									"value": "0"
+								},
+								{
+									"key": "form[rating]",
+									"value": "0",
+									"type": "text"
+								},
+								{
+									"key": "form[review]",
+									"value": "Lorem ipsum",
+									"type": "text"
+								},
+								{
+									"key": "form[website]",
+									"value": "http://website.com",
+									"type": "text"
+								},
+								{
+									"key": "form[geometry]",
+									"value": "{\"location\":{\"lat\":29.9325049,\"lng\":-95.5224653},\"viewport\":{\"northeast\":{\"lat\":29.9338039802915,\"lng\":-95.5212343697085},\"southwest\":{\"lat\":29.9311060197085,\"lng\":-95.5239323302915}}}",
+									"type": "text"
+								},
+								{
+									"key": "form[geo]",
+									"value": "0xE6100000010C1975ADBD4F034040BE9F1A2FDD5E4140",
+									"type": "text"
+								},
+								{
+									"key": "form[data]",
+									"value": "{\n   \"html_attributions\" : [],\n   \"result\" : {\n      \"formatted_address\" : \"Derech Ben Gurion 47, Bat Yam, Israel\",\n      \"formatted_phone_number\" : \"03-509-9777\",\n      \"geometry\" : {\n         \"location\" : {\n            \"lat\" : 32.025871,\n            \"lng\" : 34.741125\n         },\n         \"viewport\" : {\n            \"northeast\" : {\n               \"lat\" : 32.0272340802915,\n               \"lng\" : 34.7424099802915\n            },\n            \"southwest\" : {\n               \"lat\" : 32.0245361197085,\n               \"lng\" : 34.7397120197085\n            }\n         }\n      },\n      \"name\" : \"Bistro Bar\",\n      \"rating\" : 4.1,\n      \"reviews\" : [\n         {\n            \"author_name\" : \"Steven Rogers\",\n            \"author_url\" : \"https://www.google.com/maps/contrib/111416368591104800689/reviews\",\n            \"language\" : \"en\",\n            \"profile_photo_url\" : \"https://lh5.googleusercontent.com/-zqvpjxm47Uk/AAAAAAAAAAI/AAAAAAAAAAA/APUIFaMmL7uO3UUUo8Een4a7w1p70uP-3A/s128-c0x00000000-cc-rp-mo/photo.jpg\",\n            \"rating\" : 1,\n            \"relative_time_description\" : \"3 weeks ago\",\n            \"text\" : \"I was only in there for a few hours , the waiter was very nice but the manager was very rude he made  me move more than once  from where I was sitting a then he came there where I was slitting and \\nOver later. A threw my bag on the floor and pointed towards\\nThe front entrance  . Unless they change this guy I would\\nNot go in this place\\nhe untie American\"\n         },\n         {\n            \"author_name\" : \"JanelleAV\",\n            \"author_url\" : \"https://www.google.com/maps/contrib/112575833823846259061/reviews\",\n            \"language\" : \"en\",\n            \"profile_photo_url\" : \"https://lh6.googleusercontent.com/-_0x-GENcIuQ/AAAAAAAAAAI/AAAAAAAAAAA/APUIFaPBkT6h5I0q7euRXB8G86vxbGf2Qw/s128-c0x00000000-cc-rp-mo/photo.jpg\",\n            \"rating\" : 4,\n            \"relative_time_description\" : \"a year ago\",\n            \"text\" : \"Good food! Can be a bit pricey, but worth it. We have gotten the egg noodles twice and they are very good.\"\n         },\n         {\n            \"author_name\" : \"Georg Bergqvist\",\n            \"author_url\" : \"https://www.google.com/maps/contrib/103636991643065105294/reviews\",\n            \"language\" : \"en\",\n            \"profile_photo_url\" : \"https://lh5.googleusercontent.com/-kJ7xQZZeIVA/AAAAAAAAAAI/AAAAAAAAAAA/APUIFaMmEXeNfONdXkGR6C13zKcikogJ7A/s128-c0x00000000-cc-rp-mo/photo.jpg\",\n            \"rating\" : 3,\n            \"relative_time_description\" : \"3 months ago\",\n            \"text\" : \"Not good, Not bad.\"\n         },\n         {\n            \"author_name\" : \"Sefi Sheynin\",\n            \"author_url\" : \"https://www.google.com/maps/contrib/101944982432506876843/reviews\",\n            \"language\" : \"en\",\n            \"profile_photo_url\" : \"https://lh5.googleusercontent.com/-AAHmsa8c310/AAAAAAAAAAI/AAAAAAAAC-8/ndmUb3MxG6Q/s128-c0x00000000-cc-rp-mo-ba3/photo.jpg\",\n            \"rating\" : 1,\n            \"relative_time_description\" : \"5 months ago\",\n            \"text\" : \"Disgusting please\"\n         },\n         {\n            \"author_name\" : \"Vladimir Yevsukov\",\n            \"author_url\" : \"https://www.google.com/maps/contrib/109899863552034532903/reviews\",\n            \"language\" : \"en\",\n            \"profile_photo_url\" : \"https://lh6.googleusercontent.com/-rDFPjfB9Bis/AAAAAAAAAAI/AAAAAAABTkg/QSMaKYF1L9c/s128-c0x00000000-cc-rp-mo-ba5/photo.jpg\",\n            \"rating\" : 4,\n            \"relative_time_description\" : \"2 years ago\",\n            \"text\" : \"Used to be good some time ago, to fancy and overpriced now\"\n         }\n      ],\n      \"types\" : [ \"bar\", \"restaurant\", \"food\", \"point_of_interest\", \"establishment\" ]\n   },\n   \"status\" : \"OK\"\n}",
+									"type": "text"
+								},
+								{
+									"key": "form[toSync]",
+									"value": "0",
+									"description": "0|1",
+									"type": "text"
+								},
+								{
+									"key": "form[campaignCode]",
+									"value": "50",
+									"type": "text"
+								},
+								{
+									"key": "form[isImportant]",
+									"value": "1",
+									"description": "0|1",
+									"type": "text"
+								},
+								{
+									"key": "form[contractAt]",
+									"value": "2018-07-30 19:59:09",
+									"type": "text"
+								},
+								{
+									"key": "form[nextFollowupDate]",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "form[createdBy]",
+									"value": "478a8550-8060-11e8-9b99-0242ac160004-a0cf6488eb77",
+									"description": "if null current user id",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://map-crm.lc/api/v1/place-lead/add",
+							"protocol": "http",
+							"host": [
+								"map-crm",
+								"lc"
+							],
+							"path": [
+								"api",
+								"v1",
+								"place-lead",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "place lead update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9tYXAtY3JtLmxjIiwiYXVkIjoiaHR0cDpcL1wvbWFwLWNybS5sYyIsImlhdCI6MTU1MjYwMjczMiwibmJmIjoxNTUyNjAyNzMyLCJleHAiOjE1NTI2MDYzMzIsInR5cGUiOiJhY2Nlc3MiLCJ1aWQiOiJkNjNmN2Q2Ny00NjljLTExZTktODk1YS0wMjQyYzBhODUwMDQifQ.SwdHVaK4tc89GryrYKjM4WcQYVxZw8M3H2nkzyn9KEM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "form[id]",
+									"value": "ChIJRb8LdWHOQIYRjdHWc_ZgjCo",
+									"type": "text"
+								},
+								{
+									"key": "form[name]",
+									"value": "place lead",
+									"type": "text"
+								},
+								{
+									"key": "form[address]",
+									"value": "address"
+								},
+								{
+									"key": "form[status]",
+									"value": "1",
+									"description": "1 - NEW PLACE LEAD"
+								},
+								{
+									"key": "form[phone]",
+									"value": "+3784565455",
+									"type": "text"
+								},
+								{
+									"key": "form[type]",
+									"value": "1",
+									"description": "place type id"
+								},
+								{
+									"key": "form[price]",
+									"value": "0"
+								},
+								{
+									"key": "form[rating]",
+									"value": "0",
+									"type": "text"
+								},
+								{
+									"key": "form[review]",
+									"value": "Lorem ipsum",
+									"type": "text"
+								},
+								{
+									"key": "form[website]",
+									"value": "http://website.com",
+									"type": "text"
+								},
+								{
+									"key": "form[geometry]",
+									"value": "{'l': {}}",
+									"type": "text"
+								},
+								{
+									"key": "form[geo]",
+									"value": "data",
+									"type": "text"
+								},
+								{
+									"key": "form[data]",
+									"value": "{'data': {}}",
+									"type": "text"
+								},
+								{
+									"key": "form[toSync]",
+									"value": "0",
+									"description": "0|1",
+									"type": "text"
+								},
+								{
+									"key": "form[campaignCode]",
+									"value": "50",
+									"type": "text"
+								},
+								{
+									"key": "form[isImportant]",
+									"value": "1",
+									"description": "0|1",
+									"type": "text"
+								},
+								{
+									"key": "form[contractAt]",
+									"value": "2018-07-30 19:59:09",
+									"type": "text"
+								},
+								{
+									"key": "form[nextFollowupDate]",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "form[updatedBy]",
+									"value": "478a8550-8060-11e8-9b99-0242ac160004-a0cf6488eb77",
+									"description": "if null current user id",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://map-crm.lc/api/v1/place-lead/update",
+							"protocol": "http",
+							"host": [
+								"map-crm",
+								"lc"
+							],
+							"path": [
+								"api",
+								"v1",
+								"place-lead",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "place lead get",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9tYXAtY3JtLmxjIiwiYXVkIjoiaHR0cDpcL1wvbWFwLWNybS5sYyIsImlhdCI6MTU1MjYwMjczMiwibmJmIjoxNTUyNjAyNzMyLCJleHAiOjE1NTI2MDYzMzIsInR5cGUiOiJhY2Nlc3MiLCJ1aWQiOiJkNjNmN2Q2Ny00NjljLTExZTktODk1YS0wMjQyYzBhODUwMDQifQ.SwdHVaK4tc89GryrYKjM4WcQYVxZw8M3H2nkzyn9KEM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://map-crm.lc/api/v1/place-lead/get?id=ChIJRb8LdWHOQIYRjdHWc_ZgjCo",
+							"protocol": "http",
+							"host": [
+								"map-crm",
+								"lc"
+							],
+							"path": [
+								"api",
+								"v1",
+								"place-lead",
+								"get"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "ChIJRb8LdWHOQIYRjdHWc_ZgjCo",
+									"description": "pace lead id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "place lead remove",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9tYXAtY3JtLmxjIiwiYXVkIjoiaHR0cDpcL1wvbWFwLWNybS5sYyIsImlhdCI6MTU1MjYwMjczMiwibmJmIjoxNTUyNjAyNzMyLCJleHAiOjE1NTI2MDYzMzIsInR5cGUiOiJhY2Nlc3MiLCJ1aWQiOiJkNjNmN2Q2Ny00NjljLTExZTktODk1YS0wMjQyYzBhODUwMDQifQ.SwdHVaK4tc89GryrYKjM4WcQYVxZw8M3H2nkzyn9KEM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "placeLeads",
+									"value": "[\"ChIJRb8LdWHOQIYRjdHWc_ZgjCo\"]",
+									"description": "array with place leads id",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://map-crm.lc/api/v1/place-lead/remove",
+							"protocol": "http",
+							"host": [
+								"map-crm",
+								"lc"
+							],
+							"path": [
+								"api",
+								"v1",
+								"place-lead",
+								"remove"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "place lead list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9tYXAtY3JtLmxjIiwiYXVkIjoiaHR0cDpcL1wvbWFwLWNybS5sYyIsImlhdCI6MTU1MjYwMjczMiwibmJmIjoxNTUyNjAyNzMyLCJleHAiOjE1NTI2MDYzMzIsInR5cGUiOiJhY2Nlc3MiLCJ1aWQiOiJkNjNmN2Q2Ny00NjljLTExZTktODk1YS0wMjQyYzBhODUwMDQifQ.SwdHVaK4tc89GryrYKjM4WcQYVxZw8M3H2nkzyn9KEM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://map-crm.lc/api/v1/place-lead/list?filter={\"type\":\"!=|2\"}&sort={\"createdAt\":  \"DESC\"}",
+							"protocol": "http",
+							"host": [
+								"map-crm",
+								"lc"
+							],
+							"path": [
+								"api",
+								"v1",
+								"place-lead",
+								"list"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "{\"type\":\"!=|2\"}",
 									"description": "{field: condition|value}. Condition is optional by default \"=\", example {\"client\":\"1\"}"
 								},
 								{

@@ -183,12 +183,14 @@ class Lead
             'responsible' => ($this->responsibleSecret)?$this->responsible.'-'.$this->responsibleSecret:$this->responsible,
             'createdBy' => ($this->createdBySecret)?$this->createdBy.'-'.$this->createdBySecret:$this->createdBy,
             'status' => $this->status,
+            'statusName' => $this->statusName,
             'createdAt' => $this->createdAt,
             'completedAt' => $this->completedAt,
             'budget' => $this->budget,
             'orderId' => $this->orderId,
             'firstCallAt' => $this->firstCallAt,
             'countryId' => $this->countryId,
+            'countryName' => $this->countryName,
             'currency' => $this->currency,
             'product' => $this->product,
             'productCount' => $this->productCount,
@@ -201,8 +203,7 @@ class Lead
             'upsellProductPrice' => $this->upsellProductPrice,
             'shippingPrice' => $this->shippingPrice,
             'postOrder' => $this->postOrder,
-            'rejectionReason' => $this->rejectionReason,
-            'countryName' => $this->countryName
+            'rejectionReason' => $this->rejectionReason
         ];
     }
 

@@ -55,7 +55,7 @@ class UserController extends BaseController
 
         $behaviors['authenticator'] = [
             'class' => JwtBearerAuth::class,
-            'only' => ['detail', 'update', 'list', 'get', 'remove', 'registration', 'logout', 'hold'],
+            'only' => ['detail', 'update', 'list', 'get', 'remove', 'logout', 'hold'],
         ];
 
         $behaviors['access'] = [
@@ -74,6 +74,7 @@ class UserController extends BaseController
                 [
                     'actions' => [
                         'login',
+                        'registration',
                         'login-refresh',
                         'forgot-password',
                         'change-password',

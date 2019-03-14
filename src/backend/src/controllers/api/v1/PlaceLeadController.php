@@ -2,28 +2,28 @@
 
 namespace backend\controllers\api\v1;
 
-use backend\db\models\Lead;
-use backend\db\repositories\LeadRepositoryInterface;
+use backend\db\models\PlaceLead;
+use backend\db\repositories\PlaceLeadRepositoryInterface;
 use backend\exceptions\FormValidationException;
-use backend\forms\api\LeadAddFormModel;
-use backend\forms\api\LeadUpdateFormModel;
+use backend\forms\api\PlaceLeadAddFormModel;
+use backend\forms\api\PlaceLeadUpdateFormModel;
 use backend\db\models\Note;
 use backend\db\repositories\db\DbNoteRepository;
 use backend\services\JwtService\JwtBearerAuth;
-use backend\services\LeadService\LeadService;
+use backend\services\PlaceLeadService\PlaceLeadService;
 use yii\filters\AccessControl;
 use yii\helpers\Json;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 
 /**
- * Class LeadController
+ * Class PlaceLeadController
  * @package backend\controllers\v1
  *
- * @property \backend\db\repositories\LeadRepositoryInterface $leadRepository
+ * @property \backend\db\repositories\PlaceLeadRepositoryInterface $placeLeadRepository
  * @property \backend\db\repositories\db\DbNoteRepository $dbNoteRepository
  */
-class LeadController extends BaseController
+class PlaceLeadController extends BaseController
 {
     public function getVerbs(): array
     {
@@ -63,49 +63,45 @@ class LeadController extends BaseController
     {
         $id = $this->request->get('id');
 
-        /** @var \backend\services\LeadService\LeadRepositoryInterface $leadService */
-        $leadService = \Yii::$container->get(LeadRepositoryInterface::class);
+        /** @var \backend\services\PlaceLeadService\PlaceLeadRepositoryInterface $placeLeadService */
+        $placeLeadService = \Yii::$container->get(PlaceLeadRepositoryInterface::class);
 
-        $result = $leadService->findByID($id);
-        if(!$result) throw new HttpException(418, 'Lead not found.');
-        $lead = $result->publicBundle();
+        $result = $placeLeadService->findByID($id);
+        if(!$result) throw new HttpException(418, 'Place lead not found.');
+        $placeLead = $result->publicBundle();
         /** @var \backend\services\repositories\db\DbNoteRepository $noteService */
         $noteService = \Yii::$container->get(DbNoteRepository::class);
 
         $query = array(
-            'elementId' => (int)$lead['id'],
-            'elementType' => Note::ELEMENT_TYPE_LEAD
+            'elementId' => $placeLead['id'],
+            'elementType' => Note::ELEMENT_TYPE_PLACE_LEAD
         );
-        $lead['notes'] = $noteService->findAll($query);
+        $placeLead['notes'] = $noteService->findAll($query);
 
-        return $this->asJson($lead);
+        return $this->asJson($placeLead);
     }
 
     public function actionRemove()
     {
-        $leads = json_decode($this->request->post('leads'));
+        $placeLeads = json_decode($this->request->post('placeLeads'));
 
-        /** @var \backend\services\LeadService\LeadRepositoryInterface $leadService */
-        $leadService = \Yii::$container->get(LeadRepositoryInterface::class);
+        /** @var \backend\services\PlaceLeadService\PlaceLeadRepositoryInterface $placeLeadService */
+        $placeLeadService = \Yii::$container->get(PlaceLeadRepositoryInterface::class);
 
-        if (!$leadService->remove($leads)) {
-            throw new HttpException(418, 'Error deleting leads from DB.');
+        if (!$placeLeadService->remove($placeLeads)) {
+            throw new HttpException(418, 'Error deleting place leads from DB.');
         }
 
         /** @var \backend\services\repositories\db\DbNoteRepository $noteService */
         $noteService = \Yii::$container->get(DbNoteRepository::class);
 
-        $elements = array();
-
-        for( $i =0; $i < count( $leads ); $i++ ){ $elements[] = (int)$leads[$i];}
-
         $query = array(
-            'elementId' => array('$in' => $elements),
-            'elementType' => Note::ELEMENT_TYPE_LEAD
+            'elementId' => array('$in' => $placeLeads),
+            'elementType' => Note::ELEMENT_TYPE_PLACE_LEAD
         );
 
         if (!$noteService->deleteAll($query)) {
-            throw new HttpException(418, 'Error deleting leads notes from DB.');
+            throw new HttpException(418, 'Error deleting place leads notes from DB.');
         }
 
         $result = array();
@@ -124,22 +120,22 @@ class LeadController extends BaseController
         $filter = empty($filter) ? null : Json::decode($filter);
         $sort = empty($sort) ? null : Json::decode($sort);
 
-        /** @var \backend\services\LeadService\LeadService $leadService */
-        $leadService = \Yii::$container->get(LeadService::class);
+        /** @var \backend\services\PlaceLeadService\PlaceLeadService $placeLeadService */
+        $placeLeadService = \Yii::$container->get(PlaceLeadService::class);
 
-        $total = $leadService->countAllLeads($filter);
+        $total = $placeLeadService->countAllPlaceLeads($filter);
 
         $this->response->headers->add('X-Pagination-Total', $total);
 
-        return $this->asJson($leadService->getAllLeads($limit, $offset, $filter, $sort));
+        return $this->asJson($placeLeadService->getAllPlaceLeads($limit, $offset, $filter, $sort));
     }
 
     public function actionAdd()
     {
         sleep($this->getSleepSeconds());
 
-        /** @var \backend\forms\api\LeadAddFormModel $Form */
-        $Form = \Yii::$container->get(LeadAddFormModel::class);
+        /** @var \backend\forms\api\PlaceLeadAddFormModel $Form */
+        $Form = \Yii::$container->get(PlaceLeadAddFormModel::class);
 
         if (!$Form->load($this->request->post(), 'form')) {
             throw new HttpException(418, 'You must send a form object.');
@@ -159,8 +155,8 @@ class LeadController extends BaseController
 
         sleep($this->getSleepSeconds());
 
-        /** @var LeadUpdateFormModel $Form */
-        $Form = \Yii::$container->get(LeadUpdateFormModel::class);
+        /** @var PlaceLeadUpdateFormModel $Form */
+        $Form = \Yii::$container->get(PlaceLeadUpdateFormModel::class);
 
         if (!$Form->load($this->request->post(), 'form')) {
             throw new HttpException(418, 'You must send a form object.');
@@ -176,11 +172,11 @@ class LeadController extends BaseController
     }
 
     /**
-     * @return \backend\db\repositories\LeadRepositoryInterface
+     * @return \backend\db\repositories\PlaceLeadRepositoryInterface
      */
-    private function getLeadRepository()
+    private function getPlaceLeadRepository()
     {
-        return \Yii::$container->get(LeadRepositoryInterface::class);
+        return \Yii::$container->get(PlaceLeadRepositoryInterface::class);
     }
 
 }
