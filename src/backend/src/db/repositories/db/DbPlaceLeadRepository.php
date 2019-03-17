@@ -68,10 +68,9 @@ class DbPlaceLeadRepository extends AbstractDbRepository implements PlaceLeadRep
             app_place_leads.*,
             CONCAT(cu.id, "-", cu.secret) as createdBy,
             ls.name as statusName, 
-            lt.name as typeName
+            ST_AsText(app_place_leads.geo) as geo
             FROM app_place_leads
             LEFT JOIN app_users cu ON app_place_leads.createdBy = cu.id 
-            LEFT JOIN app_place_types lt ON app_place_leads.type = lt.id 
             LEFT JOIN app_statuses ls ON app_place_leads.status = ls.id';
 
         $sql .= \count($where) > 0 ? (' WHERE ' . implode(' AND ', $where)) : '';
@@ -157,16 +156,16 @@ class DbPlaceLeadRepository extends AbstractDbRepository implements PlaceLeadRep
             cu.name as createdByName, 
             cu.secret as createdBySecret,  
             ls.name as statusName, 
-            lt.name as typeName 
+            ST_AsText(app_place_leads.geo) as geo
             FROM app_place_leads
             LEFT JOIN app_users cu ON app_place_leads.createdBy = cu.id 
-            LEFT JOIN app_place_types lt ON app_place_leads.type = lt.id 
             LEFT JOIN app_statuses ls ON app_place_leads.status = ls.id 
             WHERE app_place_leads.id = :id', [
             ':id' => $id,
         ]);
 
         return $cmd->queryObject(PlaceLead::class) ?: null;
+
     }
 
     public function insert(PlaceLead $placeLead): bool
@@ -175,7 +174,7 @@ class DbPlaceLeadRepository extends AbstractDbRepository implements PlaceLeadRep
         $cmd = $this->db->createCommand('INSERT INTO app_place_leads
                             ( id, name, address, phone, type, status, price, rating, review, website, geometry, geo, data, toSync, campaignCode,
                             isImportant, createdBy, createdAt, updatedAt, contractAt, nextFollowupDate)
-                     VALUES (:id, :name, :address, :phone, :type, :status, :price, :rating, :review, :website, :geometry, :geo, :data, :toSync, :campaignCode,
+                     VALUES (:id, :name, :address, :phone, :type, :status, :price, :rating, :review, :website, :geometry, ST_GeomFromText(:geo), :data, :toSync, :campaignCode,
                             :isImportant, :createdBy, :createdAt, :updatedAt, :contractAt, :nextFollowupDate)',
             PlaceLeadNormalizer::serialize($placeLead));
 
@@ -197,7 +196,7 @@ class DbPlaceLeadRepository extends AbstractDbRepository implements PlaceLeadRep
                        review = :review, 
                        website = :website, 
                        geometry = :geometry,
-                       geo = :geo, 
+                       geo = ST_GeomFromText(:geo), 
                        data = :data, 
                        toSync = :toSync, 
                        campaignCode = :campaignCode, 

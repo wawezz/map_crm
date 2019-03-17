@@ -38,7 +38,7 @@ class PlaceLeadAddFormModel extends AbstractFormModel
     public $phone;
 
     /**
-     * @var int
+     * @var string
      */
     public $type;
 
@@ -169,14 +169,6 @@ class PlaceLeadAddFormModel extends AbstractFormModel
                 'message' => 'Incorrect status id.',
                 'tooSmall' => 'Incorrect status id.',
             ],
-            [['type'], 'required', 'message' => 'Incorrect type id.'],
-            [
-                ['type'],
-                'integer',
-                'min' => 1,
-                'message' => 'Incorrect type id.',
-                'tooSmall' => 'Incorrect type id.',
-            ],
             [
                 ['phone'],
                 'string',
@@ -188,7 +180,7 @@ class PlaceLeadAddFormModel extends AbstractFormModel
             [['createdBy'], 'validateUser'],
             [['toSync', 'isImportant'], 'boolean'],
             [['contractAt', 'nextFollowupDate'], 'date', 'format' => 'yyyy-M-d H:m:s'],
-            [['address', 'review', 'website', 'geometry', 'geo', 'data'], 'string'],
+            [['address', 'review', 'website', 'geometry', 'geo', 'data', 'type'], 'string'],
             [['price', 'rating', 'campaignCode'], 'integer'],
             [['name', 'address', 'phone', 'review', 'website'], 'trim'],
         ];

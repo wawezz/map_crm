@@ -13,7 +13,7 @@ class m180525_123152_statuses extends Migration
     {
         $this->createTable('{{%statuses}}', [
             'id' => $this->primaryKey(11),
-            'name' => $this->string(128)->defaultValue(null)
+            'name' => $this->string(128)->unique()
         ]);
     }
 

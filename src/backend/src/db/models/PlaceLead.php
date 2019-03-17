@@ -29,7 +29,7 @@ class PlaceLead
     public $phone;
 
     /**
-     * @var int
+     * @var string
      */
     public $type;
 
@@ -104,11 +104,6 @@ class PlaceLead
     public $statusName;
 
     /**
-    * @var string
-    */      
-    public $typeName;
-
-    /**
      * @var \DateTimeImmutable
      */
     public $createdAt;
@@ -161,7 +156,6 @@ class PlaceLead
             'address' => $this->address,
             'phone' => $this->phone,
             'type' => $this->type,
-            'typeName' => $this->typeName,
             'status' => $this->status,
             'statusName' => $this->statusName,
             'price' => $this->price,
