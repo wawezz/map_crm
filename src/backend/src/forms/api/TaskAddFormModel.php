@@ -200,7 +200,7 @@ class TaskAddFormModel extends AbstractFormModel
         $note->elementId = (int)$this->elementId;
         $note->elementType = (int)$this->elementType;
         $note->noteType = Note::NOTE_TYPE_TASK_CREATED;
-        $note->createdBy = $this->user->id;
+        $note->createdBy = $this->user->id.'-'.$this->user->secret;
         $note->dataValue = array(
             'by' => $this->user->name,
             'data' => $result

@@ -122,7 +122,7 @@ class TaskCloseFormModel extends AbstractFormModel
         $note->elementId = (int)$task->elementId;
         $note->elementType = (int)$task->elementType;
         $note->noteType = Note::NOTE_TYPE_TASK_RESULT;
-        $note->createdBy = $this->user->id;
+        $note->createdBy = $this->user->id.'-'.$this->user->secret;
         $note->dataValue = array(
             'by' => $this->user->name,
             'data' => array(
