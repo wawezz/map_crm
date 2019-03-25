@@ -753,7 +753,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9tYXAtY3JtLmxjIiwiYXVkIjoiaHR0cDpcL1wvbWFwLWNybS5sYyIsImlhdCI6MTU1MzAwNjAzMywibmJmIjoxNTUzMDA2MDMzLCJleHAiOjE1NTMwMDk2MzMsInR5cGUiOiJhY2Nlc3MiLCJ1aWQiOiJiMWU3ODAwNC00YTQ3LTExZTktYTFlYS0wMjQyYWMxNDAwMDMifQ.MUwhirv7p9prD5HWTV8_HnU2Hc-gxcNvX2qy1RsJtgM",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9tYXAtY3JtLmxjIiwiYXVkIjoiaHR0cDpcL1wvbWFwLWNybS5sYyIsImlhdCI6MTU1MzQ3NTE1NiwibmJmIjoxNTUzNDc1MTU2LCJleHAiOjE1NTM0Nzg3NTYsInR5cGUiOiJhY2Nlc3MiLCJ1aWQiOiIxYmQ5YTk5My00YTcyLTExZTktODc5Ny0wMjQyYWMxNDAwMDcifQ.ScRUlXK6fEsOIoULBAnUpypha9fZtr7fxqr92yojyV0",
 									"type": "string"
 								}
 							]
@@ -823,38 +823,6 @@
 								},
 								{
 									"key": "form[productPrice]",
-									"value": "50",
-									"type": "text"
-								},
-								{
-									"key": "form[crossProduct]",
-									"value": "1",
-									"description": "product id",
-									"type": "text"
-								},
-								{
-									"key": "form[crossProductCount]",
-									"value": "1",
-									"type": "text"
-								},
-								{
-									"key": "form[crossProductPrice]",
-									"value": "50",
-									"type": "text"
-								},
-								{
-									"key": "form[upsellProduct]",
-									"value": "1",
-									"description": "product id",
-									"type": "text"
-								},
-								{
-									"key": "form[upsellProductCount]",
-									"value": "1",
-									"type": "text"
-								},
-								{
-									"key": "form[upsellProductPrice]",
 									"value": "50",
 									"type": "text"
 								},
@@ -986,38 +954,6 @@
 								},
 								{
 									"key": "form[productPrice]",
-									"value": "50",
-									"type": "text"
-								},
-								{
-									"key": "form[crossProduct]",
-									"value": "1",
-									"description": "product id",
-									"type": "text"
-								},
-								{
-									"key": "form[crossProductCount]",
-									"value": "1",
-									"type": "text"
-								},
-								{
-									"key": "form[crossProductPrice]",
-									"value": "50",
-									"type": "text"
-								},
-								{
-									"key": "form[upsellProduct]",
-									"value": "1",
-									"description": "product id",
-									"type": "text"
-								},
-								{
-									"key": "form[upsellProductCount]",
-									"value": "1",
-									"type": "text"
-								},
-								{
-									"key": "form[upsellProductPrice]",
 									"value": "50",
 									"type": "text"
 								},
