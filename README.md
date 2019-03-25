@@ -25,7 +25,7 @@ For development:
 ```bash
 sudo ./bin/prepare.sh
  
-sudo ./bin/frontend.sh yarn start
+sudo ./bin/frontend.sh yarn dev
 ```
 
 For production:
