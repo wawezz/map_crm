@@ -52,7 +52,7 @@ API
 --------------------------
 
 ```
-use MapCRM.postman_collection.json
+use map-crm.lc.postman_collection.json
 ```
 
 Optional
