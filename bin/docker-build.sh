@@ -57,8 +57,10 @@ echo ""
 
 echo "--- Copy frontend env config -----------------------------"
 
+FONT_PATH="./src/frontend/"
 ENV_PATH="./src/frontend/source/"
 ENV_FILE="$ENV_PATH/env.js"
+ADD_ENV_FILE="$FONT_PATH/.env"
 
 case "$USE_SSL" in
  true) HTTP_SCHEME=https ;;
@@ -68,6 +70,11 @@ esac
 mkdir -p $ENV_PATH
 
 SENTRY_PUBLIC_DSN_ESCAPED=$(echo ${SENTRY_PUBLIC_DSN} | sed 's/\//\\\//g')
+
+cp ./services/frontend/.env $FONT_PATH \
+&& sed -i -- "s/<VUE_APP_GOOGLE_MAP_API>/$VUE_APP_GOOGLE_MAP_API/g" $ADD_ENV_FILE \
+&& sed -i -- "s/<VUE_APP_I18N_LOCALE>/$VUE_APP_I18N_LOCALE/g" $ADD_ENV_FILE \
+&& sed -i -- "s/<VUE_APP_I18N_FALLBACK_LOCALE>/$VUE_APP_I18N_FALLBACK_LOCALE/g" $ADD_ENV_FILE 
 
 cp ./services/frontend/env.js $ENV_PATH \
 && sed -i -- "s/<PROJECT>/$PROJECT/g" $ENV_FILE \

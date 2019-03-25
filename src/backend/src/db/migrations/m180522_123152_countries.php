@@ -13,7 +13,7 @@ class m180522_123152_countries extends Migration
     {
         $this->createTable('{{%countries}}', [
             'id' => $this->primaryKey(11),
-            'name' => $this->string(128)->defaultValue(null),
+            'name' => $this->string(128)->unique(),
             'currencies' => $this->json()
         ]);
     }

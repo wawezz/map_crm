@@ -26,6 +26,7 @@ return [
     "$POST api/v1/lead/update" => 'api/v1/lead/update',
     "$POST api/v1/place-lead/list" => 'api/v1/place-lead/list',
     "$POST api/v1/place-lead/get" => 'api/v1/place-lead/get',
+    "$POST api/v1/place-lead/get-by-place-id" => 'api/v1/place-lead/get-by-place-id',
     "$POST api/v1/place-lead/add" => 'api/v1/place-lead/add',
     "$POST api/v1/place-lead/remove" => 'api/v1/place-lead/remove',
     "$POST api/v1/place-lead/update" => 'api/v1/place-lead/update',

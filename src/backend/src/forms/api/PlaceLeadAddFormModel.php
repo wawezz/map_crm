@@ -18,9 +18,9 @@ class PlaceLeadAddFormModel extends AbstractFormModel
 {
 
     /**
-     * @var int
+     * @var string
      */
-    public $id;
+    public $placeId;
 
     /**
      * @var string
@@ -66,11 +66,6 @@ class PlaceLeadAddFormModel extends AbstractFormModel
      * @var string
      */
     public $website;
-    
-    /**
-     * @var string
-     */
-    public $geometry;
 
     /**
      * @var string
@@ -150,7 +145,7 @@ class PlaceLeadAddFormModel extends AbstractFormModel
     public function rules()
     {
         return [
-            [['id'], 'required', 'message' => 'Incorrect ID.'],
+            [['placeId'], 'required', 'message' => 'Incorrect place id.'],
             [['name'], 'required', 'message' => 'Incorrect name.'],
             [
                 ['name'],
@@ -179,10 +174,10 @@ class PlaceLeadAddFormModel extends AbstractFormModel
             [['phone'], 'checkPhone'],
             [['createdBy'], 'validateUser'],
             [['toSync', 'isImportant'], 'boolean'],
-            [['contractAt', 'nextFollowupDate'], 'date', 'format' => 'yyyy-M-d H:m:s'],
-            [['address', 'review', 'website', 'geometry', 'geo', 'data', 'type'], 'string'],
-            [['price', 'rating', 'campaignCode'], 'integer'],
-            [['name', 'address', 'phone', 'review', 'website'], 'trim'],
+            [['contractAt', 'nextFollowupDate'], 'date', 'format' => 'yyyy-M-d H:m:s', 'skipOnEmpty' => true],
+            [['address', 'review', 'website', 'geo', 'data', 'type'], 'string'],
+            [['price', 'campaignCode'], 'integer'],
+            [['placeId', 'name', 'address', 'phone', 'review', 'website', 'rating'], 'trim'],
         ];
     }
 
@@ -226,19 +221,22 @@ class PlaceLeadAddFormModel extends AbstractFormModel
             $this->nextFollowupDate = new \DateTimeImmutable($this->nextFollowupDate);
         }
 
+        if (!$this->geo) {
+            $this->geo = 'POINT(0 0)';
+        }
+
         $placeLead = new PlaceLead;
 
-        $placeLead->id = $this->id;
+        $placeLead->placeId = $this->placeId;
         $placeLead->name = $this->name;
         $placeLead->address = $this->address;
         $placeLead->phone = $this->phone;
         $placeLead->type = $this->type;
         $placeLead->status = $this->status;
         $placeLead->price = $this->price;
-        $placeLead->rating  = $this->rating;
+        $placeLead->rating  = (int)$this->rating;
         $placeLead->review  = $this->review;
         $placeLead->website  = $this->website;
-        $placeLead->geometry  = $this->geometry;
         $placeLead->geo  = $this->geo;
         $placeLead->data  = $this->data;
         $placeLead->toSync  = $this->toSync;
@@ -247,8 +245,9 @@ class PlaceLeadAddFormModel extends AbstractFormModel
         $placeLead->createdBy = $this->user->id;
         $placeLead->contractAt = $this->contractAt;
         $placeLead->nextFollowupDate = $this->nextFollowupDate;
+        $placeLead->id = $this->placeLeadRepository->insert($placeLead);
         
-        if (!$this->placeLeadRepository->insert($placeLead)) {
+        if (!$placeLead->id) {
             throw new \ErrorException('Failed to insert place lead.');
         }
 

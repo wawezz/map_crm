@@ -1,0 +1,156 @@
+.tim-row {
+    margin-bottom: 20px;
+}
+
+.tim-white-buttons {
+    background-color: #777777;
+}
+
+.typography-line {
+    padding-left: 25%;
+    margin-bottom: 35px;
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.typography-line span {
+    bottom: 10px;
+    color: #c0c1c2;
+    display: block;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 13px;
+    left: 0;
+    position: absolute;
+    width: 260px;
+    text-transform: none;
+}
+
+.tim-row {
+    padding-top: 60px;
+}
+
+.tim-row h3 {
+    margin-top: 0;
+}
+
+.offline-doc .page-header {
+    display: flex;
+    align-items: center;
+}
+
+.offline-doc .footer {
+    position: absolute;
+    width: 100%;
+    background: transparent;
+    bottom: 0;
+    color: #fff;
+    z-index: 1;
+}
+
+@media all and (min-width: 992px) {
+    .sidebar .nav>li.active-pro {
+        position: absolute;
+        width: 100%;
+        bottom: 10px;
+    }
+}
+
+.card.card-upgrade .card-category {
+    max-width: 530px;
+    margin: 0 auto;
+}
+
+.black {
+    color: #000 !important;
+}
+
+.vdp-datepicker * {
+    width: 100%;
+}
+
+.tabs-component .tabs-component-tabs {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid #e35cca;
+}
+
+.tabs-component .tabs-component-tabs .tabs-component-tab {
+    background-color: #344675;
+    padding: 6px 15px;
+    border-radius: 7px 7px 0 0;
+    margin: 0 5px;
+}
+
+.tabs-component .tabs-component-tabs .tabs-component-tab:first-child {
+    margin-left: 0;
+}
+
+.tabs-component .tabs-component-tabs .tabs-component-tab:last-child {
+    margin-right: 0;
+}
+
+.tabs-component .tabs-component-tabs .tabs-component-tab.is-active {
+    background-color: #e35cca;
+}
+
+.tabs-component .tabs-component-tabs .tabs-component-tab a {
+    color: #fff;
+}
+
+.tabs-component .tabs-component-tabs .tabs-component-tab.is-active a {
+    color: #000;
+}
+
+.tabs-component-panels {
+    padding-top: 15px;
+}
+
+.notes {
+    padding: 0;
+    list-style: none;
+}
+
+.hidden {
+    display: none;
+}
+
+select option,
+select optgroup {
+    color: #000;
+}
+
+.centeredFlex {
+    align-items: center;
+    display: flex;
+}
+
+.taskBlock .taskBlock__item {
+    padding: 10px;
+    border: 1px solid #344675;
+    margin: 10px 0;
+}
+
+.taskBlock .taskBlock__item .taskActions a {
+    margin: 0 5px;
+}
+
+.taskBlock .taskBlock__item .taskActions a:first-child {
+    margin-left: 0;
+}
+
+.taskBlock .taskBlock__item .taskActions a:last-child {
+    margin-right: 0;
+}
+
+.elementSearch .elementSearch__item {
+    cursor: pointer;
+}
+
+.elementSearch .elementSearch__item:hover {
+    color: #fff;
+}

@@ -91,36 +91,6 @@ class Lead
     /**
     * @var int
     */      
-    public $crossProduct;
-
-    /**
-    * @var int
-    */      
-    public $crossProductCount;
-
-    /**
-    * @var int
-    */      
-    public $crossProductPrice;
-
-    /**
-    * @var int
-    */      
-    public $upsellProduct;
-
-    /**
-    * @var int
-    */      
-    public $upsellProductCount;
-
-    /**
-    * @var int
-    */      
-    public $upsellProductPrice;
-
-    /**
-    * @var int
-    */      
     public $shippingPrice;
 
     /**
@@ -137,6 +107,11 @@ class Lead
     * @var string
     */      
     public $countryName;
+
+    /**
+    * @var string
+    */      
+    public $statusName;
     
     /**
      * @var \DateTimeImmutable
@@ -195,12 +170,6 @@ class Lead
             'product' => $this->product,
             'productCount' => $this->productCount,
             'productPrice' => $this->productPrice,
-            'crossProduct' => $this->crossProduct,
-            'crossProductCount' => $this->crossProductCount,
-            'crossProductPrice' => $this->crossProductPrice,
-            'upsellProduct' => $this->upsellProduct,
-            'upsellProductCount' => $this->upsellProductCount,
-            'upsellProductPrice' => $this->upsellProductPrice,
             'shippingPrice' => $this->shippingPrice,
             'postOrder' => $this->postOrder,
             'rejectionReason' => $this->rejectionReason

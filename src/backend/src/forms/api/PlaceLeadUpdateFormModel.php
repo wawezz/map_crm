@@ -25,6 +25,11 @@ class PlaceLeadUpdateFormModel extends AbstractFormModel
     /**
      * @var string
      */
+    public $placeId;
+
+    /**
+     * @var string
+     */
     public $name;
 
     /**
@@ -67,11 +72,6 @@ class PlaceLeadUpdateFormModel extends AbstractFormModel
      */
     public $website;
     
-    /**
-     * @var string
-     */
-    public $geometry;
-
     /**
      * @var string
      */
@@ -133,14 +133,14 @@ class PlaceLeadUpdateFormModel extends AbstractFormModel
     private $uuidGenerator;
 
     public function __construct(
-        PlaceLeadRepositoryInterface $PlaceleadRepository,
+        PlaceLeadRepositoryInterface $placeLeadRepository,
         DbNoteRepository $dbNoteRepository,
         UuidGenerator $uuidGenerator,
         UserRepositoryInterface $userRepository
     ) {
         parent::__construct();
 
-        $this->placeleadRepository = $placeleadRepository;
+        $this->placeLeadRepository = $placeLeadRepository;
         $this->dbNoteRepository = $dbNoteRepository;
         $this->uuidGenerator = $uuidGenerator;
         $this->userRepository = $userRepository;
@@ -152,6 +152,7 @@ class PlaceLeadUpdateFormModel extends AbstractFormModel
         return [
             [['id'], 'required', 'message' => 'Incorrect ID.'],
             [['id'], 'validatePlaceLead'],
+            [['placeId'], 'required', 'message' => 'Incorrect place id.'],
             [['name'], 'required', 'message' => 'Incorrect name.'],
             [
                 ['name'],
@@ -178,12 +179,12 @@ class PlaceLeadUpdateFormModel extends AbstractFormModel
                 'tooLong' => 'Incorrect additional phone.',
             ],
             [['phone'], 'checkPhone'],
-            [['createdBy'], 'validateUser'],
+            [['updatedBy'], 'validateUser'],
             [['toSync', 'isImportant'], 'boolean'],
-            [['contractAt', 'nextFollowupDate'], 'date', 'format' => 'yyyy-M-d H:m:s'],
-            [['address', 'review', 'website', 'geometry', 'geo', 'data', 'type'], 'string'],
-            [['price', 'rating', 'campaignCode'], 'integer'],
-            [['name', 'address', 'phone', 'review', 'website'], 'trim'],
+            [['contractAt', 'nextFollowupDate'], 'date', 'format' => 'yyyy-M-d H:m:s', 'skipOnEmpty' => true],
+            [['address', 'review', 'website', 'geo', 'data', 'type'], 'string'],
+            [['price', 'campaignCode'], 'integer'],
+            [['placeId', 'name', 'address', 'phone', 'review', 'website', 'rating'], 'trim'],
         ];
     }
 
@@ -231,22 +232,31 @@ class PlaceLeadUpdateFormModel extends AbstractFormModel
         $placeLead = $this->placeLead;
         $changes = array();
 
-        if ($placeLead->name != $this->name) {
+        if($this->geo == ''){
+            $this->geo = 'POINT(0 0)';
+        }
+
+        if ($placeLead->placeId && $placeLead->placeId != $this->placeId) {
+            $changes['placeId'] = array('from' => $placeLead->placeId, 'to' => $this->placeId );
+            $placeLead->placeId = $this->placeId;
+        }
+
+        if ($placeLead->name && $placeLead->name != $this->name) {
             $changes['name'] = array('from' => $placeLead->name, 'to' => $this->name );
             $placeLead->name = $this->name;
         }
 
-        if ($this->address && $placeLead->address != $this->address) {
+        if ($placeLead->address != $this->address) {
             $changes['address'] = array('from' => $placeLead->address, 'to' => $this->address );
             $placeLead->address = $this->address;
         }
 
-        if ($this->phone && $placeLead->phone != $this->phone) {
+        if ($placeLead->phone != $this->phone) {
             $changes['phone'] = array('from' => $placeLead->phone, 'to' => $this->phone );
             $placeLead->phone = $this->phone;
         }
 
-        if ($placeLead->status != $this->status) {
+        if ($placeLead->status &&  $placeLead->status != $this->status) {
             $changes['status'] = array('from' => $placeLead->status, 'to' => $this->status );
             $placeLead->status = $this->status;
         }
@@ -256,52 +266,47 @@ class PlaceLeadUpdateFormModel extends AbstractFormModel
             $placeLead->type = $this->type;
         }
 
-        if ($this->price && $placeLead->price != $this->price) {
+        if ($placeLead->price != $this->price) {
             $changes['price'] = array('from' => $placeLead->price, 'to' => $this->price );
             $placeLead->price = $this->price;
         }
 
-        if ($this->rating && $placeLead->rating != $this->rating) {
-            $changes['rating'] = array('from' => $placeLead->rating, 'to' => $this->rating );
-            $placeLead->rating = $this->rating;
+        if ($placeLead->rating != (float)$this->rating) {
+            $changes['rating'] = array('from' => $placeLead->rating, 'to' => (float)$this->rating );
+            $placeLead->rating = (float)$this->rating;
         }
         
-        if ($this->review && $placeLead->review != $this->review) {
+        if ($placeLead->review != $this->review) {
             $changes['review'] = array('from' => $placeLead->review, 'to' => $this->review );
             $placeLead->review = $this->review;
         }
 
-        if ($this->website && $placeLead->website != $this->website) {
+        if ($placeLead->website != $this->website) {
             $changes['website'] = array('from' => $placeLead->website, 'to' => $this->website );
             $placeLead->website = $this->website;
         }
 
-        if ($this->geometry && $placeLead->geometry != $this->geometry) {
-            $changes['geometry'] = array('from' => $placeLead->geometry, 'to' => $this->geometry );
-            $placeLead->geometry = $this->geometry;
-        }
-
-        if ($this->geo && $placeLead->geo != $this->geo) {
+        if ($placeLead->geo != $this->geo) {
             $changes['geo'] = array('from' => $placeLead->geo, 'to' => $this->geo );
             $placeLead->geo = $this->geo;
         }
 
-        if ($this->data && $placeLead->data != $this->data) {
+        if ($placeLead->data != $this->data) {
             $changes['data'] = array('from' => $placeLead->data, 'to' => $this->data );
             $placeLead->data = $this->data;
         }
 
-        if ($this->toSync && $placeLead->toSync !== $this->toSync) {
+        if ($placeLead->toSync !== $this->toSync) {
             $changes['toSync'] = array('from' => $placeLead->toSync, 'to' => $this->toSync );
             $placeLead->toSync = $this->toSync;
         }
 
-        if ($this->isImportant && $placeLead->isImportant !== $this->isImportant) {
+        if ($placeLead->isImportant !== $this->isImportant) {
             $changes['isImportant'] = array('from' => $placeLead->isImportant, 'to' => $this->isImportant );
             $placeLead->isImportant = $this->isImportant;
         }
 
-        if ($this->campaignCode && $placeLead->campaignCode != $this->campaignCode) {
+        if ($placeLead->campaignCode != $this->campaignCode) {
             $changes['campaignCode'] = array('from' => $placeLead->campaignCode, 'to' => $this->campaignCode );
             $placeLead->campaignCode = $this->campaignCode;
         }
@@ -311,8 +316,8 @@ class PlaceLeadUpdateFormModel extends AbstractFormModel
             $placeLead->contractAt = $this->contractAt;
         }
 
-        if ($this->nextFollowupDate && $placeLead->nextFollowupDate->format('Y-m-d H:i:s') != $this->nextFollowupDate) {
-            $changes['nextFollowupDate'] = array('from' => $placeLead->nextFollowupDate->format('Y-m-d H:i:s'), 'to' => $this->nextFollowupDate );
+        if (($placeLead->nextFollowupDate?$placeLead->nextFollowupDate->format('Y-m-d H:i:s'):$placeLead->nextFollowupDate) != $this->nextFollowupDate) {
+            $changes['nextFollowupDate'] = array('from' => $placeLead->nextFollowupDate?$placeLead->nextFollowupDate->format('Y-m-d H:i:s'):$placeLead->nextFollowupDate, 'to' => $this->nextFollowupDate );
             $placeLead->nextFollowupDate = $this->nextFollowupDate;
         }
 

@@ -26,6 +26,7 @@ class PlaceLeadNormalizer extends BaseNormalizer
         
         return [ 
             'id' => $object->id,
+            'placeId' => $object->placeId,
             'name' => $object->name,
             'address' => $object->address,
             'phone' => $object->phone,
@@ -35,7 +36,6 @@ class PlaceLeadNormalizer extends BaseNormalizer
             'rating' => $object->rating,
             'review' => $object->review,
             'website' => $object->website,
-            'geometry' => $object->geometry,
             'geo' => $object->geo,
             'data' => $object->data,
             'toSync' => $object->toSync,

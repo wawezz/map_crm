@@ -12,7 +12,8 @@ class m180532_123152_place_leads extends Migration
     public function safeUp()
     {
         $this->createTable('{{%place_leads}}', [
-            'id' => 'char(36) not null',
+            'id' => $this->primaryKey(11),
+            'placeId' => $this->string(32)->unique(),
             'name' => $this->string(128)->defaultValue(null),
             'address' => $this->string(255)->defaultValue(null),
             'phone' => $this->string(32),
@@ -33,8 +34,6 @@ class m180532_123152_place_leads extends Migration
             'contractAt' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
             'nextFollowupDate' => $this->timestamp()->defaultValue(null)
         ], 'CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci');
-
-        $this->addPrimaryKey('app_place_leads_pkey', '{{%place_leads}}', ['id']);
     }
 
     /**

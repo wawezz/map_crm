@@ -2,6 +2,7 @@
 /.env
 /docker-compose.override.yml
 /certbot.log
+/runtime/
 backup.sql
 
 .DS_Store

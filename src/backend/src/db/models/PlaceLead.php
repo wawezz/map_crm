@@ -57,11 +57,6 @@ class PlaceLead
      * @var string
      */
     public $website;
-    
-    /**
-     * @var string
-     */
-    public $geometry;
 
     /**
      * @var string
@@ -152,6 +147,7 @@ class PlaceLead
 
         return [ 
             'id' => $this->id,
+            'placeId' => $this->placeId,
             'name' => $this->name,
             'address' => $this->address,
             'phone' => $this->phone,
@@ -162,7 +158,6 @@ class PlaceLead
             'rating' => $this->rating,
             'review' => $this->review,
             'website' => $this->website,
-            'geometry' => $this->geometry,
             'geo' => $this->geo,
             'data' => $this->data,
             'toSync' => $this->toSync,

@@ -91,36 +91,6 @@ class LeadUpdateFormModel extends AbstractFormModel
     /**
      * @var int
      */
-    public $crossProduct;
-
-    /**
-     * @var int
-     */
-    public $crossProductCount;
-
-    /**
-     * @var int
-     */
-    public $crossProductPrice;
-
-    /**
-     * @var int
-     */
-    public $upsellProduct;
-
-    /**
-     * @var int
-     */
-    public $upsellProductCount;
-
-    /**
-     * @var int
-     */
-    public $upsellProductPrice;
-
-    /**
-     * @var int
-     */
     public $shippingPrice;
 
     /**
@@ -238,7 +208,7 @@ class LeadUpdateFormModel extends AbstractFormModel
             [['postOrder'], 'boolean'],
             [['completedAt', 'firstCallAt'], 'date', 'format' => 'yyyy-M-d H:m:s'],
             [['rejectionReason'], 'string'],
-            [['budget', 'product', 'productCount', 'productPrice', 'crossProduct', 'crossProductCount', 'crossProductPrice', 'upsellProduct', 'upsellProductCount', 'upsellProductPrice', 'shippingPrice'], 'integer'],
+            [['budget', 'product', 'productCount', 'productPrice', 'shippingPrice'], 'integer'],
             [['name'], 'trim'],
         ];
     }
@@ -356,38 +326,6 @@ class LeadUpdateFormModel extends AbstractFormModel
         if ($lead->productPrice != $this->productPrice) {
             $changes['productPrice'] = array('from' => $lead->productPrice, 'to' => $this->productPrice );
             $lead->productPrice = $this->productPrice?$this->productPrice:null;
-        }
-
-        if ($lead->crossProduct != $this->crossProduct) {
-            $changes['crossProduct'] = array('from' => $lead->crossProduct, 'to' => $this->crossProduct );
-            $lead->crossProduct = $this->crossProduct;
-        }
-
-        if ($lead->crossProductCount != $this->crossProductCount) {
-            $changes['crossProductCount'] = array('from' => $lead->crossProductCount, 'to' => $this->crossProductCount );
-            $lead->crossProductCount = $this->crossProductCount;
-        }
-
-        if ($lead->crossProductPrice != $this->crossProductPrice) {
-            $changes['crossProductPrice'] = array('from' => $lead->crossProductPrice, 'to' => $this->crossProductPrice );
-            $lead->crossProductPrice = $this->crossProductPrice?$this->crossProductPrice:null;
-        }
-
-        if ($lead->upsellProduct != $this->upsellProduct) {
-            $changes['upsellProduct'] = array('from' => $lead->upsellProduct, 'to' => $this->upsellProduct );
-            $lead->upsellProduct = $this->upsellProduct;
-        }
-
-        if ($lead->upsellProductCount != $this->upsellProductCount) {
-            $changes['upsellProductCount'] = array('from' => $lead->upsellProductCount, 'to' => $this->upsellProductCount );
-            $lead->upsellProductCount = $this->upsellProductCount;
-        }
-
-        if ($lead->upsellProductPrice != $this->upsellProductPrice) {
-            $changes['upsellProductPrice'] = array('from' => $lead->upsellProductPrice, 'to' => $this->upsellProductPrice );
-            $lead->upsellProductPrice = $this->upsellProductPrice?$this->upsellProductPrice:null;
-
-
         }
 
         if ($lead->shippingPrice != $this->shippingPrice) {

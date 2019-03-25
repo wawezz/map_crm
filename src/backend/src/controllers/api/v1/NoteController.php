@@ -93,7 +93,7 @@ class NoteController extends BaseController
 
         $this->response->headers->add('X-Pagination-Total', $total);
 
-        $result = array('count' => $total, 'result' => $noteService->findAll($filter, array(), $options));
+        $result = $noteService->findAll($filter, array(), $options);
 
         return $this->asJson($result);
     }

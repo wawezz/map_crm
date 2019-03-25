@@ -42,12 +42,6 @@ class LeadNormalizer extends BaseNormalizer
             'product' => $object->product,
             'productCount' => $object->productCount,
             'productPrice' => $object->productPrice,
-            'crossProduct' => $object->crossProduct,
-            'crossProductCount' => $object->crossProductCount,
-            'crossProductPrice' => $object->crossProductPrice,
-            'upsellProduct' => $object->upsellProduct,
-            'upsellProductCount' => $object->upsellProductCount,
-            'upsellProductPrice' => $object->upsellProductPrice,
             'shippingPrice' => $object->shippingPrice,
             'postOrder' => $object->postOrder,
             'rejectionReason' => $object->rejectionReason

@@ -13,7 +13,7 @@ class m180527_123152_currencies extends Migration
     {
         $this->createTable('{{%currencies}}', [
             'id' => $this->primaryKey(11),
-            'name' => $this->string(128)->defaultValue(null)
+            'name' => $this->string(128)->unique()
         ]);
     }
 

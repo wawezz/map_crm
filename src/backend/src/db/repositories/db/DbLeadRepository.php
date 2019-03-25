@@ -155,7 +155,7 @@ class DbLeadRepository extends AbstractDbRepository implements LeadRepositoryInt
         return $cmd->queryAll([\PDO::FETCH_CLASS, Lead::class]);
     }
 
-    public function findById(string $id): ?Lead
+    public function findById(int $id): ?Lead
     {
 
         $cmd = $this->db->createCommand('SELECT app_leads.*, ac.name as clientName, 
@@ -182,11 +182,9 @@ class DbLeadRepository extends AbstractDbRepository implements LeadRepositoryInt
     {
         $cmd = $this->db->createCommand('INSERT INTO app_leads
                             ( id, name, client, responsible, createdBy, status, createdAt,  updatedAt, completedAt, budget, orderId,
-                            firstCallAt, countryId, currency, product, productCount, productPrice, crossProduct, crossProductCount, 
-                            crossProductPrice, upsellProduct, upsellProductCount, upsellProductPrice, shippingPrice, postOrder, rejectionReason)
+                            firstCallAt, countryId, currency, product, productCount, productPrice, shippingPrice, postOrder, rejectionReason)
                      VALUES (:id, :name, :client, :responsible, :createdBy, :status, :createdAt, :updatedAt, :completedAt, :budget, :orderId,
-                            :firstCallAt, :countryId, :currency, :product, :productCount, :productPrice, :crossProduct, :crossProductCount, 
-                            :crossProductPrice, :upsellProduct, :upsellProductCount, :upsellProductPrice, :shippingPrice, :postOrder, :rejectionReason)',
+                            :firstCallAt, :countryId, :currency, :product, :productCount, :productPrice, :shippingPrice, :postOrder, :rejectionReason)',
             LeadNormalizer::serialize($lead));
 
         $cmd->execute();
@@ -215,12 +213,6 @@ class DbLeadRepository extends AbstractDbRepository implements LeadRepositoryInt
                        product = :product, 
                        productCount = :productCount, 
                        productPrice = :productPrice, 
-                       crossProduct = :crossProduct, 
-                       crossProductCount = :crossProductCount, 
-                       crossProductPrice = :crossProductPrice, 
-                       upsellProduct = :upsellProduct, 
-                       upsellProductCount = :upsellProductCount, 
-                       upsellProductPrice = :upsellProductPrice, 
                        shippingPrice = :shippingPrice, 
                        postOrder = :postOrder, 
                        rejectionReason = :rejectionReason

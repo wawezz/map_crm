@@ -1,28 +1,6 @@
 {
-    "parser": "babel-eslint",
-    "plugins": [
-        "babel"
-    ],
-    "extends": "standard",
-    "rules": {
-        "indent": 0,
-        "indent-size": [true, 4],
-        "no-trailing-spaces": 0,
-        "padded-blocks": 0,
-        "semi": 0,
-        "brace-style": 0,
-        "no-multiple-empty-lines": 0,
-        "space-in-parens": 0,
-        "no-multi-spaces": 0,
-        "object-property-newline": 0,
-        "quotes": 0,
-        "comma-dangle": 0,
-        "space-before-function-paren": 0,
-        "space-infix-ops": 0,
-        "promise/param-names": 0
-    },
-    "globals": {
-        "onmessage": true,
-        "postMessage": true
-    }
+  "root": true,
+  "extends": [
+    "plugin:vue/essential"
+  ]
 }

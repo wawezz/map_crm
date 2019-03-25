@@ -149,9 +149,8 @@ class DbPlaceLeadRepository extends AbstractDbRepository implements PlaceLeadRep
         return $cmd->queryAll([\PDO::FETCH_CLASS, PlaceLead::class]);
     }
 
-    public function findById(string $id): ?PlaceLead
+    public function findById(int $id): ?PlaceLead
     {
-
         $cmd = $this->db->createCommand('SELECT app_place_leads.*, 
             cu.name as createdByName, 
             cu.secret as createdBySecret,  
@@ -168,17 +167,36 @@ class DbPlaceLeadRepository extends AbstractDbRepository implements PlaceLeadRep
 
     }
 
-    public function insert(PlaceLead $placeLead): bool
+    public function findByPlaceId(string $placeId): ?PlaceLead
     {
+        $cmd = $this->db->createCommand('SELECT app_place_leads.*, 
+            cu.name as createdByName, 
+            cu.secret as createdBySecret,  
+            ls.name as statusName, 
+            ST_AsText(app_place_leads.geo) as geo
+            FROM app_place_leads
+            LEFT JOIN app_users cu ON app_place_leads.createdBy = cu.id 
+            LEFT JOIN app_statuses ls ON app_place_leads.status = ls.id 
+            WHERE app_place_leads.placeId = :placeId', [
+            ':placeId' => $placeId,
+        ]);
 
+        return $cmd->queryObject(PlaceLead::class) ?: null;
+
+    }
+
+    public function insert(PlaceLead $placeLead): int
+    {
         $cmd = $this->db->createCommand('INSERT INTO app_place_leads
-                            ( id, name, address, phone, type, status, price, rating, review, website, geometry, geo, data, toSync, campaignCode,
+                            ( id, placeId, name, address, phone, type, status, price, rating, review, website, geo, data, toSync, campaignCode,
                             isImportant, createdBy, createdAt, updatedAt, contractAt, nextFollowupDate)
-                     VALUES (:id, :name, :address, :phone, :type, :status, :price, :rating, :review, :website, :geometry, ST_GeomFromText(:geo), :data, :toSync, :campaignCode,
+                     VALUES (:id, :placeId, :name, :address, :phone, :type, :status, :price, :rating, :review, :website, ST_GeomFromText(:geo), :data, :toSync, :campaignCode,
                             :isImportant, :createdBy, :createdAt, :updatedAt, :contractAt, :nextFollowupDate)',
             PlaceLeadNormalizer::serialize($placeLead));
 
-        return $cmd->execute() > 0;
+        $cmd->execute();
+
+        return $this->db->getLastInsertID();
     }
 
     public function update(PlaceLead $placeLead): bool
@@ -186,7 +204,8 @@ class DbPlaceLeadRepository extends AbstractDbRepository implements PlaceLeadRep
 
         $cmd = $this->db->createCommand('
                 UPDATE app_place_leads
-                   SET name = :name,
+                   SET placeId = :placeId,
+                       name = :name,
                        address = :address,
                        phone = :phone,
                        type = :type,
@@ -195,7 +214,6 @@ class DbPlaceLeadRepository extends AbstractDbRepository implements PlaceLeadRep
                        rating = :rating,
                        review = :review, 
                        website = :website, 
-                       geometry = :geometry,
                        geo = ST_GeomFromText(:geo), 
                        data = :data, 
                        toSync = :toSync, 

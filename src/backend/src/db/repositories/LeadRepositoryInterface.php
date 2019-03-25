@@ -33,11 +33,11 @@ interface LeadRepositoryInterface
      * @param string $id
      * @return \backend\db\models\Lead|null
      */
-    public function findById(string $id): ?Lead;
+    public function findById(int $id): ?Lead;
 
     /**
      * @param Lead $lead
-     * @return bool
+     * @return int
      */
 
     public function insert(Lead $lead): int;

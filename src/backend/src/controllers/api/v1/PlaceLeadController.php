@@ -30,6 +30,7 @@ class PlaceLeadController extends BaseController
         return [
             'list' => ['POST', 'OPTIONS'],
             'get' => ['POST', 'OPTIONS'],
+            'get_by_place_id' => ['POST', 'OPTIONS'],
             'remove' => ['POST', 'OPTIONS'],
             'add' => ['POST', 'OPTIONS'],
             'update' => ['POST', 'OPTIONS'],
@@ -42,14 +43,14 @@ class PlaceLeadController extends BaseController
 
         $behaviors['authenticator'] = [
             'class' => JwtBearerAuth::class,
-            'only' => ['add', 'update', 'list', 'get', 'remove'],
+            'only' => ['add', 'get-by-place-id', 'update', 'list', 'get', 'remove'],
         ];
 
         $behaviors['access'] = [
             'class' => AccessControl::class,
             'rules' => [
                 [
-                    'actions' => ['add', 'update', 'list', 'get', 'remove'],
+                    'actions' => ['add', 'update', 'list', 'get', 'get-by-place-id', 'remove'],
                     'allow' => true,
                     'roles' => ['@'],
                 ],
@@ -57,6 +58,28 @@ class PlaceLeadController extends BaseController
         ];
 
         return $behaviors;
+    }
+
+    public function actionGetByPlaceId()
+    {
+        $placeId = $this->request->get('placeId');
+
+        /** @var \backend\services\PlaceLeadService\PlaceLeadRepositoryInterface $placeLeadService */
+        $placeLeadService = \Yii::$container->get(PlaceLeadRepositoryInterface::class);
+
+        $result = $placeLeadService->findByPlaceId($placeId);
+        if(!$result) throw new HttpException(418, 'Place lead not found.');
+        $placeLead = $result->publicBundle();
+        /** @var \backend\services\repositories\db\DbNoteRepository $noteService */
+        $noteService = \Yii::$container->get(DbNoteRepository::class);
+
+        $query = array(
+            'elementId' => (int) $placeLead['id'],
+            'elementType' => Note::ELEMENT_TYPE_PLACE_LEAD
+        );
+        $placeLead['notes'] = $noteService->findAll($query);
+
+        return $this->asJson($placeLead);
     }
 
     public function actionGet()
@@ -73,7 +96,7 @@ class PlaceLeadController extends BaseController
         $noteService = \Yii::$container->get(DbNoteRepository::class);
 
         $query = array(
-            'elementId' => $placeLead['id'],
+            'elementId' => (int) $placeLead['id'],
             'elementType' => Note::ELEMENT_TYPE_PLACE_LEAD
         );
         $placeLead['notes'] = $noteService->findAll($query);
@@ -95,8 +118,12 @@ class PlaceLeadController extends BaseController
         /** @var \backend\services\repositories\db\DbNoteRepository $noteService */
         $noteService = \Yii::$container->get(DbNoteRepository::class);
 
+        $elements = array();
+
+        for( $i =0; $i < count( $placeLeads ); $i++ ){ $elements[] = (int)$placeLeads[$i];}
+
         $query = array(
-            'elementId' => array('$in' => $placeLeads),
+            'elementId' => array('$in' => $elements),
             'elementType' => Note::ELEMENT_TYPE_PLACE_LEAD
         );
 

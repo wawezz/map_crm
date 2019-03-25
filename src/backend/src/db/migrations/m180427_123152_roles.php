@@ -13,7 +13,7 @@ class m180427_123152_roles extends Migration
     {
         $this->createTable('{{%roles}}', [
             'id' => $this->primaryKey(11),
-            'name' => $this->string(128)->defaultValue(null)
+            'name' => $this->string(128)->unique()
         ]);
     }
 

@@ -86,36 +86,6 @@ class LeadAddFormModel extends AbstractFormModel
     /**
      * @var int
      */
-    public $crossProduct;
-
-    /**
-     * @var int
-     */
-    public $crossProductCount;
-
-    /**
-     * @var int
-     */
-    public $crossProductPrice;
-
-    /**
-     * @var int
-     */
-    public $upsellProduct;
-
-    /**
-     * @var int
-     */
-    public $upsellProductCount;
-
-    /**
-     * @var int
-     */
-    public $upsellProductPrice;
-
-    /**
-     * @var int
-     */
     public $shippingPrice;
 
     /**
@@ -231,7 +201,7 @@ class LeadAddFormModel extends AbstractFormModel
             [['postOrder'], 'boolean'],
             [['completedAt', 'firstCallAt'], 'date', 'format' => 'yyyy-M-d H:m:s'],
             [['rejectionReason'], 'string'],
-            [['budget', 'product', 'productCount', 'productPrice', 'crossProduct', 'crossProductCount', 'crossProductPrice', 'upsellProduct', 'upsellProductCount', 'upsellProductPrice', 'shippingPrice'], 'integer'],
+            [['budget', 'product', 'productCount', 'productPrice', 'shippingPrice'], 'integer'],
             [['name'], 'trim'],
         ];
     }
@@ -295,12 +265,6 @@ class LeadAddFormModel extends AbstractFormModel
         $lead->product = $this->product;
         $lead->productCount = $this->productCount;
         $lead->productPrice = $this->productPrice;
-        $lead->crossProduct = $this->crossProduct;
-        $lead->crossProductCount = $this->crossProductCount;
-        $lead->crossProductPrice = $this->crossProductPrice;
-        $lead->upsellProduct = $this->upsellProduct;
-        $lead->upsellProductCount = $this->upsellProductCount;
-        $lead->upsellProductPrice = $this->upsellProductPrice;
         $lead->shippingPrice = $this->shippingPrice;
         $lead->postOrder = $this->postOrder;
         $lead->completedAt = $this->completedAt;

@@ -10,7 +10,7 @@ sudo ./bin/docker-reload.sh
 
 sudo ./bin/backend.sh build
 
-sudo ./bin/frontend.sh yarn
+sudo ./bin/frontend.sh npm install
 
 sudo ./bin/docker-reload.sh
 

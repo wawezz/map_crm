@@ -16,13 +16,7 @@ class m180526_123152_leads_fields extends Migration
         $this->addColumn('{{%leads}}', 'product', $this->integer(11)->after('currency'));
         $this->addColumn('{{%leads}}', 'productCount', $this->smallInteger(5)->defaultValue(0)->after('product'));
         $this->addColumn('{{%leads}}', 'productPrice', $this->integer(11)->after('productCount'));
-        $this->addColumn('{{%leads}}', 'crossProduct', $this->integer(11)->after('productPrice'));
-        $this->addColumn('{{%leads}}', 'crossProductCount', $this->smallInteger(5)->defaultValue(0)->after('crossProduct'));
-        $this->addColumn('{{%leads}}', 'crossProductPrice', $this->integer(11)->after('crossProductCount'));
-        $this->addColumn('{{%leads}}', 'upsellProduct', $this->integer(11)->after('crossProductPrice'));
-        $this->addColumn('{{%leads}}', 'upsellProductCount', $this->smallInteger(5)->defaultValue(0)->after('upsellProduct'));
-        $this->addColumn('{{%leads}}', 'upsellProductPrice', $this->integer(11)->after('upsellProductCount'));
-        $this->addColumn('{{%leads}}', 'shippingPrice', $this->integer(11)->after('upsellProductPrice'));
+        $this->addColumn('{{%leads}}', 'shippingPrice', $this->integer(11)->after('productPrice'));
         $this->addColumn('{{%leads}}', 'postOrder', $this->boolean()->defaultValue(0)->after('shippingPrice'));
         $this->addColumn('{{%leads}}', 'rejectionReason', $this->string(255)->defaultValue(null)->after('postOrder'));
     }
@@ -37,12 +31,6 @@ class m180526_123152_leads_fields extends Migration
         $this->dropColumn('{{%leads}}', 'product');
         $this->dropColumn('{{%leads}}', 'productCount');
         $this->dropColumn('{{%leads}}', 'productPrice');
-        $this->dropColumn('{{%leads}}', 'crossProduct');
-        $this->dropColumn('{{%leads}}', 'crossProductCount');
-        $this->dropColumn('{{%leads}}', 'crossProductPrice');
-        $this->dropColumn('{{%leads}}', 'upsellProduct');
-        $this->dropColumn('{{%leads}}', 'upsellProductCount');
-        $this->dropColumn('{{%leads}}', 'upsellProductPrice');
         $this->dropColumn('{{%leads}}', 'shippingPrice');
         $this->dropColumn('{{%leads}}', 'postOrder');
         $this->dropColumn('{{%leads}}', 'rejectionReason');

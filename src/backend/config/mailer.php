@@ -17,6 +17,6 @@ return [
     ],
     'messageConfig' => [
         'from' => [getenv('SMTP_FROM') => 'Map crm Team'],
-        'replyTo' => 'team@map-crm.lc',
+        'replyTo' => 'team@crm.officering.com',
     ],
 ];

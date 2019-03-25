@@ -30,17 +30,23 @@ interface PlaceLeadRepositoryInterface
     public function findLike(string $field, string $query, int $limit = null): array;
 
     /**
-     * @param string $id
+     * @param int $id
      * @return \backend\db\models\PlaceLead|null
      */
-    public function findById(string $id): ?PlaceLead;
+    public function findById(int $id): ?PlaceLead;
+
+    /**
+     * @param string $placeId
+     * @return \backend\db\models\PlaceLead|null
+     */
+    public function findByPlaceId(string $placeId): ?PlaceLead;
 
     /**
      * @param PlaceLead $placeLead
-     * @return bool
+     * @return int
      */
 
-    public function insert(PlaceLead $placeLead): bool;
+    public function insert(PlaceLead $placeLead): int;
 
     /**
      * @param \backend\db\models\PlaceLead $placeLead
