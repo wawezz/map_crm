@@ -1,6 +1,11 @@
 FROM rmrevin/debian-php7:4.0
 
+RUN rm /etc/apt/sources.list \
+ && touch /etc/apt/sources.list \
+ && echo "deb http://archive.debian.org/debian jessie main" >> /etc/apt/sources.list 
+ 
 RUN set -xe \
+ && apt-key adv --recv-keys --keyserver ha.pool.sks-keyservers.net 5072E1F5 \
  && apt-get update -qq \
  && apt-get install -y --no-install-recommends libgmp-dev \
  && docker-php-ext-install -j$(nproc) gmp \
