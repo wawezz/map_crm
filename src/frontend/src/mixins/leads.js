@@ -389,7 +389,7 @@ export const leads = {
         this.leadsform.currency = JSON.parse(avilCurrencies)[0];
       }
     },
-    sortBy(field = null) {
+    sortLeadsBy(field = null) {
       if (field === null) return;
       this.leadsLoading = true;
       if (this.leadsSort === '[]') this.leadsSort = {};

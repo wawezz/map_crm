@@ -39,7 +39,7 @@
             :itemsObject="usersData"
             :sort="usersSort"
             :user="user"
-            :sortBy="sortBy"
+            :sortBy="sortUsersBy"
           ></active-grouped-table>
         </div>
         <div class="col-12">

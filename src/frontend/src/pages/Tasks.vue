@@ -15,7 +15,7 @@
       <base-alert v-if="listError" type="danger">{{listError}}</base-alert>
     </div>
     <div class="col-12">
-      <card title="Tasks">
+      <card title="Tasks" :loading="tasksLoading">
         <tabs :options="{ useUrlFragment: false }">
           <tab name="Current">
             <div class="taskBlock row">
@@ -252,6 +252,7 @@
     },
     watch: {
       $route(to, from) {
+        this.tasksLoading = true;
         this.getTasks();
       }
     },

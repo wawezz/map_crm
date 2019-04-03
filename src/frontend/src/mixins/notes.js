@@ -7,6 +7,7 @@ export const notes = {
       notesFilter: '[]',
       notesSort: '[]',
       notes: [],
+      notesLoading: true,
       notesTotalCount: 0,
       noteComment: {
         data: null
@@ -50,6 +51,7 @@ export const notes = {
         .then(response => {
           this.notes = response.data;
           this.notesTotalCount = parseInt(response.headers['x-pagination-total']);
+          this.notesLoading = false;
         })
         .catch(e => {
           const data = e.response.data;

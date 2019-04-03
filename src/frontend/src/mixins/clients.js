@@ -403,7 +403,7 @@ export const clients = {
         }
       );
     },
-    sortBy(field = null) {
+    sortClientsBy(field = null) {
       if (field === null) return;
       this.clientsLoading = true;
       if (this.clientsSort === '[]') this.clientsSort = {};

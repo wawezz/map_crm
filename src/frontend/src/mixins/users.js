@@ -360,7 +360,7 @@ export const users = {
         }
       );
     },
-    sortBy(field = null) {
+    sortUsersBy(field = null) {
       if (field === null) return;
       this.usersLoading = true;
       if (this.usersSort === '[]') this.usersSort = {};

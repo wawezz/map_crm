@@ -32,7 +32,7 @@
             :data="leads"
             :itemsObject="leadsData"
             :sort="leadsSort"
-            :sortBy="sortBy"
+            :sortBy="sortLeadsBy"
           ></active-table>
         </div>
         <div class="col-12">

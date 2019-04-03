@@ -418,7 +418,7 @@ export const placeLeads = {
         }
       );
     },
-    sortBy(field = null) {
+    sortPlaceLeadsBy(field = null) {
       if (field === null) return;
       this.placeLeadsLoading = true;
       if (this.placeLeadsSort === '[]') this.placeLeadsSort = {};

@@ -1,7 +1,7 @@
 <template>
   <div class="row" v-if="user">
     <div class="col-12">
-      <card title="Events">
+      <card title="Events" :loading="notesLoading">
         <div class="table">
           <table class="table tablesorter" v-if="!listError">
             <thead>
@@ -159,6 +159,7 @@
     },
     watch: {
       $route(to, from) {
+        this.notesLoading = true;
         this.getNotes();
       }
     },

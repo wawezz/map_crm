@@ -32,7 +32,7 @@
             :data="clients"
             :itemsObject="clientsData"
             :sort="clientsSort"
-            :sortBy="sortBy"
+            :sortBy="sortClientsBy"
           ></active-table>
         </div>
         <div class="col-12">
