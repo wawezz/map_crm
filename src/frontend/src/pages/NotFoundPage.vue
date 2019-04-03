@@ -18,11 +18,11 @@
 </template>
 
 <script>
-export default {};
+  export default {};
 </script>
 
 <style>
-.marginTop {
+  .marginTop {
   margin-top: 150px;
 }
 </style>

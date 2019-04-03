@@ -233,63 +233,63 @@
   </div>
 </template>
 <script>
-import { BaseAlert } from "@/components";
-import { Pagination } from "@/components";
-import { Modal } from "@/components";
-import Datepicker from "vuejs-datepicker";
-import { main } from "./../mixins/main";
-import { tasks } from "./../mixins/tasks";
-import { clients } from "./../mixins/clients";
-import authGuard from "./../guards/auth.guard";
+  import { BaseAlert } from "@/components";
+  import { Pagination } from "@/components";
+  import { Modal } from "@/components";
+  import Datepicker from "vuejs-datepicker";
+  import { main } from "./../mixins/main";
+  import { tasks } from "./../mixins/tasks";
+  import { clients } from "./../mixins/clients";
+  import authGuard from "./../guards/auth.guard";
 
-export default {
-  beforeRouteEnter: authGuard,
-  components: {
-    BaseAlert,
-    Modal,
-    Datepicker,
-    Pagination
-  },
-  watch: {
-    $route(to, from) {
+  export default {
+    beforeRouteEnter: authGuard,
+    components: {
+      BaseAlert,
+      Modal,
+      Datepicker,
+      Pagination
+    },
+    watch: {
+      $route(to, from) {
+        this.getTasks();
+      }
+    },
+    data() {
+      return {
+        taskAddModalVisible: false,
+        taskCloseModalVisible: false,
+        taskRemoveModalVisible: false
+      };
+    },
+    methods: {
+      closeTaskHandler(taskId) {
+        this.getTaskData(taskId);
+        this.taskCloseModalVisible = true;
+      },
+      removeTaskHandler(taskId) {
+        this.getTaskData(taskId);
+        this.taskRemoveModalVisible = true;
+      },
+      loadElements() {
+        this.searching = true;
+        this.getElementsByName(this.tasksForm.elementName);
+      },
+      selectElement(element) {
+        this.tasksForm.elementId = element.id;
+        this.tasksForm.elementType = element.source;
+        this.tasksForm.elementName = element.name;
+        this.searching = false;
+      }
+    },
+    created() {
+      (this.tasksFilter = { responsible: this.$route.params.id }), { id: "DESC" };
+      this.managersFilter = { roleId: "!=|3" };
       this.getTasks();
-    }
-  },
-  data() {
-    return {
-      taskAddModalVisible: false,
-      taskCloseModalVisible: false,
-      taskRemoveModalVisible: false
-    };
-  },
-  methods: {
-    closeTaskHandler(taskId) {
-      this.getTaskData(taskId);
-      this.taskCloseModalVisible = true;
+      this.getManagers();
     },
-    removeTaskHandler(taskId) {
-      this.getTaskData(taskId);
-      this.taskRemoveModalVisible = true;
-    },
-    loadElements() {
-      this.searching = true;
-      this.getElementsByName(this.tasksForm.elementName);
-    },
-    selectElement(element) {
-      this.tasksForm.elementId = element.id;
-      this.tasksForm.elementType = element.source;
-      this.tasksForm.elementName = element.name;
-      this.searching = false;
-    }
-  },
-  created() {
-    (this.tasksFilter = { responsible: this.$route.params.id }), { id: "DESC" };
-    this.managersFilter = { roleId: "!=|3" };
-    this.getTasks();
-    this.getManagers();
-  },
-  mixins: [main, tasks, clients]
-};
+    mixins: [main, tasks, clients]
+  };
 </script>
 <style>
 </style>

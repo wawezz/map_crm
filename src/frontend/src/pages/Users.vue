@@ -16,7 +16,7 @@
         @click="toogleHidden"
       >{{toogleHidenUsers?'Hide api users':'Show api users'}}</base-button>
       <base-button
-        v-if="checkedUsers.length>0"
+        v-if="usersData.checked.length>0"
         data-toggle="modal"
         data-target="usersRemove"
         type="button"
@@ -30,63 +30,17 @@
       <base-alert v-if="listError" type="danger">{{listError}}</base-alert>
     </div>
     <div class="col-12">
-      <card title="Users">
+      <card title="Users" :loading="usersLoading">
         <div class="table">
-          <table class="table tablesorter">
-            <thead>
-              <tr>
-                <th></th>
-                <th></th>
-                <th>NAME</th>
-                <th>EMAIL</th>
-                <th>ROLE</th>
-              </tr>
-            </thead>
-            <tbody v-for="group in usersByGroups" :key="group.id">
-              <tr>
-                <th colspan="7">
-                  GROUP: {{group.name}}
-                  <span
-                    v-if="group.users.length"
-                    class="users-list-count"
-                  >({{group.users.length}} users)</span>
-                </th>
-              </tr>
-              <tr
-                class="footable-even"
-                style="display: table-row;"
-                :class="listUser.isOnline>1?' online':listUser.isOnline==1?' hold':''"
-                v-for="listUser in group.users"
-                :key="listUser.id"
-              >
-                <td style="width: 40px;">
-                  <base-checkbox
-                    v-if="listUser.id != user.id"
-                    :id="'checkbox_' + listUser.id"
-                    :value="listUser.id"
-                    v-model="checkedUsers"
-                  ></base-checkbox>
-                </td>
-                <td style="width: 60px;">
-                  <img
-                    :src="listUser.avatarId>0?listUser.avatarPath + listUser.avatarName:require('./../assets/images/avatar.png')"
-                    alt="user img"
-                    class="img-circle"
-                    width="30"
-                  >
-                </td>
-                <td>
-                  <router-link :to="{ path: '/profile/' + listUser.id}">{{listUser.name}}</router-link>
-                </td>
-                <td>
-                  <a :href="'mail-to:' + listUser.email">{{listUser.email}}</a>
-                </td>
-                <td>
-                  <span class="label label-success">{{listUser.roleName}}</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <active-grouped-table
+            :columns="usersColumns"
+            items="users"
+            :data="usersByGroups"
+            :itemsObject="usersData"
+            :sort="usersSort"
+            :user="user"
+            :sortBy="sortBy"
+          ></active-grouped-table>
         </div>
         <div class="col-12">
           <pagination
@@ -205,57 +159,60 @@
   </div>
 </template>
 <script>
-import { BaseAlert } from "@/components";
-import { Pagination } from "@/components";
-import { Modal } from "@/components";
-import { main } from "./../mixins/main";
-import { users } from "./../mixins/users";
-import authGuard from "./../guards/auth.guard";
+  import { BaseAlert } from "@/components";
+  import { ActiveGroupedTable } from "@/components";
+  import { Pagination } from "@/components";
+  import { Modal } from "@/components";
+  import { main } from "./../mixins/main";
+  import { users } from "./../mixins/users";
+  import authGuard from "./../guards/auth.guard";
 
-export default {
-  beforeRouteEnter: authGuard,
-  components: {
-    BaseAlert,
-    Modal,
-    Pagination
-  },
-  watch: {
-    $route(to, from) {
-      this.getUsers();
-    }
-  },
-  data() {
-    return {
-      userAddModalVisible: false,
-      usersRemoveModalVisible: false,
-      toogleHidenUsers: false
-    };
-  },
-  created() {
-    this.usersFilter = { roleId: "!=|3" };
-    this.getUsers();
-    this.getParams();
-  },
-  methods: {
-    handleFileUpload() {
-      this.usersForm.image = this.$refs.avatar.files[0];
+  export default {
+    beforeRouteEnter: authGuard,
+    components: {
+      BaseAlert,
+      ActiveGroupedTable,
+      Modal,
+      Pagination
     },
-    removeFile() {
-      this.usersForm.image = null;
-    },
-    toogleHidden() {
-      if (this.toogleHidenUsers) {
-        this.toogleHidenUsers = false;
-        this.usersFilter = { roleId: "!=|3" };
-      } else {
-        this.toogleHidenUsers = true;
-        this.usersFilter = [];
+    watch: {
+      $route(to, from) {
+        this.usersLoading = true;
+        this.getUsers();
       }
+    },
+    data() {
+      return {
+        userAddModalVisible: false,
+        usersRemoveModalVisible: false,
+        toogleHidenUsers: false
+      };
+    },
+    created() {
+      this.usersFilter = { roleId: "!=|3" };
       this.getUsers();
-    }
-  },
-  mixins: [main, users]
-};
+      this.getParams();
+    },
+    methods: {
+      handleFileUpload() {
+        this.usersForm.image = this.$refs.avatar.files[0];
+      },
+      removeFile() {
+        this.usersForm.image = null;
+      },
+      toogleHidden() {
+        if (this.toogleHidenUsers) {
+          this.toogleHidenUsers = false;
+          this.usersFilter = { roleId: "!=|3" };
+        } else {
+          this.toogleHidenUsers = true;
+          this.usersFilter = [];
+        }
+        this.getUsers();
+      }
+    },
+    mixins: [main, users]
+  };
 </script>
 <style>
 </style>

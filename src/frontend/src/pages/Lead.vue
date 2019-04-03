@@ -210,53 +210,53 @@
 </template>
 
 <script>
-import { BaseAlert } from "@/components";
-import { Modal } from "@/components";
-import NotesList from "./Tabs/NotesList";
-import NotesUpdatesList from "./Tabs/NotesUpdatesList";
-import TasksList from "./Tabs/TasksList";
-import Datepicker from "vuejs-datepicker";
-import { main } from "./../mixins/main";
-import { notes } from "./../mixins/notes";
-import { leads } from "./../mixins/leads";
-import { clients } from "./../mixins/clients";
-import { tasks } from "./../mixins/tasks";
-import authGuard from "./../guards/auth.guard";
+  import { BaseAlert } from "@/components";
+  import { Modal } from "@/components";
+  import NotesList from "./Tabs/NotesList";
+  import NotesUpdatesList from "./Tabs/NotesUpdatesList";
+  import TasksList from "./Tabs/TasksList";
+  import Datepicker from "vuejs-datepicker";
+  import { main } from "./../mixins/main";
+  import { notes } from "./../mixins/notes";
+  import { leads } from "./../mixins/leads";
+  import { clients } from "./../mixins/clients";
+  import { tasks } from "./../mixins/tasks";
+  import authGuard from "./../guards/auth.guard";
 
-export default {
-  beforeRouteEnter: authGuard,
-  components: {
-    Datepicker,
-    NotesList,
-    TasksList,
-    NotesUpdatesList,
-    Modal,
-    BaseAlert
-  },
-  data() {
-    return {
-      leadRemoveModalVisible: false
-    };
-  },
-  created() {
-    const { state } = this.$store;
-    this.tasksForm.elementId = this.$route.params.id;
-    this.tasksForm.elementType = state.elementTypes.ELEMENT_TYPE_LEAD.id;
-    this.tasksFilter = {
-      elementId: this.$route.params.id,
-      elementType: state.elementTypes.ELEMENT_TYPE_LEAD.id
-    };
-    this.managersFilter = { roleId: 2 };
+  export default {
+    beforeRouteEnter: authGuard,
+    components: {
+      Datepicker,
+      NotesList,
+      TasksList,
+      NotesUpdatesList,
+      Modal,
+      BaseAlert
+    },
+    data() {
+      return {
+        leadRemoveModalVisible: false
+      };
+    },
+    created() {
+      const { state } = this.$store;
+      this.tasksForm.elementId = this.$route.params.id;
+      this.tasksForm.elementType = state.elementTypes.ELEMENT_TYPE_LEAD.id;
+      this.tasksFilter = {
+        elementId: this.$route.params.id,
+        elementType: state.elementTypes.ELEMENT_TYPE_LEAD.id
+      };
+      this.managersFilter = { roleId: 2 };
 
-    this.getParams(["statuses", "countries", "currencies"]);
-    this.getManagers();
-    this.getClients();
-    this.getProducts();
-    this.getLead();
-    this.getTasks();
-  },
-  mixins: [main, notes, leads, clients, tasks]
-};
+      this.getParams(["statuses", "countries", "currencies"]);
+      this.getManagers();
+      this.getClients();
+      this.getProducts();
+      this.getLead();
+      this.getTasks();
+    },
+    mixins: [main, notes, leads, clients, tasks]
+  };
 </script>
 <style>
 </style>

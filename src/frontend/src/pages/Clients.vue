@@ -11,7 +11,7 @@
         <i class="tim-icons icon-simple-add"></i> Add client
       </base-button>
       <base-button
-        v-if="checkedClients.length>0"
+        v-if="clientsData.checked.length>0"
         data-toggle="modal"
         data-target="clientsRemove"
         type="button"
@@ -25,46 +25,15 @@
       <base-alert v-if="listError" type="danger">{{listError}}</base-alert>
     </div>
     <div class="col-12">
-      <card title="Clients">
+      <card title="Clients" :loading="clientsLoading">
         <div class="table">
-          <table class="table tablesorter">
-            <thead>
-              <tr>
-                <th></th>
-                <th></th>
-                <th>NAME</th>
-                <th>PHONE</th>
-                <th>EMAIL</th>
-                <th>ADDED BY</th>
-                <th>RESPONSIBLE</th>
-                <th>COUNTRY</th>
-              </tr>
-            </thead>
-            <tbody v-for="listClient in clients" :key="listClient.id">
-              <tr class="advance-table-row">
-                <td style="width: 10px;"></td>
-                <td style="width: 40px;">
-                  <base-checkbox
-                    :id="'checkbox_' + listClient.id"
-                    :value="listClient.id"
-                    v-model="checkedClients"
-                  ></base-checkbox>
-                </td>
-                <td>
-                  <router-link :to="{ path: '/client/' + listClient.id}">{{listClient.name}}</router-link>
-                </td>
-                <td>
-                  <a href="#">{{listClient.workPhone}}</a>
-                </td>
-                <td>
-                  <a :href="'mail-to:' + listClient.email">{{listClient.email}}</a>
-                </td>
-                <td>{{listClient.creatorName}}</td>
-                <td>{{listClient.responsibleName}}</td>
-                <td>{{listClient.countryName}}</td>
-              </tr>
-            </tbody>
-          </table>
+          <active-table
+            :columns="clientsColumns"
+            :data="clients"
+            :itemsObject="clientsData"
+            :sort="clientsSort"
+            :sortBy="sortBy"
+          ></active-table>
         </div>
         <div class="col-12">
           <pagination
@@ -195,39 +164,42 @@
   </div>
 </template>
 <script>
-import { BaseAlert } from "@/components";
-import { Pagination } from "@/components";
-import { Modal } from "@/components";
-import { main } from "./../mixins/main";
-import { clients } from "./../mixins/clients";
-import authGuard from "./../guards/auth.guard";
+  import { BaseAlert } from "@/components";
+  import { ActiveTable } from "@/components";
+  import { Pagination } from "@/components";
+  import { Modal } from "@/components";
+  import { main } from "./../mixins/main";
+  import { clients } from "./../mixins/clients";
+  import authGuard from "./../guards/auth.guard";
 
-export default {
-  beforeRouteEnter: authGuard,
-  components: {
-    BaseAlert,
-    Modal,
-    Pagination
-  },
-  watch: {
-    $route(to, from) {
+  export default {
+    beforeRouteEnter: authGuard,
+    components: {
+      BaseAlert,
+      ActiveTable,
+      Modal,
+      Pagination
+    },
+    watch: {
+      $route(to, from) {
+        this.clientsLoading = true;
+        this.getClients();
+      }
+    },
+    data() {
+      return {
+        clientAddModalVisible: false,
+        clientsRemoveModalVisible: false
+      };
+    },
+    created() {
+      this.managersFilter = { roleId: 2 };
+      this.getParams(["countries"]);
+      this.getManagers();
       this.getClients();
-    }
-  },
-  data() {
-    return {
-      clientAddModalVisible: false,
-      clientsRemoveModalVisible: false
-    };
-  },
-  created() {
-    this.managersFilter = { roleId: 2 };
-    this.getParams(["countries"]);
-    this.getManagers();
-    this.getClients();
-  },
-  mixins: [main, clients]
-};
+    },
+    mixins: [main, clients]
+  };
 </script>
 <style>
 </style>

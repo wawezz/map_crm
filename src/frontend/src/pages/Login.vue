@@ -40,92 +40,92 @@
   </div>
 </template>
 <script>
-import env from "./../../source/env";
-import { main } from "./../mixins/main";
-import AuthService from "./../services/AuthService";
-import axios from "axios";
-import { BaseAlert } from "@/components";
+  import env from "./../../source/env";
+  import { main } from "./../mixins/main";
+  import AuthService from "./../services/AuthService";
+  import axios from "axios";
+  import { BaseAlert } from "@/components";
 
-export default {
-  data() {
-    return {
-      data: {
-        email: null,
-        password: null
-      },
-      errors: {
-        email: null,
-        password: null
+  export default {
+    data() {
+      return {
+        data: {
+          email: null,
+          password: null
+        },
+        errors: {
+          email: null,
+          password: null
+        }
+      };
+    },
+    created() {},
+    mounted() {
+      this.$refs.email.$el.focus();
+    },
+    computed: {
+      hasError() {
+        return this.errors.email !== null || this.errors.password !== null;
       }
-    };
-  },
-  created() {},
-  mounted() {
-    this.$refs.email.$el.focus();
-  },
-  computed: {
-    hasError() {
-      return this.errors.email !== null || this.errors.password !== null;
-    }
-  },
-  methods: {
-    submitForm() {
-      if (this.inProgress === true) return;
+    },
+    methods: {
+      submitForm() {
+        if (this.inProgress === true) return;
 
-      this.errors.email = null;
-      this.errors.password = null;
+        this.errors.email = null;
+        this.errors.password = null;
 
-      if (!this.isValidEmail(this.data.email)) {
-        this.errors.email = "Incorrect email.";
-        return false;
-      }
+        if (!this.isValidEmail(this.data.email)) {
+          this.errors.email = "Incorrect email.";
+          return false;
+        }
 
-      if (!this.isValidPassword(this.data.password)) {
-        this.errors.password = "Password is required.";
-        return false;
-      }
+        if (!this.isValidPassword(this.data.password)) {
+          this.errors.password = "Password is required.";
+          return false;
+        }
 
-      if (this.hasError) {
-        return false;
-      }
+        if (this.hasError) {
+          return false;
+        }
 
-      this.inProgress = true;
-      axios
-        .post(
-          "/v1/user/login",
-          { form: this.data },
-          { params: { s: env.env === "dev" ? 0 : null } }
-        )
-        .then(
-          ({ data }) => {
-            this.inProgress = false;
+        this.inProgress = true;
+        axios
+          .post(
+            "/v1/user/login",
+            { form: this.data },
+            { params: { s: env.env === "dev" ? 0 : null } }
+          )
+          .then(
+            ({ data }) => {
+              this.inProgress = false;
 
-            AuthService.setUser(data.result);
-            this.$store.commit("SET_USER", data.result.user);
-            this.$store.commit("CLEAR_AUTH_FORM_DATA");
+              AuthService.setUser(data.result);
+              this.$store.commit("SET_USER", data.result.user);
+              this.$store.commit("CLEAR_AUTH_FORM_DATA");
 
-            this.$router.push({ path: "/" });
-          },
-          ({ response }) => {
-            this.inProgress = false;
+              this.$router.push({ path: "/" });
+            },
+            ({ response }) => {
+              this.inProgress = false;
 
-            const { data } = response;
+              const { data } = response;
 
-            if (data.error) {
-              if (data.error.code === 418 && data.error.errors)
-                this.errors = Object.assign(this.errors, data.error.errors);
-            } else {
-              console.error("Unexpected error", data.error);
+              if (data.error) {
+                if (data.error.code === 418 && data.error.errors)
+                  this.errors = Object.assign(this.errors, data.error.errors);
+              } else {
+                console.error("Unexpected error", data.error);
+              }
             }
-          }
-        );
+          );
+      }
+    },
+    mixins: [main],
+    components: {
+      BaseAlert
     }
-  },
-  mixins: [main],
-  components: {
-    BaseAlert
-  }
-};
+  };
 </script>
 <style>
 </style>

@@ -20,46 +20,46 @@
   </div>
 </template>
 <script>
-import EditProfileForm from "./Profile/EditProfileForm";
-import UserCard from "./Profile/UserCard";
-import { BaseAlert } from "@/components";
-import { main } from "./../mixins/main";
-import { users } from "./../mixins/users";
-import authGuard from "./../guards/auth.guard";
+  import EditProfileForm from "./Profile/EditProfileForm";
+  import UserCard from "./Profile/UserCard";
+  import { BaseAlert } from "@/components";
+  import { main } from "./../mixins/main";
+  import { users } from "./../mixins/users";
+  import authGuard from "./../guards/auth.guard";
 
-export default {
-  beforeRouteEnter: authGuard,
-  components: {
-    EditProfileForm,
-    UserCard,
-    BaseAlert
-  },
-  watch: {
-    $route(to, from) {
+  export default {
+    beforeRouteEnter: authGuard,
+    components: {
+      EditProfileForm,
+      UserCard,
+      BaseAlert
+    },
+    watch: {
+      $route(to, from) {
+        this.initUser();
+      }
+    },
+    data() {
+      return {};
+    },
+    created() {
+      this.getParams();
       this.initUser();
-    }
-  },
-  data() {
-    return {};
-  },
-  created() {
-    this.getParams();
-    this.initUser();
-  },
-  methods: {
-    handleFileUpload() {
-      this.usersForm.image = this.$refs.avatar.files[0];
     },
-    removeFile() {
-      this.usersForm.image = null;
+    methods: {
+      handleFileUpload() {
+        this.usersForm.image = this.$refs.avatar.files[0];
+      },
+      removeFile() {
+        this.usersForm.image = null;
+      },
+      updateGroup() {
+        if (this.usersForm.roleId != 1 && this.usersForm.groupId == 0)
+          this.usersForm.groupId = 1;
+      }
     },
-    updateGroup() {
-      if (this.usersForm.roleId != 1 && this.usersForm.groupId == 0)
-        this.usersForm.groupId = 1;
-    }
-  },
-  mixins: [main, users]
-};
+    mixins: [main, users]
+  };
 </script>
 <style>
 </style>

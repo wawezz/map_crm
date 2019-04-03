@@ -1,28 +1,28 @@
 <template>
   <table class="table tablesorter" :class="tableClass">
     <thead :class="theadClasses">
-    <tr>
-      <slot name="columns">
-        <th v-for="column in columns" :key="column">{{column}}</th>
-      </slot>
-    </tr>
+      <tr>
+        <slot name="columns">
+          <th v-for="column in columns" :key="column">{{column}}</th>
+        </slot>
+      </tr>
     </thead>
     <tbody :class="tbodyClasses">
-    <tr v-for="(item, index) in data" :key="index">
-      <slot :row="item">
-        <td v-for="(column, index) in columns"
+      <tr v-for="(item, index) in data" :key="index">
+        <slot :row="item">
+          <td
+            v-for="(column, index) in columns"
             :key="index"
-            v-if="hasValue(item, column)">
-          {{itemValue(item, column)}}
-        </td>
-      </slot>
-    </tr>
+            v-if="hasValue(item, column)"
+          >{{itemValue(item, column)}}</td>
+        </slot>
+      </tr>
     </tbody>
   </table>
 </template>
 <script>
   export default {
-    name: 'base-table',
+    name: "base-table",
     props: {
       columns: {
         type: Array,
@@ -41,12 +41,12 @@
       },
       theadClasses: {
         type: String,
-        default: '',
+        default: "",
         description: "<thead> css classes"
       },
       tbodyClasses: {
         type: String,
-        default: '',
+        default: "",
         description: "<tbody> css classes"
       }
     },

@@ -183,53 +183,53 @@
 </template>
 
 <script>
-import { BaseAlert } from "@/components";
-import { Modal } from "@/components";
-import NotesList from "./Tabs/NotesList";
-import NotesUpdatesList from "./Tabs/NotesUpdatesList";
-import TasksList from "./Tabs/TasksList";
-import Datepicker from "vuejs-datepicker";
-import { main } from "./../mixins/main";
-import { notes } from "./../mixins/notes";
-import { tasks } from "./../mixins/tasks";
-import { clients } from "./../mixins/clients";
-import { leads } from "./../mixins/leads";
-import authGuard from "./../guards/auth.guard";
+  import { BaseAlert } from "@/components";
+  import { Modal } from "@/components";
+  import NotesList from "./Tabs/NotesList";
+  import NotesUpdatesList from "./Tabs/NotesUpdatesList";
+  import TasksList from "./Tabs/TasksList";
+  import Datepicker from "vuejs-datepicker";
+  import { main } from "./../mixins/main";
+  import { notes } from "./../mixins/notes";
+  import { tasks } from "./../mixins/tasks";
+  import { clients } from "./../mixins/clients";
+  import { leads } from "./../mixins/leads";
+  import authGuard from "./../guards/auth.guard";
 
-export default {
-  beforeRouteEnter: authGuard,
-  components: {
-    Datepicker,
-    NotesList,
-    TasksList,
-    NotesUpdatesList,
-    Modal,
-    BaseAlert
-  },
-  data() {
-    return {
-      clientRemoveModalVisible: false
-    };
-  },
-  created() {
-    const { state } = this.$store;
-    this.tasksForm.elementId = this.$route.params.id;
-    this.tasksForm.elementType = state.elementTypes.ELEMENT_TYPE_CLIENT.id;
-    this.tasksFilter = {
-      elementId: this.$route.params.id,
-      elementType: state.elementTypes.ELEMENT_TYPE_CLIENT.id
-    };
-    this.managersFilter = { roleId: 2 };
-    this.clientsFilter = { client: this.$route.params.id };
+  export default {
+    beforeRouteEnter: authGuard,
+    components: {
+      Datepicker,
+      NotesList,
+      TasksList,
+      NotesUpdatesList,
+      Modal,
+      BaseAlert
+    },
+    data() {
+      return {
+        clientRemoveModalVisible: false
+      };
+    },
+    created() {
+      const { state } = this.$store;
+      this.tasksForm.elementId = this.$route.params.id;
+      this.tasksForm.elementType = state.elementTypes.ELEMENT_TYPE_CLIENT.id;
+      this.tasksFilter = {
+        elementId: this.$route.params.id,
+        elementType: state.elementTypes.ELEMENT_TYPE_CLIENT.id
+      };
+      this.managersFilter = { roleId: 2 };
+      this.clientsFilter = { client: this.$route.params.id };
 
-    this.getParams(["countries"]);
-    this.getManagers();
-    this.getTasks();
-    this.getClient();
-    this.getLeads();
-  },
-  mixins: [main, notes, tasks, clients, leads]
-};
+      this.getParams(["countries"]);
+      this.getManagers();
+      this.getTasks();
+      this.getClient();
+      this.getLeads();
+    },
+    mixins: [main, notes, tasks, clients, leads]
+  };
 </script>
 <style>
 </style>

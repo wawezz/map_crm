@@ -1,156 +1,168 @@
 .tim-row {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .tim-white-buttons {
-    background-color: #777777;
+  background-color: #777;
 }
 
 .typography-line {
-    padding-left: 25%;
-    margin-bottom: 35px;
-    position: relative;
-    display: block;
-    width: 100%;
+  position: relative;
+  display: block;
+  width: 100%;
+  padding-left: 25%;
+  margin-bottom: 35px;
 }
 
 .typography-line span {
-    bottom: 10px;
-    color: #c0c1c2;
-    display: block;
-    font-weight: 400;
-    font-size: 13px;
-    line-height: 13px;
-    left: 0;
-    position: absolute;
-    width: 260px;
-    text-transform: none;
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  display: block;
+  width: 260px;
+  color: #c0c1c2;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 13px;
+  text-transform: none;
 }
 
 .tim-row {
-    padding-top: 60px;
+  padding-top: 60px;
 }
 
 .tim-row h3 {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 .offline-doc .page-header {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .offline-doc .footer {
-    position: absolute;
-    width: 100%;
-    background: transparent;
-    bottom: 0;
-    color: #fff;
-    z-index: 1;
+  position: absolute;
+  bottom: 0;
+  z-index: 1;
+  width: 100%;
+  color: #fff;
+  background: transparent;
 }
 
 @media all and (min-width: 992px) {
-    .sidebar .nav>li.active-pro {
-        position: absolute;
-        width: 100%;
-        bottom: 10px;
-    }
+  .sidebar .nav > li.active-pro {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+  }
 }
 
 .card.card-upgrade .card-category {
-    max-width: 530px;
-    margin: 0 auto;
+  max-width: 530px;
+  margin: 0 auto;
 }
 
 .black {
-    color: #000 !important;
+  color: #000 !important;
 }
 
 .vdp-datepicker * {
-    width: 100%;
+  width: 100%;
 }
 
 .tabs-component .tabs-component-tabs {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: flex;
-    align-items: center;
-    border-bottom: 2px solid #e35cca;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  border-bottom: 2px solid #e35cca;
 }
 
 .tabs-component .tabs-component-tabs .tabs-component-tab {
-    background-color: #344675;
-    padding: 6px 15px;
-    border-radius: 7px 7px 0 0;
-    margin: 0 5px;
+  padding: 6px 15px;
+  margin: 0 5px;
+  background-color: #344675;
+  border-radius: 7px 7px 0 0;
 }
 
 .tabs-component .tabs-component-tabs .tabs-component-tab:first-child {
-    margin-left: 0;
+  margin-left: 0;
 }
 
 .tabs-component .tabs-component-tabs .tabs-component-tab:last-child {
-    margin-right: 0;
+  margin-right: 0;
 }
 
 .tabs-component .tabs-component-tabs .tabs-component-tab.is-active {
-    background-color: #e35cca;
+  background-color: #e35cca;
 }
 
 .tabs-component .tabs-component-tabs .tabs-component-tab a {
-    color: #fff;
+  color: #fff;
 }
 
 .tabs-component .tabs-component-tabs .tabs-component-tab.is-active a {
-    color: #000;
+  color: #000;
 }
 
 .tabs-component-panels {
-    padding-top: 15px;
+  padding-top: 15px;
 }
 
 .notes {
-    padding: 0;
-    list-style: none;
+  padding: 0;
+  list-style: none;
 }
 
 .hidden {
-    display: none;
+  display: none;
 }
 
 select option,
 select optgroup {
-    color: #000;
+  color: #000;
 }
 
 .centeredFlex {
-    align-items: center;
-    display: flex;
+  display: flex;
+  align-items: center;
 }
 
 .taskBlock .taskBlock__item {
-    padding: 10px;
-    border: 1px solid #344675;
-    margin: 10px 0;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #344675;
 }
 
 .taskBlock .taskBlock__item .taskActions a {
-    margin: 0 5px;
+  margin: 0 5px;
 }
 
 .taskBlock .taskBlock__item .taskActions a:first-child {
-    margin-left: 0;
+  margin-left: 0;
 }
 
 .taskBlock .taskBlock__item .taskActions a:last-child {
-    margin-right: 0;
+  margin-right: 0;
 }
 
 .elementSearch .elementSearch__item {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .elementSearch .elementSearch__item:hover {
-    color: #fff;
+  color: #fff;
+}
+
+.sort-by {
+  margin: 0 5px;
+  color: #858690;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.sort-by.fa-sort-up,
+.sort-by.fa-sort-down {
+  color: #fff;
 }

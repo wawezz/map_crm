@@ -51,7 +51,7 @@
                 <td
                   colspan="2"
                   style="text-align: center;"
-                  v-if="note.noteType != $store.state.noteTypes.NOTE_TYPE_LEAD_FIELD_UPDATE.id && 
+                  v-if="note.noteType != $store.state.noteTypes.NOTE_TYPE_LEAD_FIELD_UPDATE.id &&
                               note.noteType != $store.state.noteTypes.NOTE_TYPE_PLACE_LEAD_FIELD_UPDATE.id &&
                               note.noteType != $store.state.noteTypes.NOTE_TYPE_PLACE_LEAD_STATUS_CHANGED.id &&
                               note.noteType != $store.state.noteTypes.NOTE_TYPE_LEAD_STATUS_CHANGED.id &&
@@ -63,10 +63,10 @@
                 </td>
                 <td
                   style="max-width: 100px; overflow: hidden;"
-                  v-if="note.noteType == $store.state.noteTypes.NOTE_TYPE_LEAD_FIELD_UPDATE.id || 
-                              note.noteType == $store.state.noteTypes.NOTE_TYPE_PLACE_LEAD_FIELD_UPDATE.id || 
-                              note.noteType == $store.state.noteTypes.NOTE_TYPE_PLACE_LEAD_STATUS_CHANGED.id || 
-                              note.noteType == $store.state.noteTypes.NOTE_TYPE_LEAD_STATUS_CHANGED.id || 
+                  v-if="note.noteType == $store.state.noteTypes.NOTE_TYPE_LEAD_FIELD_UPDATE.id ||
+                              note.noteType == $store.state.noteTypes.NOTE_TYPE_PLACE_LEAD_FIELD_UPDATE.id ||
+                              note.noteType == $store.state.noteTypes.NOTE_TYPE_PLACE_LEAD_STATUS_CHANGED.id ||
+                              note.noteType == $store.state.noteTypes.NOTE_TYPE_LEAD_STATUS_CHANGED.id ||
                               note.noteType == $store.state.noteTypes.NOTE_TYPE_CLIENT_FIELD_UPDATE.id"
                 >
                   <router-link
@@ -78,7 +78,7 @@
                     :to="'/client/' + note.dataValue.data.values.from"
                   >from</router-link>
                   <span
-                    v-if="(note.dataValue.data.field != 'responsible' && 
+                    v-if="(note.dataValue.data.field != 'responsible' &&
                                 note.dataValue.data.field != 'client')"
                   >
                     <span
@@ -97,10 +97,10 @@
                 </td>
                 <td
                   style="max-width: 100px; overflow: hidden;"
-                  v-if="note.noteType == $store.state.noteTypes.NOTE_TYPE_LEAD_FIELD_UPDATE.id || 
-                              note.noteType == $store.state.noteTypes.NOTE_TYPE_PLACE_LEAD_FIELD_UPDATE.id || 
-                              note.noteType == $store.state.noteTypes.NOTE_TYPE_PLACE_LEAD_STATUS_CHANGED.id || 
-                              note.noteType == $store.state.noteTypes.NOTE_TYPE_LEAD_STATUS_CHANGED.id || 
+                  v-if="note.noteType == $store.state.noteTypes.NOTE_TYPE_LEAD_FIELD_UPDATE.id ||
+                              note.noteType == $store.state.noteTypes.NOTE_TYPE_PLACE_LEAD_FIELD_UPDATE.id ||
+                              note.noteType == $store.state.noteTypes.NOTE_TYPE_PLACE_LEAD_STATUS_CHANGED.id ||
+                              note.noteType == $store.state.noteTypes.NOTE_TYPE_LEAD_STATUS_CHANGED.id ||
                               note.noteType == $store.state.noteTypes.NOTE_TYPE_CLIENT_FIELD_UPDATE.id"
                 >
                   <router-link
@@ -112,7 +112,7 @@
                     :to="'/client/' + note.dataValue.data.values.to"
                   >to</router-link>
                   <span
-                    v-if="(note.dataValue.data.field != 'responsible' && 
+                    v-if="(note.dataValue.data.field != 'responsible' &&
                                 note.dataValue.data.field != 'client')"
                   >
                     <span
@@ -147,36 +147,36 @@
   </div>
 </template>
 <script>
-import { Pagination } from "@/components";
-import { main } from "./../mixins/main";
-import { notes } from "./../mixins/notes";
-import authGuard from "./../guards/auth.guard";
+  import { Pagination } from "@/components";
+  import { main } from "./../mixins/main";
+  import { notes } from "./../mixins/notes";
+  import authGuard from "./../guards/auth.guard";
 
-export default {
-  beforeRouteEnter: authGuard,
-  components: {
-    Pagination
-  },
-  watch: {
-    $route(to, from) {
-      this.getNotes();
-    }
-  },
-  created() {
-    const { state } = this.$store;
-    this.getParams(["statuses", "countries", "currencies"]);
-    this.notesFilter = {
-      noteType: {
-        $nin: [
-          state.noteTypes.NOTE_TYPE_CALL_IN.id,
-          state.noteTypes.NOTE_TYPE_CALL_OUT.id
-        ]
+  export default {
+    beforeRouteEnter: authGuard,
+    components: {
+      Pagination
+    },
+    watch: {
+      $route(to, from) {
+        this.getNotes();
       }
-    };
-    this.getNotes();
-  },
-  mixins: [main, notes]
-};
+    },
+    created() {
+      const { state } = this.$store;
+      this.getParams(["statuses", "countries", "currencies"]);
+      this.notesFilter = {
+        noteType: {
+          $nin: [
+            state.noteTypes.NOTE_TYPE_CALL_IN.id,
+            state.noteTypes.NOTE_TYPE_CALL_OUT.id
+          ]
+        }
+      };
+      this.getNotes();
+    },
+    mixins: [main, notes]
+  };
 </script>
 <style>
 </style>

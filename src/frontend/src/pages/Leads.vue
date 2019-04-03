@@ -11,7 +11,7 @@
         <i class="tim-icons icon-simple-add"></i> Add lead
       </base-button>
       <base-button
-        v-if="checkedLeads.length>0"
+        v-if="leadsData.checked.length>0"
         data-toggle="modal"
         data-target="leadsRemove"
         type="button"
@@ -25,50 +25,15 @@
       <base-alert v-if="listError" type="danger">{{listError}}</base-alert>
     </div>
     <div class="col-12">
-      <card title="Leads">
+      <card title="Leads" :loading="leadsLoading">
         <div class="table">
-          <table class="table tablesorter">
-            <thead>
-              <tr>
-                <th></th>
-                <th></th>
-                <th>ID</th>
-                <th>DATE OF CREATE</th>
-                <th>DATE OF COMPLETED</th>
-                <th>TITLE</th>
-                <th>CONTACT</th>
-                <th>RESPONSIBLE</th>
-                <th>STATUS</th>
-              </tr>
-            </thead>
-            <tbody v-for="listLead in leads" :key="listLead.id">
-              <tr class="advance-table-row">
-                <td style="width: 10px;"></td>
-                <td style="width: 40px;">
-                  <base-checkbox
-                    :id="'checkbox_' + listLead.id"
-                    :value="listLead.id"
-                    v-model="checkedLeads"
-                  ></base-checkbox>
-                </td>
-                <td>{{listLead.id}}</td>
-                <td>{{listLead.createdAt.date | date}}</td>
-                <td>{{listLead.completedAt.date | date}}</td>
-                <td>
-                  <router-link :to="{ path: '/lead/' + listLead.id}">{{listLead.name}}</router-link>
-                </td>
-                <td>
-                  <router-link :to="{ path: '/client/' + listLead.client}">{{listLead.clientName}}</router-link>
-                </td>
-                <td>
-                  <router-link
-                    :to="{ path: '/profile/' + listLead.responsible}"
-                  >{{listLead.responsibleName}}</router-link>
-                </td>
-                <td>{{listLead.statusName}}</td>
-              </tr>
-            </tbody>
-          </table>
+          <active-table
+            :columns="leadsColumns"
+            :data="leads"
+            :itemsObject="leadsData"
+            :sort="leadsSort"
+            :sortBy="sortBy"
+          ></active-table>
         </div>
         <div class="col-12">
           <pagination
@@ -252,44 +217,47 @@
   </div>
 </template>
 <script>
-import { BaseAlert } from "@/components";
-import { Pagination } from "@/components";
-import { Modal } from "@/components";
-import { main } from "./../mixins/main";
-import { leads } from "./../mixins/leads";
-import { clients } from "./../mixins/clients";
-import Datepicker from "vuejs-datepicker";
-import authGuard from "./../guards/auth.guard";
+  import { BaseAlert } from "@/components";
+  import { ActiveTable } from "@/components";
+  import { Pagination } from "@/components";
+  import { Modal } from "@/components";
+  import { main } from "./../mixins/main";
+  import { leads } from "./../mixins/leads";
+  import { clients } from "./../mixins/clients";
+  import Datepicker from "vuejs-datepicker";
+  import authGuard from "./../guards/auth.guard";
 
-export default {
-  beforeRouteEnter: authGuard,
-  components: {
-    BaseAlert,
-    Modal,
-    Datepicker,
-    Pagination
-  },
-  watch: {
-    $route(to, from) {
+  export default {
+    beforeRouteEnter: authGuard,
+    components: {
+      BaseAlert,
+      ActiveTable,
+      Modal,
+      Datepicker,
+      Pagination
+    },
+    watch: {
+      $route(to, from) {
+        this.leadsLoading = true;
+        this.getLeads();
+      }
+    },
+    data() {
+      return {
+        leadAddModalVisible: false,
+        leadsRemoveModalVisible: false
+      };
+    },
+    created() {
+      this.managersFilter = { roleId: 2 };
+      this.getParams(["statuses", "countries", "currencies"]);
+      this.getManagers();
+      this.getClients();
+      this.getProducts();
       this.getLeads();
-    }
-  },
-  data() {
-    return {
-      leadAddModalVisible: false,
-      leadsRemoveModalVisible: false
-    };
-  },
-  created() {
-    this.managersFilter = { roleId: 2 };
-    this.getParams(["statuses", "countries", "currencies"]);
-    this.getManagers();
-    this.getClients();
-    this.getProducts();
-    this.getLeads();
-  },
-  mixins: [main, leads, clients]
-};
+    },
+    mixins: [main, leads, clients]
+  };
 </script>
 <style>
 </style>

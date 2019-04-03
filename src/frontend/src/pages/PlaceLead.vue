@@ -181,100 +181,100 @@
 </template>
 
 <script>
-import { BaseAlert } from "@/components";
-import { Modal } from "@/components";
-import NotesList from "./Tabs/NotesList";
-import NotesUpdatesList from "./Tabs/NotesUpdatesList";
-import TasksList from "./Tabs/TasksList";
-import Datepicker from "vuejs-datepicker";
-import { main } from "./../mixins/main";
-import { notes } from "./../mixins/notes";
-import { placeLeads } from "./../mixins/placeLeads";
-import { tasks } from "./../mixins/tasks";
-import authGuard from "./../guards/auth.guard";
+  import { BaseAlert } from "@/components";
+  import { Modal } from "@/components";
+  import NotesList from "./Tabs/NotesList";
+  import NotesUpdatesList from "./Tabs/NotesUpdatesList";
+  import TasksList from "./Tabs/TasksList";
+  import Datepicker from "vuejs-datepicker";
+  import { main } from "./../mixins/main";
+  import { notes } from "./../mixins/notes";
+  import { placeLeads } from "./../mixins/placeLeads";
+  import { tasks } from "./../mixins/tasks";
+  import authGuard from "./../guards/auth.guard";
 
-export default {
-  beforeRouteEnter: authGuard,
-  components: {
-    Datepicker,
-    NotesList,
-    TasksList,
-    NotesUpdatesList,
-    Modal,
-    BaseAlert
-  },
-  data() {
-    return {
-      placeLeadRemoveModalVisible: false
-    };
-  },
-  created() {
-    const { state } = this.$store;
-    this.tasksForm.elementId = this.$route.params.id;
-    this.tasksForm.elementType = state.elementTypes.ELEMENT_TYPE_PLACE_LEAD.id;
-    this.tasksFilter = {
-      elementId: this.$route.params.id,
-      elementType: state.elementTypes.ELEMENT_TYPE_PLACE_LEAD.id
-    };
-    this.managersFilter = { roleId: 2 };
-
-    this.getParams(["statuses"]);
-    this.getManagers();
-    this.init();
-    this.getTasks();
-  },
-  methods: {
-    async init() {
-      await this.getPlaceLeadByPlaceId();
-
-      this.initMap(this.placeLeadsform.geo, this.placeLeadsform.name);
+  export default {
+    beforeRouteEnter: authGuard,
+    components: {
+      Datepicker,
+      NotesList,
+      TasksList,
+      NotesUpdatesList,
+      Modal,
+      BaseAlert
     },
-    initMap(point = "POINT(0 0)", name) {
-      if (point === "POINT(0 0)") return;
-
-      const pointData = point
-        .replace("POINT(", "")
-        .replace(")", "")
-        .split(" ");
-
-      const myLatlng = new window.google.maps.LatLng(
-        pointData[0],
-        pointData[1]
-      );
-      const mapOptions = {
-        zoom: 13,
-        center: myLatlng,
-        scrollwheel: false, //we disable de scroll over the map, it is a really annoing when you scroll through page
-        styles: [
-          {
-            elementType: "geometry",
-            stylers: [
-              {
-                color: "#1d2c4d"
-              }
-            ]
-          }
-        ]
+    data() {
+      return {
+        placeLeadRemoveModalVisible: false
       };
-      const map = new window.google.maps.Map(
-        document.getElementById("map"),
-        mapOptions
-      );
+    },
+    created() {
+      const { state } = this.$store;
+      this.tasksForm.elementId = this.$route.params.id;
+      this.tasksForm.elementType = state.elementTypes.ELEMENT_TYPE_PLACE_LEAD.id;
+      this.tasksFilter = {
+        elementId: this.$route.params.id,
+        elementType: state.elementTypes.ELEMENT_TYPE_PLACE_LEAD.id
+      };
+      this.managersFilter = { roleId: 2 };
 
-      const marker = new window.google.maps.Marker({
-        position: myLatlng,
-        title: name
-      });
+      this.getParams(["statuses"]);
+      this.getManagers();
+      this.init();
+      this.getTasks();
+    },
+    methods: {
+      async init() {
+        await this.getPlaceLeadByPlaceId();
 
-      // To add the marker to the map, call setMap();
-      marker.setMap(map);
-    }
-  },
-  mixins: [main, notes, placeLeads, tasks]
-};
+        this.initMap(this.placeLeadsform.geo, this.placeLeadsform.name);
+      },
+      initMap(point = "POINT(0 0)", name) {
+        if (point === "POINT(0 0)") return;
+
+        const pointData = point
+          .replace("POINT(", "")
+          .replace(")", "")
+          .split(" ");
+
+        const myLatlng = new window.google.maps.LatLng(
+          pointData[0],
+          pointData[1]
+        );
+        const mapOptions = {
+          zoom: 13,
+          center: myLatlng,
+          scrollwheel: false, //we disable de scroll over the map, it is a really annoing when you scroll through page
+          styles: [
+            {
+              elementType: "geometry",
+              stylers: [
+                {
+                  color: "#1d2c4d"
+                }
+              ]
+            }
+          ]
+        };
+        const map = new window.google.maps.Map(
+          document.getElementById("map"),
+          mapOptions
+        );
+
+        const marker = new window.google.maps.Marker({
+          position: myLatlng,
+          title: name
+        });
+
+        // To add the marker to the map, call setMap();
+        marker.setMap(map);
+      }
+    },
+    mixins: [main, notes, placeLeads, tasks]
+  };
 </script>
 <style>
-#map {
+  #map {
   min-height: 600px;
 }
 </style>

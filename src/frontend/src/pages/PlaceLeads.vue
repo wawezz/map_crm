@@ -4,14 +4,14 @@
       <base-button
         data-toggle="modal"
         data-target="placeLeadAdd"
-        type="button"
+        type="button   "
         class="btn btn-primary"
         @click="placeLeadAddModalVisible = true"
       >
         <i class="tim-icons icon-simple-add"></i> Add place lead
       </base-button>
       <base-button
-        v-if="checkedPlaceLeads.length>0"
+        v-if="placeLeadsData.checked.length>0"
         data-toggle="modal"
         data-target="placeLeadsRemove"
         type="button"
@@ -25,42 +25,15 @@
       <base-alert v-if="listError" type="danger">{{listError}}</base-alert>
     </div>
     <div class="col-12">
-      <card title="Place leads">
+      <card title="Place leads" :loading="placeLeadsLoading">
         <div class="table">
-          <table class="table tablesorter">
-            <thead>
-              <tr>
-                <th></th>
-                <th></th>
-                <th>NAME</th>
-                <th>DATE OF CREATE</th>
-                <th>TYPE</th>
-                <th>STATUS</th>
-                <th>PHONE</th>
-              </tr>
-            </thead>
-            <tbody v-for="listPlaceLead in placeLeads" :key="listPlaceLead.id">
-              <tr class="advance-table-row">
-                <td style="width: 10px;"></td>
-                <td style="width: 40px;">
-                  <base-checkbox
-                    :id="'checkbox_' + listPlaceLead.id"
-                    :value="listPlaceLead.id"
-                    v-model="checkedPlaceLeads"
-                  ></base-checkbox>
-                </td>
-                <td>
-                  <router-link
-                    :to="{ path: '/place-lead/' + listPlaceLead.id}"
-                  >{{listPlaceLead.name}}</router-link>
-                </td>
-                <td>{{listPlaceLead.createdAt.date | date}}</td>
-                <td>{{listPlaceLead.type}}</td>
-                <td>{{listPlaceLead.statusName}}</td>
-                <td>{{listPlaceLead.phone}}</td>
-              </tr>
-            </tbody>
-          </table>
+          <active-table
+            :columns="placeLeadsColumns"
+            :data="placeLeads"
+            :itemsObject="placeLeadsData"
+            :sort="placeLeadsSort"
+            :sortBy="sortBy"
+          ></active-table>
         </div>
         <div class="col-12">
           <pagination
@@ -219,41 +192,44 @@
   </div>
 </template>
 <script>
-import { BaseAlert } from "@/components";
-import { Pagination } from "@/components";
-import { Modal } from "@/components";
-import { main } from "./../mixins/main";
-import { placeLeads } from "./../mixins/placeLeads";
-import Datepicker from "vuejs-datepicker";
-import authGuard from "./../guards/auth.guard";
+  import { BaseAlert } from "@/components";
+  import { ActiveTable } from "@/components";
+  import { Pagination } from "@/components";
+  import { Modal } from "@/components";
+  import { main } from "./../mixins/main";
+  import { placeLeads } from "./../mixins/placeLeads";
+  import Datepicker from "vuejs-datepicker";
+  import authGuard from "./../guards/auth.guard";
 
-export default {
-  beforeRouteEnter: authGuard,
-  components: {
-    BaseAlert,
-    Modal,
-    Datepicker,
-    Pagination
-  },
-  watch: {
-    $route(to, from) {
+  export default {
+    beforeRouteEnter: authGuard,
+    components: {
+      ActiveTable,
+      BaseAlert,
+      Modal,
+      Datepicker,
+      Pagination
+    },
+    watch: {
+      $route(to, from) {
+        this.placeLeadsLoading = true;
+        this.getPlaceLeads();
+      }
+    },
+    data() {
+      return {
+        placeLeadAddModalVisible: false,
+        placeLeadsRemoveModalVisible: false
+      };
+    },
+    created() {
+      this.managersFilter = { roleId: 2 };
+      this.getParams(["statuses"]);
+      this.getManagers();
       this.getPlaceLeads();
-    }
-  },
-  data() {
-    return {
-      placeLeadAddModalVisible: false,
-      placeLeadsRemoveModalVisible: false
-    };
-  },
-  created() {
-    this.managersFilter = { roleId: 2 };
-    this.getParams(["statuses"]);
-    this.getManagers();
-    this.getPlaceLeads();
-  },
-  mixins: [main, placeLeads]
-};
+    },
+    mixins: [main, placeLeads]
+  };
 </script>
 <style>
 </style>

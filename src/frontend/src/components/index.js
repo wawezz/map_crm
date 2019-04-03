@@ -10,6 +10,8 @@ import BaseNav from "./BaseNav";
 import Modal from "./Modal";
 import Pagination from "./Pagination";
 import CloseButton from "./CloseButton";
+import ActiveTable from "./ActiveTable";
+import ActiveGroupedTable from "./ActiveGroupedTable";
 
 import Card from "./Cards/Card.vue";
 import StatsCard from "./Cards/StatsCard.vue";
@@ -22,6 +24,8 @@ export {
   Modal,
   Pagination,
   CloseButton,
+  ActiveTable,
+  ActiveGroupedTable,
   StatsCard,
   BaseTable,
   BaseCheckbox,

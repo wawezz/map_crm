@@ -58,36 +58,36 @@
   </div>
 </template>
 <script>
-import { Pagination } from "@/components";
-import { main } from "./../mixins/main";
-import { notes } from "./../mixins/notes";
-import authGuard from "./../guards/auth.guard";
+  import { Pagination } from "@/components";
+  import { main } from "./../mixins/main";
+  import { notes } from "./../mixins/notes";
+  import authGuard from "./../guards/auth.guard";
 
-export default {
-  beforeRouteEnter: authGuard,
-  components: {
-    Pagination
-  },
-  watch: {
-    $route(to, from) {
-      this.getNotes();
-    }
-  },
-  created() {
-    const { state } = this.$store;
-    this.notesFilter = {
-      noteType: {
-        $in: [
-          state.noteTypes.NOTE_TYPE_CALL_IN.id,
-          state.noteTypes.NOTE_TYPE_CALL_OUT.id
-        ]
+  export default {
+    beforeRouteEnter: authGuard,
+    components: {
+      Pagination
+    },
+    watch: {
+      $route(to, from) {
+        this.getNotes();
       }
-    };
-    if (this.user.roleId != 1) this.notesFilter.createdBy = this.user.id;
-    this.getNotes();
-  },
-  mixins: [main, notes]
-};
+    },
+    created() {
+      const { state } = this.$store;
+      this.notesFilter = {
+        noteType: {
+          $in: [
+            state.noteTypes.NOTE_TYPE_CALL_IN.id,
+            state.noteTypes.NOTE_TYPE_CALL_OUT.id
+          ]
+        }
+      };
+      if (this.user.roleId != 1) this.notesFilter.createdBy = this.user.id;
+      this.getNotes();
+    },
+    mixins: [main, notes]
+  };
 </script>
 <style>
 </style>

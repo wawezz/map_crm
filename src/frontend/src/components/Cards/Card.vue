@@ -5,7 +5,10 @@
     </div>
     <div class="card-header" v-if="$slots.header || title" :class="headerClasses">
       <slot name="header">
-        <h4 class="card-title">{{title}}</h4>
+        <h4 class="card-title">
+          {{title}}
+          <i v-if="loading" class="fas fa-spinner fa-spin"></i>
+        </h4>
         <p class="card-category" v-if="subTitle">{{subTitle}}</p>
       </slot>
     </div>
@@ -48,6 +51,9 @@
       footerClasses: {
         type: [String, Object, Array],
         description: "Card footer css classes"
+      },
+      loading: {
+        type: Boolean
       }
     }
   };
