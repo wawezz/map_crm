@@ -32,6 +32,7 @@ class PlaceLeadController extends BaseController
             'get' => ['POST', 'OPTIONS'],
             'get_by_place_id' => ['POST', 'OPTIONS'],
             'remove' => ['POST', 'OPTIONS'],
+            'massupdate' => ['POST', 'OPTIONS'],
             'add' => ['POST', 'OPTIONS'],
             'update' => ['POST', 'OPTIONS'],
         ];
@@ -43,14 +44,14 @@ class PlaceLeadController extends BaseController
 
         $behaviors['authenticator'] = [
             'class' => JwtBearerAuth::class,
-            'only' => ['add', 'get-by-place-id', 'update', 'list', 'get', 'remove'],
+            'only' => ['add', 'get-by-place-id', 'update', 'massupdate', 'list', 'get', 'remove'],
         ];
 
         $behaviors['access'] = [
             'class' => AccessControl::class,
             'rules' => [
                 [
-                    'actions' => ['add', 'update', 'list', 'get', 'get-by-place-id', 'remove'],
+                    'actions' => ['add', 'update', 'massupdate', 'list', 'get', 'get-by-place-id', 'remove'],
                     'allow' => true,
                     'roles' => ['@'],
                 ],
@@ -139,6 +140,7 @@ class PlaceLeadController extends BaseController
 
     public function actionList()
     {
+        $query = $this->request->get('query');
         $filter = $this->request->get('filter');
         $sort = $this->request->get('sort');
         $offset = (int) $this->request->get('offset', 0);
@@ -146,15 +148,29 @@ class PlaceLeadController extends BaseController
 
         $filter = empty($filter) ? null : Json::decode($filter);
         $sort = empty($sort) ? null : Json::decode($sort);
+        $query = !$query ? null : $query;
 
         /** @var \backend\services\PlaceLeadService\PlaceLeadService $placeLeadService */
         $placeLeadService = \Yii::$container->get(PlaceLeadService::class);
 
-        $total = $placeLeadService->countAllPlaceLeads($filter);
+        $total = $placeLeadService->countAllPlaceLeads($filter, $query);
 
         $this->response->headers->add('X-Pagination-Total', $total);
 
-        return $this->asJson($placeLeadService->getAllPlaceLeads($limit, $offset, $filter, $sort));
+        $response = $placeLeadService->getAllPlaceLeads($limit, $offset, $filter, $sort, $query);
+        /** @var \backend\services\repositories\db\DbNoteRepository $noteService */
+        $noteService = \Yii::$container->get(DbNoteRepository::class);
+
+        foreach ($response as &$data) {
+            $data = (array) $data;
+            $query = array(
+                'elementId' => (int) $data['id'],
+                'elementType' => Note::ELEMENT_TYPE_PLACE_LEAD
+            );
+            $data['notesCount'] = $noteService->countAllNotes($query);
+        }    
+
+        return  $this->asJson($response);
     }
 
     public function actionAdd()
@@ -194,6 +210,35 @@ class PlaceLeadController extends BaseController
         }
 
         $result = $Form->execute();
+
+        return $this->asJson(['result' => $result]);
+    }
+
+    public function actionMassupdate()
+    {
+        sleep($this->getSleepSeconds());
+        /** @var PlaceLeadUpdateFormModel $Form */
+        $Form = \Yii::$container->get(PlaceLeadUpdateFormModel::class);
+
+        $placeLeads = $this->request->post('forms');
+
+        if(empty($placeLeads)){
+            throw new HttpException(418, 'No place leads in forms array.');
+        }
+
+        $result = array();
+        foreach ($placeLeads as $placeLead) {
+
+            if (!$Form->load($placeLead, 'form')) {
+                throw new HttpException(418, 'You must send a form object.');
+            }
+    
+            if (!$Form->validate()) {
+                throw new FormValidationException($Form);
+            }
+    
+            $result[] = $Form->execute();
+        }  
 
         return $this->asJson(['result' => $result]);
     }

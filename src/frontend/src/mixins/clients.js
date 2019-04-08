@@ -6,10 +6,11 @@ export const clients = {
     return {
       clientsFilter: '[]',
       clientsSort: '[]',
-      clientsLoading: true,
+      clientsLoading: false,
       clientsData: {
         checked: []
       },
+      clientsSearchString: '',
       clientInfo: {},
       clientLeads: {},
       clients: {},
@@ -80,6 +81,7 @@ export const clients = {
   },
   methods: {
     getClient() {
+      this.clientsLoading = true;
       axios({
           method: "post",
           url: "/v1/client/get?id=" + this.$route.params.id,
@@ -126,6 +128,7 @@ export const clients = {
             "";
           this.clientform.id = this.clientInfo.id;
           this.notes = this.clientInfo.notes;
+          this.clientsLoading = false;
         })
         .catch(e => {
           const data = e.response.data;
@@ -139,9 +142,11 @@ export const clients = {
           } else {
             console.error("Unexpected error", data.error);
           }
+          this.clientsLoading = false;
         });
     },
     getClients() {
+      this.clientsLoading = true;
       const filter = this.clientsFilter !== '[]' ? JSON.stringify(this.clientsFilter) : this.clientsFilter;
       const sort = this.clientsSort !== '[]' ? JSON.stringify(this.clientsSort) : this.clientsSort;
       axios({
@@ -159,11 +164,11 @@ export const clients = {
         .then(response => {
           this.clients = response.data;
           this.clientsTotalCount = parseInt(response.headers['x-pagination-total']);
-          this.clientsLoading = false;
 
           for (let i in this.clients) {
             this.clientsById[this.clients[i].id] = this.clients[i];
           }
+          this.clientsLoading = false;
         })
         .catch(e => {
           const data = e.response.data;
@@ -177,6 +182,7 @@ export const clients = {
           } else {
             console.error("Unexpected error", data.error);
           }
+          this.clientsLoading = false;
         });
     },
     addClient() {
@@ -361,7 +367,7 @@ export const clients = {
       formData = new FormData();
       /* eslint-enable */
       formData.append("params[id]", AuthService.uid);
-      formData.append("clients", JSON.stringify(this.checkedClients.length ? this.checkedClients : [this.clientInfo.id]));
+      formData.append("clients", JSON.stringify(this.clientsData.checked.length ? this.clientsData.checked : [this.clientInfo.id]));
 
       axios({
         method: "post",
@@ -382,7 +388,7 @@ export const clients = {
               path: "/clients"
             });
           } else {
-            this.checkedClients = [];
+            this.clientsData.checked = [];
             this.getClients();
           }
         },
@@ -405,7 +411,6 @@ export const clients = {
     },
     sortClientsBy(field = null) {
       if (field === null) return;
-      this.clientsLoading = true;
       if (this.clientsSort === '[]') this.clientsSort = {};
       if (!this.clientsSort[field]) {
         this.clientsSort[field] = 'DESC';
@@ -416,7 +421,36 @@ export const clients = {
       }
 
       if (Object.keys(this.clientsSort).length === 0) this.clientsSort = '[]';
+      this.clientsQueryControll();
       this.getClients();
+    },
+    clientsQueryControll() {
+      if (this.$route.query.string === this.placeLeadsSearchString &&
+        (this.$route.query.sort != '' && this.$route.query.sort === JSON.stringify(this.placeLeadsSort)) &&
+        (this.$route.query.filter != '' && this.$route.query.filter === JSON.stringify(this.placeLeadsFilter))) return;
+
+      if (this.placeLeadsPage != 1) {
+        this.$router.push({
+          name: 'clients',
+          params: {
+            page: 1
+          },
+          query: this.$route.query
+        });
+      }
+      this.$router.replace({
+        query: {
+          string: this.clientsSearchString,
+          sort: (this.clientsSort !== '[]') ? JSON.stringify(this.clientsSort) : '',
+          filter: (this.clientsFilter !== '[]') ? JSON.stringify(this.clientsFilter) : ''
+        }
+      });
     }
+  },
+  created() {
+    this.clientsSearchString = this.$route.query.string;
+    this.clientsSort = this.$route.query.sort && this.$route.query.sort.length ? JSON.parse(this.$route.query.sort) : this.clientsSort;
+    this.clientsFilter = this.$route.query.filter && this.$route.query.filter.length ? JSON.parse(this.$route.query.filter) : this.clientsFilter;
+
   }
 }

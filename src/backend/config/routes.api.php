@@ -30,6 +30,7 @@ return [
     "$POST api/v1/place-lead/add" => 'api/v1/place-lead/add',
     "$POST api/v1/place-lead/remove" => 'api/v1/place-lead/remove',
     "$POST api/v1/place-lead/update" => 'api/v1/place-lead/update',
+    "$POST api/v1/place-lead/massupdate" => 'api/v1/place-lead/massupdate',
     "$POST api/v1/product/list" => 'api/v1/product/list',
     "$POST api/v1/note/comment" => 'api/v1/note/comment',
     "$POST api/v1/note/list" => 'api/v1/note/list',

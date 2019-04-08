@@ -18,56 +18,56 @@
   </div>
 </template>
 <script>
-export default {
-  name: "base-checkbox",
-  model: {
-    prop: "checked"
-  },
-  props: {
-    checked: {
-      type: [Array, Boolean, Number, String]
-    },
-    disabled: {
-      type: Boolean
-    },
-    inline: {
-      type: Boolean
-    },
-    value: {
-      type: [String, Number]
-    },
-    label: {
-      type: String
-    }
-  },
-  data() {
-    return {
-      cbId: "",
-      touched: false
-    };
-  },
-  computed: {
+  export default {
+    name: "base-checkbox",
     model: {
-      get() {
-        return this.checked;
+      prop: "checked"
+    },
+    props: {
+      checked: {
+        type: [Array, Boolean, Number, String]
       },
-      set(check) {
-        if (!this.touched) {
-          this.touched = true;
-        }
-        this.$emit("input", check);
+      disabled: {
+        type: Boolean
+      },
+      inline: {
+        type: Boolean
+      },
+      value: {
+        type: [String, Number, Boolean]
+      },
+      label: {
+        type: String
       }
     },
-    inlineClass() {
-      if (this.inline) {
-        return `form-check-inline`;
+    data() {
+      return {
+        cbId: "",
+        touched: false
+      };
+    },
+    computed: {
+      model: {
+        get() {
+          return this.checked;
+        },
+        set(check) {
+          if (!this.touched) {
+            this.touched = true;
+          }
+          this.$emit("input", check);
+        }
+      },
+      inlineClass() {
+        if (this.inline) {
+          return `form-check-inline`;
+        }
       }
+    },
+    created() {
+      this.cbId = Math.random()
+        .toString(16)
+        .slice(2);
     }
-  },
-  created() {
-    this.cbId = Math.random()
-      .toString(16)
-      .slice(2);
-  }
-};
+  };
 </script>

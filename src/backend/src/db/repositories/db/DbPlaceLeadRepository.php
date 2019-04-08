@@ -3,6 +3,7 @@
 namespace backend\db\repositories\db;
 
 use backend\db\models\PlaceLead;
+use backend\db\models\Note;
 use backend\db\normalizers\PlaceLeadNormalizer;
 use backend\db\repositories\PlaceLeadRepositoryInterface;
 use yii\db\Connection;
@@ -15,11 +16,15 @@ class DbPlaceLeadRepository extends AbstractDbRepository implements PlaceLeadRep
         parent::__construct($db);
     }
 
-    public function findAll(int $limit = null, int $offset = null, array $filter = null, array $sort = null): array
+    public function findAll(int $limit = null, int $offset = null, array $filter = null, array $sort = null, string $query = null): array
     {
         $where = [];
         $params = [];
         $orderBy = [];
+
+        if(null !== $query) {
+            $params[":query"] = "%$query%";
+        }
 
         $i = 0;
         if (null !== $filter) {
@@ -28,23 +33,53 @@ class DbPlaceLeadRepository extends AbstractDbRepository implements PlaceLeadRep
                     continue;
                 }
                 $condition = " = ";
+                $conditionValue = "";
                 $value = explode('|', $value);
 
                 if(count($value)==2){
-                    $condition = " $value[0] ";
+                    $condition = $value[0]!="NULL"?" $value[0] ":($value[1] != 0 ? "IS NOT NULL" : "IS NULL");
+                    $conditionValue = $value[0];
+                }
+             
+                if(count($value)==3){
+                    $condition = "BETWEEN";
+                }else{
+                    $value = end($value);
                 }
 
-                $value = end($value);
-
                 if (\is_string($field)) {
-                    $where[] = "($field $condition :value$i)";
-                    $params[":value$i"] = $condition==" LIKE "?"%$value%":$value;
+                    if($conditionValue!="NULL"){
+                        if($condition == "BETWEEN"){
+                            $from = $i."1";
+                            $to = $i."2";
+                            $where[] = "(app_place_leads.$field $condition :value$from AND :value$to)";
+                            $params[":value$from"] = $value[1];
+                            $params[":value$to"] = $value[2];
+                        }else{
+                            $where[] = "(app_place_leads.$field $condition :value$i)";
+                            $params[":value$i"] = $condition==" LIKE "?"%$value%":$value;
+                        }
+                    }else{
+                        $where[] = "(app_place_leads.$field $condition)";
+                    }
                     $i++;
                 } elseif (\is_array($field)) {
                     $w = [];
                     foreach ($field as $f) {
-                        $w[] = "($f $condition :value$i)";
-                        $params[":value$i"] = $condition==" LIKE "?"%$value%":$value;
+                        if($conditionValue!="NULL"){
+                            if($condition == "BETWEEN"){
+                                $from = $i."1";
+                                $to = $i."2";
+                                $w[] = "(app_place_leads.$f $condition :value$from AND :value$to)";
+                                $params[":value$from"] = $value[1];
+                                $params[":value$to"] = $value[2];
+                            }else{
+                                $w[] = "(app_place_leads.$f $condition :value$i)";
+                                $params[":value$i"] = $condition==" LIKE "?"%$value%":$value;
+                            }
+                        }else{
+                            $w[] = "(app_place_leads.$f $condition)";
+                        }
                         $i++;
                     }
                     $where[] = '(' . implode(' OR ', $w) . ')';
@@ -68,12 +103,21 @@ class DbPlaceLeadRepository extends AbstractDbRepository implements PlaceLeadRep
             app_place_leads.*,
             CONCAT(cu.id, "-", cu.secret) as createdBy,
             ls.name as statusName, 
-            ST_AsText(app_place_leads.geo) as geo
+            ST_AsText(app_place_leads.geo) as geo,
+            (SELECT COUNT(*) FROM app_tasks tt WHERE tt.elementId=app_place_leads.id AND tt.elementType = '.Note::ELEMENT_TYPE_PLACE_LEAD.') as tasksCount
             FROM app_place_leads
             LEFT JOIN app_users cu ON app_place_leads.createdBy = cu.id 
             LEFT JOIN app_statuses ls ON app_place_leads.status = ls.id';
 
-        $sql .= \count($where) > 0 ? (' WHERE ' . implode(' AND ', $where)) : '';
+        if(null !== $query){
+            $sql .= " WHERE (app_place_leads.name LIKE :query OR app_place_leads.zipCode LIKE :query OR app_place_leads.phone LIKE :query)";
+        }
+
+        if(count($where) > 0){
+            $sql .= \null !== $query ? ' AND ' : ' WHERE ';
+            $sql .= implode(' AND ', $where);
+        }
+
         $sql .= \count($orderBy) > 0 ? (' ORDER BY ' . implode(', ', $orderBy)) : '';
 
         if (null !== $limit) {
@@ -89,10 +133,14 @@ class DbPlaceLeadRepository extends AbstractDbRepository implements PlaceLeadRep
         return $cmd->queryAll([\PDO::FETCH_CLASS, PlaceLead::class]);
     }
 
-    public function countAll(array $filter = null): int
+    public function countAll(array $filter = null, string $query = null): int
     {
         $where = [];
         $params = [];
+
+        if(null !== $query) {
+            $params[":query"] = "%$query%";
+        }
 
         $i = 0;
         if (null !== $filter) {
@@ -101,23 +149,53 @@ class DbPlaceLeadRepository extends AbstractDbRepository implements PlaceLeadRep
                     continue;
                 }
                 $condition = " = ";
+                $conditionValue = "";
                 $value = explode('|', $value);
 
                 if(count($value)==2){
-                    $condition = " $value[0] ";
+                    $condition = $value[0]!="NULL"?" $value[0] ":($value[1] != 0 ? "IS NOT NULL" : "IS NULL");
+                    $conditionValue = $value[0];
                 }
 
-                $value = end($value);
+                if(count($value)==3){
+                    $condition = "BETWEEN";
+                }else{
+                    $value = end($value);
+                }
 
                 if (\is_string($field)) {
-                    $where[] = "($field $condition :value$i)";
-                    $params[":value$i"] = $condition==" LIKE "?"%$value%":$value;
+                    if($conditionValue!="NULL"){
+                        if($condition == "BETWEEN"){
+                            $from = $i."1";
+                            $to = $i."2";
+                            $where[] = "(app_place_leads.$field $condition :value$from AND :value$to)";
+                            $params[":value$from"] = $value[1];
+                            $params[":value$to"] = $value[2];
+                        }else{
+                            $where[] = "(app_place_leads.$field $condition :value$i)";
+                            $params[":value$i"] = $condition==" LIKE "?"%$value%":$value;
+                        }
+                    }else{
+                        $where[] = "(app_place_leads.$field $condition)";
+                    }
                     $i++;
                 } elseif (\is_array($field)) {
                     $w = [];
                     foreach ($field as $f) {
-                        $w[] = "($f $condition :value$i)";
-                        $params[":value$i"] = $condition==" LIKE "?"%$value%":$value;
+                        if($conditionValue!="NULL"){
+                            if($condition == "BETWEEN"){
+                                $from = $i."1";
+                                $to = $i."2";
+                                $w[] = "(app_place_leads.$f $condition :value$from AND :value$to)";
+                                $params[":value$from"] = $value[1];
+                                $params[":value$to"] = $value[2];
+                            }else{
+                                $w[] = "(app_place_leads.$f $condition :value$i)";
+                                $params[":value$i"] = $condition==" LIKE "?"%$value%":$value;
+                            }
+                        }else{
+                            $w[] = "(app_place_leads.$f $condition)";
+                        }
                         $i++;
                     }
                     $where[] = '(' . implode(' OR ', $w) . ')';
@@ -127,7 +205,14 @@ class DbPlaceLeadRepository extends AbstractDbRepository implements PlaceLeadRep
 
         $sql = 'SELECT COUNT(*) FROM app_place_leads';
 
-        $sql .= \count($where) > 0 ? (' WHERE ' . implode(' AND ', $where)) : '';
+        if(null !== $query){
+            $sql .= " WHERE (app_place_leads.name LIKE :query OR app_place_leads.zipCode LIKE :query OR app_place_leads.phone LIKE :query)";
+        }
+
+        if(count($where) > 0){
+            $sql .= \null !== $query ? ' AND ' : ' WHERE ';
+            $sql .= implode(' AND ', $where);
+        }
 
         $cmd = $this->db->createCommand($sql, $params);
 
@@ -154,7 +239,7 @@ class DbPlaceLeadRepository extends AbstractDbRepository implements PlaceLeadRep
         $cmd = $this->db->createCommand('SELECT app_place_leads.*, 
             cu.name as createdByName, 
             cu.secret as createdBySecret,  
-            ls.name as statusName, 
+            ls.name as statusName,
             ST_AsText(app_place_leads.geo) as geo
             FROM app_place_leads
             LEFT JOIN app_users cu ON app_place_leads.createdBy = cu.id 
@@ -189,9 +274,11 @@ class DbPlaceLeadRepository extends AbstractDbRepository implements PlaceLeadRep
     {
         $cmd = $this->db->createCommand('INSERT INTO app_place_leads
                             ( id, placeId, name, address, phone, type, status, price, rating, review, website, geo, data, toSync, campaignCode,
-                            isImportant, createdBy, createdAt, updatedAt, contractAt, nextFollowupDate)
+                            isImportant, zipCode, city, alexaRank, onlineSince, ypReviews, multiLocation, lastRemark, bbbRating, ypRating, 
+                            dataScore, carrier, callerIdName, rn, createdBy, createdAt, updatedAt, contractAt, nextFollowupDate)
                      VALUES (:id, :placeId, :name, :address, :phone, :type, :status, :price, :rating, :review, :website, ST_GeomFromText(:geo), :data, :toSync, :campaignCode,
-                            :isImportant, :createdBy, :createdAt, :updatedAt, :contractAt, :nextFollowupDate)',
+                            :isImportant, :zipCode, :city, :alexaRank, :onlineSince, :ypReviews, :multiLocation, :lastRemark, :bbbRating, :ypRating, 
+                            :dataScore, :carrier, :callerIdName, :rn, :createdBy, :createdAt, :updatedAt, :contractAt, :nextFollowupDate)',
             PlaceLeadNormalizer::serialize($placeLead));
 
         $cmd->execute();
@@ -219,6 +306,19 @@ class DbPlaceLeadRepository extends AbstractDbRepository implements PlaceLeadRep
                        toSync = :toSync, 
                        campaignCode = :campaignCode, 
                        isImportant = :isImportant, 
+                       zipCode = :zipCode,
+                       city = :city, 
+                       alexaRank = :alexaRank, 
+                       onlineSince = :onlineSince, 
+                       ypReviews = :ypReviews, 
+                       multiLocation = :multiLocation, 
+                       lastRemark = :lastRemark, 
+                       bbbRating = :bbbRating, 
+                       ypRating = :ypRating, 
+                       dataScore = :dataScore, 
+                       carrier = :carrier, 
+                       callerIdName = :callerIdName, 
+                       rn = :rn,
                        createdBy = :createdBy, 
                        createdAt = :createdAt, 
                        updatedAt = :updatedAt, 
@@ -226,6 +326,20 @@ class DbPlaceLeadRepository extends AbstractDbRepository implements PlaceLeadRep
                        nextFollowupDate = :nextFollowupDate
                  WHERE id = :id',
                  PlaceLeadNormalizer::serialize($placeLead));
+
+        return $cmd->execute() > 0;
+    }
+
+    public function updateByID(int $id): bool
+    {
+
+        $data = array( 'id' => $id );
+
+        $cmd = $this->db->createCommand('
+                UPDATE app_place_leads
+                   SET updatedAt = NOW()
+                 WHERE id = :id',
+                 $data);
 
         return $cmd->execute() > 0;
     }

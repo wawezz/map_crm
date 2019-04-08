@@ -25,8 +25,7 @@
         "City",
         "Salary"
       ],
-      "data": [
-        {
+      "data": [{
           "id": 1,
           "name": "Dakota Rice",
           "salary": "$36.738",
@@ -77,8 +76,7 @@
         }
       ]
     },
-    "taskList": [
-      {
+    "taskList": [{
         "title": "Update the Documentation",
         "description": "Dwuamish Head, Seattle, WA 8:47 AM",
         "done": false
@@ -121,5 +119,12 @@
     "tableList": "Table List",
     "typography": "Typography",
     "rtlSupport": "RTL Support"
-  }
+  },
+  "leads": "leads",
+  "place leads": "place leads",
+  "clients": "clients",
+  "users": "users",
+  "events": "events",
+  "tasks": "tasks",
+  "calls": "calls"
 }

@@ -56,6 +56,12 @@ interface ClientRepositoryInterface
     public function update(Client $client): bool;
 
     /**
+     * @param int $id
+     * @return bool
+     */
+    public function updateByID(int $id): bool;
+
+    /**
      * @param array $clients
      * @return bool
      */

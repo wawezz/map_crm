@@ -157,12 +157,6 @@
     components: {
       Pagination
     },
-    watch: {
-      $route(to, from) {
-        this.notesLoading = true;
-        this.getNotes();
-      }
-    },
     created() {
       const { state } = this.$store;
       this.getParams(["statuses", "countries", "currencies"]);

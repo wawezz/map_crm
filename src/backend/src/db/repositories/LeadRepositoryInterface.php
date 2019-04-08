@@ -49,6 +49,12 @@ interface LeadRepositoryInterface
     public function update(Lead $lead): bool;
 
     /**
+     * @param int $id
+     * @return bool
+     */
+    public function updateByID(int $id): bool;
+
+    /**
      * @param array $leads
      * @return bool
      */

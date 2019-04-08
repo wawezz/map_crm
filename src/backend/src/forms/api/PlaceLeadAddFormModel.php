@@ -95,6 +95,71 @@ class PlaceLeadAddFormModel extends AbstractFormModel
     /**
      * @var int
      */
+    public $zipCode;
+
+    /**
+     * @var string
+     */
+    public $city;
+
+    /**
+     * @var int
+     */
+    public $alexaRank;
+
+    /**
+     * @var string
+     */
+    public $onlineSince;
+
+    /**
+     * @var int
+     */
+    public $ypReviews;
+
+    /**
+     * @var int
+     */
+    public $multiLocation;
+
+    /**
+     * @var string
+     */
+    public $lastRemark;
+
+    /**
+     * @var int
+     */
+    public $bbbRating;
+
+    /**
+     * @var int
+     */
+    public $ypRating;
+
+    /**
+     * @var int
+     */
+    public $dataScore;
+
+    /**
+     * @var string
+     */
+    public $carrier;
+
+    /**
+     * @var string
+     */
+    public $callerIdName;
+
+    /**
+     * @var int
+     */
+    public $rn;
+
+    /**
+     * @var int
+     */
     public $createdBy = 0;
 
     /**
@@ -175,12 +240,12 @@ class PlaceLeadAddFormModel extends AbstractFormModel
             [['createdBy'], 'validateUser'],
             [['toSync', 'isImportant'], 'boolean'],
             [['contractAt', 'nextFollowupDate'], 'date', 'format' => 'yyyy-M-d H:m:s', 'skipOnEmpty' => true],
-            [['address', 'review', 'website', 'geo', 'data', 'type'], 'string'],
-            [['price', 'campaignCode'], 'integer'],
-            [['placeId', 'name', 'address', 'phone', 'review', 'website', 'rating'], 'trim'],
+            [['address', 'review', 'website', 'geo', 'data', 'type', 'zipCode', 'city', 'onlineSince', 'lastRemark', 'carrier', 'callerIdName'], 'string'],
+            [['price', 'campaignCode', 'alexaRank', 'ypReviews', 'multiLocation', 'bbbRating', 'ypRating', 'dataScore', 'rn'], 'integer'],
+            [['placeId', 'name', 'address', 'phone', 'review', 'website', 'rating', 'zipCode', 'city', 'onlineSince', 'carrier', 'callerIdName'], 'trim'],
         ];
     }
-
+    
     private $user;
 
     public function checkPhone($attribute){
@@ -234,19 +299,32 @@ class PlaceLeadAddFormModel extends AbstractFormModel
         $placeLead->type = $this->type;
         $placeLead->status = $this->status;
         $placeLead->price = $this->price;
-        $placeLead->rating  = (int)$this->rating;
-        $placeLead->review  = $this->review;
-        $placeLead->website  = $this->website;
-        $placeLead->geo  = $this->geo;
-        $placeLead->data  = $this->data;
-        $placeLead->toSync  = $this->toSync;
-        $placeLead->campaignCode  = $this->campaignCode;
-        $placeLead->isImportant  = $this->isImportant;
+        $placeLead->rating = (int)$this->rating;
+        $placeLead->review = $this->review;
+        $placeLead->website = $this->website;
+        $placeLead->geo = $this->geo;
+        $placeLead->data = $this->data;
+        $placeLead->toSync = $this->toSync;
+        $placeLead->campaignCode = $this->campaignCode;
+        $placeLead->isImportant = $this->isImportant;
+        $placeLead->zipCode = $this->zipCode;
+        $placeLead->city = $this->city;
+        $placeLead->alexaRank = $this->alexaRank;
+        $placeLead->onlineSince = $this->onlineSince;
+        $placeLead->ypReviews = $this->ypReviews;
+        $placeLead->multiLocation = $this->multiLocation;
+        $placeLead->lastRemark = $this->lastRemark;
+        $placeLead->bbbRating = $this->bbbRating;
+        $placeLead->ypRating = $this->ypRating;
+        $placeLead->dataScore = $this->dataScore;
+        $placeLead->carrier = $this->carrier;
+        $placeLead->callerIdName = $this->callerIdName;
+        $placeLead->rn = $this->rn;
         $placeLead->createdBy = $this->user->id;
         $placeLead->contractAt = $this->contractAt;
         $placeLead->nextFollowupDate = $this->nextFollowupDate;
         $placeLead->id = $this->placeLeadRepository->insert($placeLead);
-        
+
         if (!$placeLead->id) {
             throw new \ErrorException('Failed to insert place lead.');
         }

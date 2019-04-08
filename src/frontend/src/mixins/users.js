@@ -6,10 +6,11 @@ export const users = {
     return {
       usersFilter: '[]',
       usersSort: '[]',
-      usersLoading: true,
+      usersLoading: false,
       usersData: {
         checked: []
       },
+      usersSearchString: '',
       usersByGroups: {},
       usersTotalCount: 0,
       userInfo: {
@@ -38,7 +39,7 @@ export const users = {
         {
           name: 'name',
           type: 'link',
-          path: '/profile',
+          prefix: '/profile/',
           disableSort: true
         },
         {
@@ -81,6 +82,7 @@ export const users = {
       }
     },
     getUser(id) {
+      this.usersLoading = true;
       axios({
           method: "post",
           url: id ? "/v1/user/get?id=" + id : "/v1/user/get",
@@ -102,6 +104,7 @@ export const users = {
           this.usersForm.sipId = this.userInfo.sipId;
           this.usersForm.sipPass = this.userInfo.sipPass;
           this.usersForm.id = this.userInfo.id;
+          this.usersLoading = false;
         })
         .catch(e => {
           const data = e.response.data;
@@ -115,9 +118,11 @@ export const users = {
           } else {
             console.error("Unexpected error", data.error);
           }
+          this.usersLoading = false;
         });
     },
     getUsers() {
+      this.usersLoading = true;
       const filter = this.usersFilter !== '[]' ? JSON.stringify(this.usersFilter) : this.usersFilter;
       const sort = this.usersSort !== '[]' ? JSON.stringify(this.usersSort) : this.usersSort;
 
@@ -150,6 +155,7 @@ export const users = {
           } else {
             console.error("Unexpected error", data.error);
           }
+          this.usersLoading = false;
         });
     },
     addUser() {
@@ -314,7 +320,7 @@ export const users = {
       formData = new FormData();
       /* eslint-enable */
       formData.append("params[id]", AuthService.uid);
-      formData.append("users", JSON.stringify(this.checkedUsers.length ? this.checkedUsers : [this.userInfo.id]));
+      formData.append("users", JSON.stringify(this.usersData.checked.length ? this.usersData.checked : [this.userInfo.id]));
       axios({
         method: "post",
         url: "/v1/user/remove",
@@ -339,7 +345,7 @@ export const users = {
               path: "/users/1"
             });
           } else {
-            this.checkedUsers = [];
+            this.usersData.checked = [];
             this.getUsers();
           }
         },
@@ -362,7 +368,6 @@ export const users = {
     },
     sortUsersBy(field = null) {
       if (field === null) return;
-      this.usersLoading = true;
       if (this.usersSort === '[]') this.usersSort = {};
       if (!this.usersSort[field]) {
         this.usersSort[field] = 'DESC';
@@ -373,7 +378,36 @@ export const users = {
       }
 
       if (Object.keys(this.usersSort).length === 0) this.usersSort = '[]';
+      this.usersQueryControll();
       this.getUsers();
+    },
+    usersQueryControll() {
+      if (this.$route.query.string === this.placeLeadsSearchString &&
+        (this.$route.query.sort != '' && this.$route.query.sort === JSON.stringify(this.placeLeadsSort)) &&
+        (this.$route.query.filter != '' && this.$route.query.filter === JSON.stringify(this.placeLeadsFilter))) return;
+
+      if (this.placeLeadsPage != 1) {
+        this.$router.push({
+          name: 'users',
+          params: {
+            page: 1
+          },
+          query: this.$route.query
+        });
+      }
+      this.$router.replace({
+        query: {
+          string: this.usersSearchString,
+          sort: (this.usersSort !== '[]') ? JSON.stringify(this.usersSort) : '',
+          filter: (this.usersFilter !== '[]') ? JSON.stringify(this.usersFilter) : ''
+        }
+      });
     }
+  },
+  created() {
+    this.usersSearchString = this.$route.query.string;
+    this.usersSort = this.$route.query.sort && this.$route.query.sort.length ? JSON.parse(this.$route.query.sort) : this.usersSort;
+    this.usersFilter = this.$route.query.filter && this.$route.query.filter.length ? JSON.parse(this.$route.query.filter) : this.usersFilter;
+
   }
 }

@@ -10,6 +10,7 @@ export const main = {
       ws: null,
       access: null,
       statuses: {},
+      updatebleStatuses: [],
       statusesById: {},
       currenciesFiltered: {},
       countries: {},
@@ -166,6 +167,9 @@ export const main = {
             for (let i in filter) {
               this[filter[i]] = response.data[filter[i]];
               for (let ii in this[filter[i]]) {
+                if (filter[i] === 'statuses' && this[filter[i]][ii].isMove == 1) {
+                  this.updatebleStatuses.push(this[filter[i]][ii].id);
+                }
                 this[filter[i] + "ById"][this[filter[i]][ii].id] = this[filter[i]][ii];
               }
             }
@@ -186,6 +190,6 @@ export const main = {
     },
     isValidPassword(password) {
       return password !== "";
-    },
+    }
   }
 }

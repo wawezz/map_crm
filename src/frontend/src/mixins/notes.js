@@ -7,7 +7,7 @@ export const notes = {
       notesFilter: '[]',
       notesSort: '[]',
       notes: [],
-      notesLoading: true,
+      notesLoading: false,
       notesTotalCount: 0,
       noteComment: {
         data: null
@@ -34,6 +34,7 @@ export const notes = {
   },
   methods: {
     getNotes() {
+      this.notesLoading = true;
       const filter = this.notesFilter !== '[]' ? JSON.stringify(this.notesFilter) : this.notesFilter;
       // const sort = this.notesSort !== '[]' ? JSON.stringify(this.notesSort) : this.notesSort;
       axios({
@@ -65,6 +66,7 @@ export const notes = {
           } else {
             console.error("Unexpected error", data.error);
           }
+          this.notesLoading = false;
         });
     },
     saveNoteComment(type, element) {

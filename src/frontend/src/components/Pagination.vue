@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-12 text-center" v-if="pages.length > 1">
       <nav class="mt-3">
-        <router-link v-if="pCurrent > 1" :to="lPrefix + (pCurrent - 1)">
+        <router-link v-if="pCurrent > 1" :to="lPrefix + (pCurrent - 1) + getQuery()">
           <base-button type="primary" class="mr-3">prev</base-button>
         </router-link>
         <base-button v-if="pCurrent === 1" class="mr-3">prev</base-button>
@@ -11,7 +11,7 @@
           <router-link
             v-if="page != pCurrent && page !== '...'"
             class="page"
-            :to="lPrefix + page"
+            :to="lPrefix + page + getQuery()"
           >{{page}}</router-link>
 
           <span v-if="page == pCurrent" class="page current">{{page}}</span>
@@ -19,7 +19,7 @@
           <span v-if="page === '...'" class="page dots">…</span>
         </span>
 
-        <router-link v-if="pCurrent < maxPage" :to="lPrefix + (pCurrent + 1)">
+        <router-link v-if="pCurrent < maxPage" :to="lPrefix + (pCurrent + 1) + getQuery()">
           <base-button type="primary" class="ml-3">next</base-button>
         </router-link>
         <base-button v-if="pCurrent === maxPage" class="ml-3">next</base-button>
@@ -28,68 +28,79 @@
   </div>
 </template>
 <script>
-export default {
-  name: "pagination",
-  props: {
-    total: {
-      type: Number,
-      default: 0
-    },
-    size: {
-      type: Number,
-      default: 1
-    },
-    current: {
-      type: Number,
-      default: 1
-    },
-    prefix: {
-      type: String,
-      default: "/"
-    }
-  },
-  data() {
-    return {
-      pages: [],
-      maxPage: 0,
-      pCurrent: parseInt(this.current),
-      pSize: parseInt(this.size),
-      pTotal: parseInt(this.total),
-      lPrefix: this.prefix
-    };
-  },
-  created() {
-    this.maxPage = Math.ceil(this.pTotal / this.pSize);
-
-    this.getPages();
-  },
-  methods: {
-    getPages() {
-      const { pCurrent, maxPage } = this;
-      const pages = [];
-
-      if (pCurrent > 3) {
-        pages.push(1);
-        if (pCurrent > 4) pages.push("...");
+  export default {
+    name: "pagination",
+    props: {
+      total: {
+        type: Number,
+        default: 0
+      },
+      size: {
+        type: Number,
+        default: 1
+      },
+      current: {
+        type: Number,
+        default: 1
+      },
+      prefix: {
+        type: String,
+        default: "/"
       }
+    },
+    data() {
+      return {
+        pages: [],
+        maxPage: 0,
+        pCurrent: parseInt(this.current),
+        pSize: parseInt(this.size),
+        pTotal: parseInt(this.total),
+        lPrefix: this.prefix
+      };
+    },
+    created() {
+      this.maxPage = Math.ceil(this.pTotal / this.pSize);
+      this.getPages();
+    },
+    methods: {
+      getPages() {
+        const { pCurrent, maxPage } = this;
+        const pages = [];
 
-      for (let page = pCurrent - 2; page <= pCurrent + 2; page++) {
-        if (page > 0 && page <= maxPage) {
-          pages.push(page);
+        if (pCurrent > 3) {
+          pages.push(1);
+          if (pCurrent > 4) pages.push("...");
         }
-      }
 
-      if (pCurrent < maxPage - 2) {
-        if (pCurrent < maxPage - 3) pages.push("...");
-        pages.push(maxPage);
+        for (let page = pCurrent - 2; page <= pCurrent + 2; page++) {
+          if (page > 0 && page <= maxPage) {
+            pages.push(page);
+          }
+        }
+
+        if (pCurrent < maxPage - 2) {
+          if (pCurrent < maxPage - 3) pages.push("...");
+          pages.push(maxPage);
+        }
+        this.pages = pages;
+      },
+      getQuery() {
+        const query = this.$route.query;
+        if (query.length === 0) return;
+        delete query.length;
+        const queryString = Object.keys(query)
+          .map(k => {
+            return k + "=" + query[k];
+          })
+          .join("&");
+
+        return "?" + queryString;
       }
-      this.pages = pages;
     }
-  }
-};
+  };
 </script>
 <style>
-.page {
+  .page {
   margin: 0 10px;
   font-size: 16px;
 }

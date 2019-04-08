@@ -86,6 +86,71 @@ class PlaceLead
     /**
      * @var int
      */
+    public $zipCode;
+
+    /**
+     * @var string
+     */
+    public $city;
+
+    /**
+     * @var int
+     */
+    public $alexaRank;
+
+    /**
+     * @var string
+     */
+    public $onlineSince;
+
+    /**
+     * @var int
+     */
+    public $ypReviews;
+
+    /**
+     * @var int
+     */
+    public $multiLocation;
+
+    /**
+     * @var string
+     */
+    public $lastRemark;
+
+    /**
+     * @var int
+     */
+    public $bbbRating;
+
+    /**
+     * @var int
+     */
+    public $ypRating;
+
+    /**
+     * @var int
+     */
+    public $dataScore;
+
+    /**
+     * @var string
+     */
+    public $carrier;
+
+    /**
+     * @var string
+     */
+    public $callerIdName;
+
+    /**
+     * @var int
+     */
+    public $rn;
+
+    /**
+     * @var int
+     */
     public $createdBy;
 
     /**
@@ -163,6 +228,19 @@ class PlaceLead
             'toSync' => $this->toSync,
             'campaignCode' => $this->campaignCode,
             'isImportant' => $this->isImportant,
+            'zipCode' => $this->zipCode,
+            'city' => $this->city,
+            'alexaRank' => $this->alexaRank,
+            'onlineSince' => $this->onlineSince,
+            'ypReviews' => $this->ypReviews,
+            'multiLocation' => $this->multiLocation,
+            'lastRemark' => $this->lastRemark,
+            'bbbRating' => $this->bbbRating,
+            'ypRating' => $this->ypRating,
+            'dataScore' => $this->dataScore,
+            'carrier' => $this->carrier,
+            'callerIdName' => $this->callerIdName,
+            'rn' => $this->rn,
             'createdBy' => ($this->createdBySecret)?$this->createdBy.'-'.$this->createdBySecret:$this->createdBy,
             'createdAt' => $this->createdAt,
             'updatedAt' => $this->updatedAt,

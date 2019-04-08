@@ -7,10 +7,11 @@ export const leads = {
     return {
       leadsFilter: '[]',
       leadsSort: '[]',
-      leadsLoading: true,
+      leadsLoading: false,
       leadsData: {
         checked: []
       },
+      leadsSearchString: '',
       leadInfo: {},
       leads: {},
       leadsTotalCount: 0,
@@ -70,7 +71,8 @@ export const leads = {
         },
         {
           name: 'status',
-          field: 'statusName'
+          field: 'statusName',
+          disableSort: true
         }
       ],
       leadsLimit: 25
@@ -86,6 +88,7 @@ export const leads = {
   },
   methods: {
     getLeads() {
+      this.leadsLoading = true;
       const filter = this.leadsFilter !== '[]' ? JSON.stringify(this.leadsFilter) : this.leadsFilter;
       const sort = this.leadsSort !== '[]' ? JSON.stringify(this.leadsSort) : this.leadsSort;
       axios({
@@ -117,9 +120,11 @@ export const leads = {
           } else {
             console.error("Unexpected error", data.error);
           }
+          this.leadsLoading = false;
         });
     },
     getLead() {
+      this.leadsLoading = true;
       axios({
           method: "post",
           url: "/v1/lead/get?id=" + this.$route.params.id,
@@ -152,6 +157,7 @@ export const leads = {
           this.leadsform.rejectionReason = this.leadInfo.rejectionReason;
           this.notes = this.leadInfo.notes;
           this.updateCurrency(true);
+          this.leadsLoading = false;
         })
         .catch(e => {
           const data = e.response.data;
@@ -165,6 +171,7 @@ export const leads = {
           } else {
             console.error("Unexpected error", data.error);
           }
+          this.leadsLoading = false;
         });
     },
     addLead() {
@@ -325,7 +332,7 @@ export const leads = {
       formData = new FormData();
       /* eslint-enable */
       formData.append("params[id]", AuthService.uid);
-      formData.append("leads", JSON.stringify(this.checkedLeads.length ? this.checkedLeads : [this.leadInfo.id]));
+      formData.append("leads", JSON.stringify(this.leadsData.checked.length ? this.leadsData.checked : [this.leadInfo.id]));
       axios({
         method: "post",
         url: "/v1/lead/remove",
@@ -345,7 +352,7 @@ export const leads = {
               path: "/leads"
             });
           } else {
-            this.checkedLeads = [];
+            this.leadsData.checked = [];
             this.getLeads();
           }
         },
@@ -391,7 +398,6 @@ export const leads = {
     },
     sortLeadsBy(field = null) {
       if (field === null) return;
-      this.leadsLoading = true;
       if (this.leadsSort === '[]') this.leadsSort = {};
       if (!this.leadsSort[field]) {
         this.leadsSort[field] = 'DESC';
@@ -402,7 +408,36 @@ export const leads = {
       }
 
       if (Object.keys(this.leadsSort).length === 0) this.leadsSort = '[]';
+      this.leadsQueryControll();
       this.getLeads();
+    },
+    leadsQueryControll() {
+      if (this.$route.query.string === this.placeLeadsSearchString &&
+        (this.$route.query.sort != '' && this.$route.query.sort === JSON.stringify(this.placeLeadsSort)) &&
+        (this.$route.query.filter != '' && this.$route.query.filter === JSON.stringify(this.placeLeadsFilter))) return;
+
+      if (this.placeLeadsPage != 1) {
+        this.$router.push({
+          name: 'leads',
+          params: {
+            page: 1
+          },
+          query: this.$route.query
+        });
+      }
+      this.$router.replace({
+        query: {
+          string: this.leadsSearchString,
+          sort: (this.leadsSort !== '[]') ? JSON.stringify(this.leadsSort) : '',
+          filter: (this.leadsFilter !== '[]') ? JSON.stringify(this.leadsFilter) : ''
+        }
+      });
     }
+  },
+  created() {
+    this.leadsSearchString = this.$route.query.string;
+    this.leadsSort = this.$route.query.sort && this.$route.query.sort.length ? JSON.parse(this.$route.query.sort) : this.leadsSort;
+    this.leadsFilter = this.$route.query.filter && this.$route.query.filter.length ? JSON.parse(this.$route.query.filter) : this.leadsFilter;
+
   }
 }

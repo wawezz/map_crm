@@ -7,19 +7,21 @@ use backend\db\models\PlaceLead;
 interface PlaceLeadRepositoryInterface
 {
     /**
+     * @param string|null $query
      * @param int|null $limit
      * @param int|null $offset
      * @param array|null $filter
      * @param array|null $sort
      * @return \backend\db\models\PlaceLead[]
      */
-    public function findAll(int $limit = null, int $offset = null, array $filter = null, array $sort = null): array;
+    public function findAll(int $limit = null, int $offset = null, array $filter = null, array $sort = null, string $query = null): array;
 
     /**
+     * @param string|null $query
      * @param array|null $filter
      * @return int
      */
-    public function countAll(array $filter = null): int;
+    public function countAll(array $filter = null, string $query = null): int;
 
     /**
      * @param string $field
@@ -53,6 +55,12 @@ interface PlaceLeadRepositoryInterface
      * @return bool
      */
     public function update(PlaceLead $placeLead): bool;
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function updateByID(int $id): bool;
 
     /**
      * @param array $placeLeads

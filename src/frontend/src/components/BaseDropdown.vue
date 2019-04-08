@@ -1,9 +1,11 @@
 <template>
-  <component :is="tag"
-             class="dropdown"
-             :class="{show:isOpen}"
-             @click="toggleDropDown"
-             v-click-outside="closeDropDown">
+  <component
+    :is="tag"
+    class="dropdown"
+    :class="{show:isOpen}"
+    @click="toggleDropDown"
+    v-click-outside="closeDropDown"
+  >
     <slot name="title-container" :is-open="isOpen">
       <component
         :is="titleTag"
@@ -11,14 +13,18 @@
         :class="titleClasses"
         :aria-expanded="isOpen"
         :aria-label="title || ariaLabel"
-        data-toggle="dropdown">
+        data-toggle="dropdown"
+      >
         <slot name="title" :is-open="isOpen">
           <i :class="icon"></i>
           {{title}}
         </slot>
       </component>
     </slot>
-    <ul class="dropdown-menu" :class="[{show:isOpen}, {'dropdown-menu-right': menuOnRight}, menuClasses]">
+    <ul
+      class="dropdown-menu"
+      :class="[{show:isOpen}, {'dropdown-menu-right': menuOnRight}, menuClasses]"
+    >
       <slot></slot>
     </ul>
   </component>
@@ -39,8 +45,7 @@
       },
       title: {
         type: String,
-        description: "Dropdown title",
-
+        description: "Dropdown title"
       },
       icon: {
         type: String,
@@ -72,7 +77,7 @@
       },
       closeDropDown() {
         this.isOpen = false;
-        this.$emit('change', false);
+        this.$emit("change", false);
       }
     }
   };

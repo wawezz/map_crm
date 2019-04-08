@@ -100,6 +100,71 @@ class PlaceLeadUpdateFormModel extends AbstractFormModel
     /**
      * @var int
      */
+    public $zipCode;
+
+    /**
+     * @var string
+     */
+    public $city;
+
+    /**
+     * @var int
+     */
+    public $alexaRank;
+
+    /**
+     * @var string
+     */
+    public $onlineSince;
+
+    /**
+     * @var int
+     */
+    public $ypReviews;
+
+    /**
+     * @var int
+     */
+    public $multiLocation;
+
+    /**
+     * @var string
+     */
+    public $lastRemark;
+
+    /**
+     * @var int
+     */
+    public $bbbRating;
+
+    /**
+     * @var int
+     */
+    public $ypRating;
+
+    /**
+     * @var int
+     */
+    public $dataScore;
+
+    /**
+     * @var string
+     */
+    public $carrier;
+
+    /**
+     * @var string
+     */
+    public $callerIdName;
+
+    /**
+     * @var int
+     */
+    public $rn;
+
+    /**
+     * @var int
+     */
     public $updatedBy = 0;
 
     /**
@@ -182,9 +247,9 @@ class PlaceLeadUpdateFormModel extends AbstractFormModel
             [['updatedBy'], 'validateUser'],
             [['toSync', 'isImportant'], 'boolean'],
             [['contractAt', 'nextFollowupDate'], 'date', 'format' => 'yyyy-M-d H:m:s', 'skipOnEmpty' => true],
-            [['address', 'review', 'website', 'geo', 'data', 'type'], 'string'],
-            [['price', 'campaignCode'], 'integer'],
-            [['placeId', 'name', 'address', 'phone', 'review', 'website', 'rating'], 'trim'],
+            [['address', 'review', 'website', 'geo', 'data', 'type', 'zipCode', 'city', 'onlineSince', 'lastRemark', 'carrier', 'callerIdName'], 'string'],
+            [['price', 'campaignCode', 'alexaRank', 'ypReviews', 'multiLocation', 'bbbRating', 'ypRating', 'dataScore', 'rn'], 'integer'],
+            [['placeId', 'name', 'address', 'phone', 'review', 'website', 'rating', 'zipCode', 'city', 'onlineSince', 'carrier', 'callerIdName'], 'trim'],
         ];
     }
 
@@ -309,6 +374,71 @@ class PlaceLeadUpdateFormModel extends AbstractFormModel
         if ($placeLead->campaignCode != $this->campaignCode) {
             $changes['campaignCode'] = array('from' => $placeLead->campaignCode, 'to' => $this->campaignCode );
             $placeLead->campaignCode = $this->campaignCode;
+        }
+
+        if ($placeLead->zipCode != $this->zipCode) {
+            $changes['zipCode'] = array('from' => $placeLead->zipCode, 'to' => $this->zipCode );
+            $placeLead->zipCode = $this->zipCode;
+        }
+
+        if ($placeLead->city != $this->city) {
+            $changes['city'] = array('from' => $placeLead->city, 'to' => $this->city );
+            $placeLead->city = $this->city;
+        }
+
+        if ($placeLead->alexaRank != $this->alexaRank) {
+            $changes['alexaRank'] = array('from' => $placeLead->alexaRank, 'to' => $this->alexaRank );
+            $placeLead->alexaRank = $this->alexaRank;
+        }
+
+        if ($placeLead->onlineSince != $this->onlineSince) {
+            $changes['onlineSince'] = array('from' => $placeLead->onlineSince, 'to' => $this->onlineSince );
+            $placeLead->onlineSince = $this->onlineSince;
+        }
+
+        if ($placeLead->ypReviews != $this->ypReviews) {
+            $changes['ypReviews'] = array('from' => $placeLead->ypReviews, 'to' => $this->ypReviews );
+            $placeLead->ypReviews = $this->ypReviews;
+        }
+
+        if ($placeLead->multiLocation != $this->multiLocation) {
+            $changes['multiLocation'] = array('from' => $placeLead->multiLocation, 'to' => $this->multiLocation );
+            $placeLead->multiLocation = $this->multiLocation;
+        }
+
+        if ($placeLead->lastRemark != $this->lastRemark) {
+            $changes['lastRemark'] = array('from' => $placeLead->lastRemark, 'to' => $this->lastRemark );
+            $placeLead->lastRemark = $this->lastRemark;
+        }
+
+        if ($placeLead->bbbRating != $this->bbbRating) {
+            $changes['bbbRating'] = array('from' => $placeLead->bbbRating, 'to' => $this->bbbRating );
+            $placeLead->bbbRating = $this->bbbRating;
+        }
+
+        if ($placeLead->ypRating != $this->ypRating) {
+            $changes['ypRating'] = array('from' => $placeLead->ypRating, 'to' => $this->ypRating );
+            $placeLead->ypRating = $this->ypRating;
+        }
+
+        if ($placeLead->dataScore != $this->dataScore) {
+            $changes['dataScore'] = array('from' => $placeLead->dataScore, 'to' => $this->dataScore );
+            $placeLead->dataScore = $this->dataScore;
+        }
+
+        if ($placeLead->carrier != $this->carrier) {
+            $changes['carrier'] = array('from' => $placeLead->carrier, 'to' => $this->carrier );
+            $placeLead->carrier = $this->carrier;
+        }
+
+        if ($placeLead->callerIdName != $this->callerIdName) {
+            $changes['callerIdName'] = array('from' => $placeLead->callerIdName, 'to' => $this->callerIdName );
+            $placeLead->callerIdName = $this->callerIdName;
+        }
+
+        if ($placeLead->rn != $this->rn) {
+            $changes['rn'] = array('from' => $placeLead->rn, 'to' => $this->rn );
+            $placeLead->rn = $this->rn;
         }
 
         if ($this->contractAt && $placeLead->contractAt->format('Y-m-d H:i:s') != $this->contractAt) {

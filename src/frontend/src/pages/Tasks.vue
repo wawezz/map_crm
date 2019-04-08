@@ -1,124 +1,130 @@
 <template>
-  <div class="row" v-if="user">
-    <div class="col-sm-12 mb-3">
-      <base-button
-        data-toggle="modal"
-        data-target="userAdd"
-        type="button"
-        class="btn btn-primary"
-        @click="taskAddModalVisible = true"
-      >
-        <i class="tim-icons icon-simple-add"></i> Add task
-      </base-button>
+  <div v-if="user">
+    <div class="row">
+      <div class="col-sm-12 mb-3">
+        <base-button
+          data-toggle="modal"
+          data-target="userAdd"
+          type="button"
+          class="btn btn-primary"
+          @click="taskAddModalVisible = true"
+        >
+          <i class="tim-icons icon-simple-add"></i> Add task
+        </base-button>
+      </div>
     </div>
-    <div class="col-sm-12">
-      <base-alert v-if="listError" type="danger">{{listError}}</base-alert>
+    <div class="row">
+      <div class="col-sm-12">
+        <base-alert v-if="listError" type="danger">{{listError}}</base-alert>
+      </div>
     </div>
-    <div class="col-12">
-      <card title="Tasks" :loading="tasksLoading">
-        <tabs :options="{ useUrlFragment: false }">
-          <tab name="Current">
-            <div class="taskBlock row">
-              <div
-                v-for="task in tasks"
-                :key="task.id"
-                v-if="Date.now() > new Date(task.eventDate.date)"
-                class="col-6"
-              >
-                <div class="taskBlock__item">
-                  Task
-                  <b>N {{task.id}}</b> created by:
-                  <router-link :to="'/profile/'  + task.createdBy">{{task.createdByName}}</router-link>
-                  <b>{{task.eventDate.date | dateTime}}</b> in
-                  <router-link
-                    v-if="task.elementType == $store.state.elementTypes.ELEMENT_TYPE_CLIENT.id"
-                    :to="'/client/'  + task.elementId"
-                  >Client</router-link>
-                  <router-link
-                    v-if="task.elementType == $store.state.elementTypes.ELEMENT_TYPE_LEAD.id"
-                    :to="'/lead/'  + task.elementId"
-                  >Lead</router-link>
-                  <router-link
-                    v-if="task.elementType == $store.state.elementTypes.ELEMENT_TYPE_PLACE_LEAD.id"
-                    :to="'/place-lead/'  + task.elementId"
-                  >Place lead</router-link>
-                  <br>
-                  {{task.comment}}
-                  <br>
-                  Type: {{task.type=='connect'?'Connect to client':task.type=='meeting'?'Meeting':'Other'}}
-                  <br>
-                  <span
-                    v-if="user.id == task.responsible || user.id == task.createdBy"
-                    class="taskActions"
-                  >
-                    <a
-                      href="#"
-                      @click.prevent="closeTaskHandler(task.id)"
-                      alt="default"
-                      data-toggle="modal"
-                      data-target="taskClose"
+    <div class="row">
+      <div class="col-12">
+        <card title="Tasks" :loading="tasksLoading">
+          <tabs :options="{ useUrlFragment: false }">
+            <tab name="Current">
+              <div class="taskBlock row">
+                <div
+                  v-for="task in tasks"
+                  :key="task.id"
+                  v-if="Date.now() > new Date(task.eventDate.date)"
+                  class="col-6"
+                >
+                  <div class="taskBlock__item">
+                    Task
+                    <b>N {{task.id}}</b> created by:
+                    <router-link :to="'/profile/'  + task.createdBy">{{task.createdByName}}</router-link>
+                    <b>{{task.eventDate.date | dateTime}}</b> in
+                    <router-link
+                      v-if="task.elementType == $store.state.elementTypes.ELEMENT_TYPE_CLIENT.id"
+                      :to="'/client/'  + task.elementId"
+                    >Client</router-link>
+                    <router-link
+                      v-if="task.elementType == $store.state.elementTypes.ELEMENT_TYPE_LEAD.id"
+                      :to="'/lead/'  + task.elementId"
+                    >Lead</router-link>
+                    <router-link
+                      v-if="task.elementType == $store.state.elementTypes.ELEMENT_TYPE_PLACE_LEAD.id"
+                      :to="'/place-lead/'  + task.elementId"
+                    >Place lead</router-link>
+                    <br>
+                    {{task.comment}}
+                    <br>
+                    Type: {{task.type=='connect'?'Connect to client':task.type=='meeting'?'Meeting':'Other'}}
+                    <br>
+                    <span
+                      v-if="user.id == task.responsible || user.id == task.createdBy"
                       class="taskActions"
-                    >Close</a>
-                    <a
-                      href="#"
-                      @click.prevent="removeTaskHandler(task.id)"
-                      alt="default"
-                      data-toggle="modal"
-                      data-target="taskRemove"
-                      class="taskActions"
-                    >Remove</a>
-                  </span>
+                    >
+                      <a
+                        href="#"
+                        @click.prevent="closeTaskHandler(task.id)"
+                        alt="default"
+                        data-toggle="modal"
+                        data-target="taskClose"
+                        class="taskActions"
+                      >Close</a>
+                      <a
+                        href="#"
+                        @click.prevent="removeTaskHandler(task.id)"
+                        alt="default"
+                        data-toggle="modal"
+                        data-target="taskRemove"
+                        class="taskActions"
+                      >Remove</a>
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </tab>
-          <tab name="Scheduled">
-            <div class="taskBlock row">
-              <div
-                v-for="task in tasks"
-                :key="task.id"
-                v-if="Date.now() < new Date(task.eventDate.date)"
-                class="col-6"
-              >
-                <div class="taskBlock__item">
-                  Task
-                  <b>N {{task.id}}</b> created by:
-                  <router-link :to="'/profile/'  + task.createdBy">{{task.createdByName}}</router-link>
-                  <b>{{task.eventDate.date | dateTime}}</b> in
-                  <router-link
-                    :to="task.elementType == $store.state.elementTypes.ELEMENT_TYPE_CLIENT.id?'/client/'  + task.elementId:'/lead/'  + task.elementId"
-                  >{{task.elementType == $store.state.elementTypes.ELEMENT_TYPE_CLIENT.id?'Client':'Lead'}}</router-link>
-                  <br>
-                  Type: {{task.type=='connect'?'Connect to client':task.type=='meeting'?'Meeting':'Other'}}
-                  <br>
-                  {{task.comment}}
-                  <span
-                    v-if="user.id == task.responsible + '-' + task.responsibleSecret || user.id == task.createdBy + '-' + task.createdBySecret"
-                    class="taskActions"
-                  >
-                    <a
-                      href="#"
-                      @click.prevent="closeTaskHandler(task.id)"
-                      alt="default"
-                      data-toggle="modal"
-                      data-target="taskClose"
+            </tab>
+            <tab name="Scheduled">
+              <div class="taskBlock row">
+                <div
+                  v-for="task in tasks"
+                  :key="task.id"
+                  v-if="Date.now() < new Date(task.eventDate.date)"
+                  class="col-6"
+                >
+                  <div class="taskBlock__item">
+                    Task
+                    <b>N {{task.id}}</b> created by:
+                    <router-link :to="'/profile/'  + task.createdBy">{{task.createdByName}}</router-link>
+                    <b>{{task.eventDate.date | dateTime}}</b> in
+                    <router-link
+                      :to="task.elementType == $store.state.elementTypes.ELEMENT_TYPE_CLIENT.id?'/client/'  + task.elementId:'/lead/'  + task.elementId"
+                    >{{task.elementType == $store.state.elementTypes.ELEMENT_TYPE_CLIENT.id?'Client':'Lead'}}</router-link>
+                    <br>
+                    Type: {{task.type=='connect'?'Connect to client':task.type=='meeting'?'Meeting':'Other'}}
+                    <br>
+                    {{task.comment}}
+                    <span
+                      v-if="user.id == task.responsible + '-' + task.responsibleSecret || user.id == task.createdBy + '-' + task.createdBySecret"
                       class="taskActions"
-                    >Close</a>
-                    <a
-                      href="#"
-                      @click.prevent="removeTaskHandler(task.id)"
-                      alt="default"
-                      data-toggle="modal"
-                      data-target="taskRemove"
-                      class="taskActions"
-                    >Remove</a>
-                  </span>
+                    >
+                      <a
+                        href="#"
+                        @click.prevent="closeTaskHandler(task.id)"
+                        alt="default"
+                        data-toggle="modal"
+                        data-target="taskClose"
+                        class="taskActions"
+                      >Close</a>
+                      <a
+                        href="#"
+                        @click.prevent="removeTaskHandler(task.id)"
+                        alt="default"
+                        data-toggle="modal"
+                        data-target="taskRemove"
+                        class="taskActions"
+                      >Remove</a>
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </tab>
-        </tabs>
-      </card>
+            </tab>
+          </tabs>
+        </card>
+      </div>
     </div>
     <modal :show.sync="taskAddModalVisible" id="taskAdd" :centered="false" :show-close="true">
       <base-alert v-if="error.message" type="warning">{{error.message}}</base-alert>
@@ -249,12 +255,6 @@
       Modal,
       Datepicker,
       Pagination
-    },
-    watch: {
-      $route(to, from) {
-        this.tasksLoading = true;
-        this.getTasks();
-      }
     },
     data() {
       return {

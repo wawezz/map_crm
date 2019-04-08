@@ -25,8 +25,7 @@
         "مدينة",
         "راتب"
       ],
-      "data": [
-        {
+      "data": [{
           "id": 1,
           "اسم": "رايس داكوتا",
           "راتب": "$36.738",
@@ -77,8 +76,7 @@
         }
       ]
     },
-    "taskList": [
-      {
+    "taskList": [{
         "title": "مركز معالجة موقع محور",
         "description": "نص آخر هناالوثائق",
         "done": false
@@ -121,5 +119,12 @@
     "tableList": "قائمة الجدول",
     "typography": "طباعة",
     "rtlSupport": "دعم RTL"
-  }
+  },
+  "leads": "leads",
+  "place leads": "place leads",
+  "clients": "clients",
+  "users": "users",
+  "events": "events",
+  "tasks": "tasks",
+  "calls": "calls"
 }

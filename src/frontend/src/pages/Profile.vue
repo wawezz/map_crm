@@ -34,11 +34,6 @@
       UserCard,
       BaseAlert
     },
-    watch: {
-      $route(to, from) {
-        this.initUser();
-      }
-    },
     data() {
       return {};
     },

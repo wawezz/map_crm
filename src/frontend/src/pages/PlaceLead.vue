@@ -26,10 +26,10 @@
         </div>
         <div class="row">
           <div class="col-md-3">
-            <base-input label="Website" v-model="placeLeadsform.website"></base-input>
+            <base-input label="Website" readonly="readonly" :value="placeLeadsform.website"></base-input>
           </div>
           <div class="col-md-3">
-            <base-input label="Geo" v-model="placeLeadsform.geo"></base-input>
+            <base-input label="Geo" readonly="readonly" :value="placeLeadsform.geo"></base-input>
           </div>
           <div class="col-3">
             <label>Status</label>
@@ -38,7 +38,7 @@
             </select>
           </div>
           <div class="col-md-3">
-            <base-input label="Type" v-model="placeLeadsform.type"></base-input>
+            <base-input label="Type" readonly="readonly" :value="placeLeadsform.type"></base-input>
           </div>
         </div>
         <div class="row">
@@ -47,20 +47,22 @@
               label="Price"
               type="number"
               min="0"
-              v-model="placeLeadsform.price"
+              readonly="readonly"
+              :value="placeLeadsform.price"
               placeholder="0"
             ></base-input>
           </div>
-          <div class="col-3">
+          <div class="col-2">
             <base-input
               label="Rating"
               type="number"
               min="0"
-              v-model="placeLeadsform.rating"
+              readonly="readonly"
+              :value="placeLeadsform.rating"
               placeholder="0"
             ></base-input>
           </div>
-          <div class="col-3 centeredFlex">
+          <div class="col-2 centeredFlex">
             <base-checkbox
               label="Sync?"
               :value="placeLeadsform.toSync"
@@ -73,6 +75,101 @@
               :value="placeLeadsform.isImportant"
               v-model="placeLeadsform.isImportant"
             ></base-checkbox>
+          </div>
+          <div class="col-2">
+            <base-input label="RN" readonly="readonly" :value="placeLeadsform.rn"></base-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <base-input
+              label="Zip code"
+              type="number"
+              min="0"
+              v-model="placeLeadsform.zipCode"
+              placeholder="0"
+            ></base-input>
+          </div>
+          <div class="col-3">
+            <base-input label="City" v-model="placeLeadsform.city"></base-input>
+          </div>
+          <div class="col-3">
+            <base-input
+              label="Alexa rank"
+              type="number"
+              min="0"
+              readonly="readonly"
+              :value="placeLeadsform.alexaRank"
+              placeholder="0"
+            ></base-input>
+          </div>
+          <div class="col-3">
+            <base-input label="Online since" v-model="placeLeadsform.onlineSince"></base-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <base-input
+              label="YP reviews"
+              type="number"
+              min="0"
+              readonly="readonly"
+              :value="placeLeadsform.ypReviews"
+              placeholder="0"
+            ></base-input>
+          </div>
+          <div class="col-3">
+            <base-input
+              label="Multi location"
+              type="number"
+              min="0"
+              readonly="readonly"
+              :value="placeLeadsform.multiLocation"
+              placeholder="0"
+            ></base-input>
+          </div>
+          <div class="col-3">
+            <base-input label="Last remark" readonly="readonly" :value="placeLeadsform.lastRemark"></base-input>
+          </div>
+          <div class="col-3">
+            <base-input
+              label="BBB rating"
+              type="number"
+              min="0"
+              readonly="readonly"
+              :value="placeLeadsform.bbbRating"
+              placeholder="0"
+            ></base-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <base-input
+              label="YP rating"
+              type="number"
+              min="0"
+              v-model="placeLeadsform.ypRating"
+              placeholder="0"
+            ></base-input>
+          </div>
+          <div class="col-3">
+            <base-input
+              label="Data score"
+              type="number"
+              min="0"
+              v-model="placeLeadsform.dataScore"
+              placeholder="0"
+            ></base-input>
+          </div>
+          <div class="col-3">
+            <base-input label="Carrier" readonly="readonly" :value="placeLeadsform.carrier"></base-input>
+          </div>
+          <div class="col-3">
+            <base-input
+              label="Caller id name"
+              readonly="readonly"
+              :value="placeLeadsform.callerIdName"
+            ></base-input>
           </div>
         </div>
         <div class="row">
@@ -87,7 +184,12 @@
           <div class="col-12">
             <base-input>
               <label>Data</label>
-              <textarea rows="4" class="form-control" v-model="placeLeadsform.data"></textarea>
+              <textarea
+                rows="4"
+                class="form-control"
+                readonly="readonly"
+                v-model="placeLeadsform.data"
+              ></textarea>
             </base-input>
           </div>
         </div>

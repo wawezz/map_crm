@@ -7,7 +7,7 @@ export const tasks = {
     return {
       tasksFilter: '[]',
       tasksSort: '[]',
-      tasksLoading: true,
+      tasksLoading: false,
       tasks: {},
       currentTask: {
         id: null,
@@ -29,6 +29,7 @@ export const tasks = {
   },
   methods: {
     getTasks() {
+      this.tasksLoading = true;
       const filter = this.tasksFilter !== '[]' ? JSON.stringify(this.tasksFilter) : this.tasksFilter;
       const sort = this.tasksSort !== '[]' ? JSON.stringify(this.tasksSort) : this.tasksSort;
       axios({
@@ -59,6 +60,7 @@ export const tasks = {
           } else {
             console.error("Unexpected error", data.error);
           }
+          this.tasksLoading = false;
         });
     },
     getTaskData(id) {

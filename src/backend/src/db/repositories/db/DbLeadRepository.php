@@ -28,23 +28,53 @@ class DbLeadRepository extends AbstractDbRepository implements LeadRepositoryInt
                     continue;
                 }
                 $condition = " = ";
+                $conditionValue = "";
                 $value = explode('|', $value);
 
                 if(count($value)==2){
-                    $condition = " $value[0] ";
+                    $condition = $value[0]!="NULL"?" $value[0] ":($value[1] != 0 ? "IS NOT NULL" : "IS NULL");
+                    $conditionValue = $value[0];
+                }
+                
+                if(count($value)==3){
+                    $condition = "BETWEEN";
+                }else{
+                    $value = end($value);
                 }
 
-                $value = end($value);
-
                 if (\is_string($field)) {
-                    $where[] = "($field $condition :value$i)";
-                    $params[":value$i"] = $condition==" LIKE "?"%$value%":$value;
+                    if($conditionValue!="NULL"){
+                        if($condition == "BETWEEN"){
+                            $from = $i."1";
+                            $to = $i."2";
+                            $where[] = "(app_leads.$field $condition :value$from AND :value$to)";
+                            $params[":value$from"] = $value[1];
+                            $params[":value$to"] = $value[2];
+                        }else{
+                            $where[] = "(app_leads.$field $condition :value$i)";
+                            $params[":value$i"] = $condition==" LIKE "?"%$value%":$value;
+                        }
+                    }else{
+                        $where[] = "(app_leads.$field $condition)";
+                    }
                     $i++;
                 } elseif (\is_array($field)) {
                     $w = [];
                     foreach ($field as $f) {
-                        $w[] = "($f $condition :value$i)";
-                        $params[":value$i"] = $condition==" LIKE "?"%$value%":$value;
+                        if($conditionValue!="NULL"){
+                            if($condition == "BETWEEN"){
+                                $from = $i."1";
+                                $to = $i."2";
+                                $w[] = "(app_leads.$f $condition :value$from AND :value$to)";
+                                $params[":value$from"] = $value[1];
+                                $params[":value$to"] = $value[2];
+                            }else{
+                                $w[] = "(app_leads.$f $condition :value$i)";
+                                $params[":value$i"] = $condition==" LIKE "?"%$value%":$value;
+                            }
+                        }else{
+                            $w[] = "(app_leads.$f $condition)";
+                        }
                         $i++;
                     }
                     $where[] = '(' . implode(' OR ', $w) . ')';
@@ -107,23 +137,53 @@ class DbLeadRepository extends AbstractDbRepository implements LeadRepositoryInt
                     continue;
                 }
                 $condition = " = ";
+                $conditionValue = "";
                 $value = explode('|', $value);
 
                 if(count($value)==2){
-                    $condition = " $value[0] ";
+                    $condition = $value[0]!="NULL"?" $value[0] ":($value[1] != 0 ? "IS NOT NULL" : "IS NULL");
+                    $conditionValue = $value[0];
                 }
 
-                $value = end($value);
+                if(count($value)==3){
+                    $condition = "BETWEEN";
+                }else{
+                    $value = end($value);
+                }
 
                 if (\is_string($field)) {
-                    $where[] = "($field $condition :value$i)";
-                    $params[":value$i"] = $condition==" LIKE "?"%$value%":$value;
+                    if($conditionValue!="NULL"){
+                        if($condition == "BETWEEN"){
+                            $from = $i."1";
+                            $to = $i."2";
+                            $where[] = "(app_leads.$field $condition :value$from AND :value$to)";
+                            $params[":value$from"] = $value[1];
+                            $params[":value$to"] = $value[2];
+                        }else{
+                            $where[] = "(app_leads.$field $condition :value$i)";
+                            $params[":value$i"] = $condition==" LIKE "?"%$value%":$value;
+                        }
+                    }else{
+                        $where[] = "(app_leads.$field $condition)";
+                    }
                     $i++;
                 } elseif (\is_array($field)) {
                     $w = [];
                     foreach ($field as $f) {
-                        $w[] = "($f $condition :value$i)";
-                        $params[":value$i"] = $condition==" LIKE "?"%$value%":$value;
+                        if($conditionValue!="NULL"){
+                            if($condition == "BETWEEN"){
+                                $from = $i."1";
+                                $to = $i."2";
+                                $w[] = "(app_leads.$f $condition :value$from AND :value$to)";
+                                $params[":value$from"] = $value[1];
+                                $params[":value$to"] = $value[2];
+                            }else{
+                                $w[] = "(app_leads.$f $condition :value$i)";
+                                $params[":value$i"] = $condition==" LIKE "?"%$value%":$value;
+                            }
+                        }else{
+                            $w[] = "(app_leads.$f $condition)";
+                        }
                         $i++;
                     }
                     $where[] = '(' . implode(' OR ', $w) . ')';
@@ -218,6 +278,20 @@ class DbLeadRepository extends AbstractDbRepository implements LeadRepositoryInt
                        rejectionReason = :rejectionReason
                  WHERE id = :id',
                  LeadNormalizer::serialize($lead));
+
+        return $cmd->execute() > 0;
+    }
+
+    public function updateByID(int $id): bool
+    {
+
+        $data = array( 'id' => $id );
+
+        $cmd = $this->db->createCommand('
+                UPDATE app_leads
+                   SET updatedAt = NOW()
+                 WHERE id = :id',
+                 $data);
 
         return $cmd->execute() > 0;
     }

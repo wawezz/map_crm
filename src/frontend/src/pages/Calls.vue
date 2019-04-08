@@ -68,11 +68,6 @@
     components: {
       Pagination
     },
-    watch: {
-      $route(to, from) {
-        this.getNotes();
-      }
-    },
     created() {
       const { state } = this.$store;
       this.notesFilter = {

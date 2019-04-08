@@ -4,12 +4,14 @@ namespace backend\forms\api;
 
 use backend\common\model\AbstractFormModel;
 use backend\db\models\Lead;
+use backend\db\models\PlaceLead;
 use backend\db\models\Client;
 use backend\db\models\Note;
 use backend\db\models\User;
 use backend\db\repositories\db\DbNoteRepository;
 use backend\db\repositories\ClientRepositoryInterface;
 use backend\db\repositories\LeadRepositoryInterface;
+use backend\db\repositories\PlaceLeadRepositoryInterface;
 use backend\db\repositories\UserRepositoryInterface;
 use backend\db\common\generator\UuidGenerator;
 
@@ -61,6 +63,11 @@ class NoteAddFormModel extends AbstractFormModel
     private $leadRepository;
 
     /**
+     * @var \backend\db\repositories\PlaceLeadRepositoryInterface
+     */
+    private $placeLeadRepository;
+
+    /**
      * @var \backend\db\repositories\DbNoteRepository
      */
     private $dbNoteRepository;
@@ -73,6 +80,7 @@ class NoteAddFormModel extends AbstractFormModel
     public function __construct(
         ClientRepositoryInterface $clientRepository,
         LeadRepositoryInterface $leadRepository,
+        PlaceLeadRepositoryInterface $placeLeadRepository,
         UserRepositoryInterface $userRepository,
         DbNoteRepository $dbNoteRepository,
         UuidGenerator $uuidGenerator
@@ -81,6 +89,7 @@ class NoteAddFormModel extends AbstractFormModel
 
         $this->clientRepository = $clientRepository;
         $this->leadRepository = $leadRepository;
+        $this->placeLeadRepository = $placeLeadRepository;
         $this->userRepository = $userRepository;
         $this->dbNoteRepository = $dbNoteRepository;
         $this->uuidGenerator = $uuidGenerator;
@@ -150,13 +159,18 @@ class NoteAddFormModel extends AbstractFormModel
 
         switch ($this->elementType) {
             case Note::ELEMENT_TYPE_CLIENT:
-                if (!$this->clientRepository->findByID($this->elementId)) {
+                if (!$this->clientRepository->updateByID($this->elementId)) {
                     $this->addError($attribute, 'Client not found.');
                 }
                 break;
             case Note::ELEMENT_TYPE_LEAD:
-                if (!$this->leadRepository->findByID($this->elementId)) {
+                if (!$this->leadRepository->updateByID($this->elementId)) {
                     $this->addError($attribute, 'Lead not found.');
+                }
+                break;
+            case Note::ELEMENT_TYPE_PLACE_LEAD:
+                if (!$this->placeLeadRepository->updateByID($this->elementId)) {
+                    $this->addError($attribute, 'Place lead not found.');
                 }
                 break;
         }
