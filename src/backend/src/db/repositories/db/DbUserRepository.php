@@ -52,8 +52,8 @@ class DbUserRepository extends AbstractDbRepository implements UserRepositoryInt
                 if (\is_string($field)) {
                     if($conditionValue!="NULL"){
                         if($condition == "BETWEEN"){
-                            $from = $i."1";
-                            $to = $i."2";
+                            $from = $i."from";
+                            $to = $i."to";
                             $where[] = "(app_users.$field $condition :value$from AND :value$to)";
                             $params[":value$from"] = $value[1];
                             $params[":value$to"] = $value[2];
@@ -70,8 +70,8 @@ class DbUserRepository extends AbstractDbRepository implements UserRepositoryInt
                     foreach ($field as $f) {
                         if($conditionValue!="NULL"){
                             if($condition == "BETWEEN"){
-                                $from = $i."1";
-                                $to = $i."2";
+                                $from = $i."from";
+                                $to = $i."to";
                                 $w[] = "(app_users.$f $condition :value$from AND :value$to)";
                                 $params[":value$from"] = $value[1];
                                 $params[":value$to"] = $value[2];
@@ -153,8 +153,8 @@ class DbUserRepository extends AbstractDbRepository implements UserRepositoryInt
                 if (\is_string($field)) {
                     if($conditionValue!="NULL"){
                         if($condition == "BETWEEN"){
-                            $from = $i."1";
-                            $to = $i."2";
+                            $from = $i."from";
+                            $to = $i."to";
                             $where[] = "(app_users.$field $condition :value$from AND :value$to)";
                             $params[":value$from"] = $value[1];
                             $params[":value$to"] = $value[2];
@@ -171,8 +171,8 @@ class DbUserRepository extends AbstractDbRepository implements UserRepositoryInt
                     foreach ($field as $f) {
                         if($conditionValue!="NULL"){
                             if($condition == "BETWEEN"){
-                                $from = $i."1";
-                                $to = $i."2";
+                                $from = $i."from";
+                                $to = $i."to";
                                 $w[] = "(app_users.$f $condition :value$from AND :value$to)";
                                 $params[":value$from"] = $value[1];
                                 $params[":value$to"] = $value[2];
@@ -278,7 +278,7 @@ class DbUserRepository extends AbstractDbRepository implements UserRepositoryInt
 
         $cmd = $this->db->createCommand('INSERT INTO app_users
                             ( id,  email, name, roleId, groupId, avatarId, sipId, sipPass, createdAt,  updatedAt, passwordHash, secret)
-                     VALUES (:id, :email, :name, :roleId, :groupId, :avatarId, :sipId, :sipPass, :createdAt, :updatedAt, :passwordHash, :secret)',
+                     VALUES (:id, :email, :name, :roleId, :groupId, :avatarId, :sipId, :sipPass, :createdAt, NOW(), :passwordHash, :secret)',
             UserNormalizer::serialize($user));
 
         return $cmd->execute() > 0;
@@ -301,7 +301,7 @@ class DbUserRepository extends AbstractDbRepository implements UserRepositoryInt
                        sipId = :sipId, 
                        sipPass = :sipPass,
                        createdAt = :createdAt,
-                       updatedAt = :updatedAt,
+                       updatedAt = NOW(),
                        passwordHash = :passwordHash,
                        secret = :secret
                  WHERE id = :id',

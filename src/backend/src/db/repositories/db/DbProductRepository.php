@@ -45,8 +45,8 @@ class DbProductRepository extends AbstractDbRepository implements ProductReposit
                 if (\is_string($field)) {
                     if($conditionValue!="NULL"){
                         if($condition == "BETWEEN"){
-                            $from = $i."1";
-                            $to = $i."2";
+                            $from = $i."from";
+                            $to = $i."to";
                             $where[] = "(app_products.$field $condition :value$from AND :value$to)";
                             $params[":value$from"] = $value[1];
                             $params[":value$to"] = $value[2];
@@ -63,8 +63,8 @@ class DbProductRepository extends AbstractDbRepository implements ProductReposit
                     foreach ($field as $f) {
                         if($conditionValue!="NULL"){
                             if($condition == "BETWEEN"){
-                                $from = $i."1";
-                                $to = $i."2";
+                                $from = $i."from";
+                                $to = $i."to";
                                 $w[] = "(app_products.$f $condition :value$from AND :value$to)";
                                 $params[":value$from"] = $value[1];
                                 $params[":value$to"] = $value[2];
@@ -143,8 +143,8 @@ class DbProductRepository extends AbstractDbRepository implements ProductReposit
                 if (\is_string($field)) {
                     if($conditionValue!="NULL"){
                         if($condition == "BETWEEN"){
-                            $from = $i."1";
-                            $to = $i."2";
+                            $from = $i."from";
+                            $to = $i."to";
                             $where[] = "(app_products.$field $condition :value$from AND :value$to)";
                             $params[":value$from"] = $value[1];
                             $params[":value$to"] = $value[2];
@@ -161,8 +161,8 @@ class DbProductRepository extends AbstractDbRepository implements ProductReposit
                     foreach ($field as $f) {
                         if($conditionValue!="NULL"){
                             if($condition == "BETWEEN"){
-                                $from = $i."1";
-                                $to = $i."2";
+                                $from = $i."from";
+                                $to = $i."to";
                                 $w[] = "(app_products.$f $condition :value$from AND :value$to)";
                                 $params[":value$from"] = $value[1];
                                 $params[":value$to"] = $value[2];

@@ -33,7 +33,6 @@ class UserNormalizer extends BaseNormalizer
             'sipId' => (int)$object->sipId,
             'sipPass' => $object->sipPass,
             'createdAt' => static::serializeDateTime($object->createdAt),
-            'updatedAt' => static::serializeDateTime($object->updatedAt),
             'passwordHash' => $object->passwordHash,
             'secret' => $object->secret
         ];

@@ -52,8 +52,8 @@ class DbTaskRepository extends AbstractDbRepository implements TaskRepositoryInt
                     }
                     if($conditionValue!="NULL"){
                         if($condition == "BETWEEN"){
-                            $from = $i."1";
-                            $to = $i."2";
+                            $from = $i."from";
+                            $to = $i."to";
                             $where[] = "(app_tasks.$field $condition :value$from AND :value$to)";
                             $params[":value$from"] = $value[1];
                             $params[":value$to"] = $value[2];
@@ -76,8 +76,8 @@ class DbTaskRepository extends AbstractDbRepository implements TaskRepositoryInt
                         }
                         if($conditionValue!="NULL"){
                             if($condition == "BETWEEN"){
-                                $from = $i."1";
-                                $to = $i."2";
+                                $from = $i."from";
+                                $to = $i."to";
                                 $w[] = "(app_tasks.$f $condition :value$from AND :value$to)";
                                 $params[":value$from"] = $value[1];
                                 $params[":value$to"] = $value[2];
@@ -165,8 +165,8 @@ class DbTaskRepository extends AbstractDbRepository implements TaskRepositoryInt
                     }
                     if($conditionValue!="NULL"){
                         if($condition == "BETWEEN"){
-                            $from = $i."1";
-                            $to = $i."2";
+                            $from = $i."from";
+                            $to = $i."to";
                             $where[] = "(app_tasks.$field $condition :value$from AND :value$to)";
                             $params[":value$from"] = $value[1];
                             $params[":value$to"] = $value[2];
@@ -189,8 +189,8 @@ class DbTaskRepository extends AbstractDbRepository implements TaskRepositoryInt
                         }
                         if($conditionValue!="NULL"){
                             if($condition == "BETWEEN"){
-                                $from = $i."1";
-                                $to = $i."2";
+                                $from = $i."from";
+                                $to = $i."to";
                                 $w[] = "(app_tasks.$f $condition :value$from AND :value$to)";
                                 $params[":value$from"] = $value[1];
                                 $params[":value$to"] = $value[2];
@@ -250,7 +250,7 @@ class DbTaskRepository extends AbstractDbRepository implements TaskRepositoryInt
     {
         $cmd = $this->db->createCommand('INSERT INTO app_tasks
                             ( id,  elementId, elementType, type, responsible, createdBy, comment, eventDate, createdAt, updatedAt)
-                     VALUES (:id, :elementId, :elementType, :type, :responsible, :createdBy, :comment, :eventDate, :createdAt, :updatedAt)',
+                     VALUES (:id, :elementId, :elementType, :type, :responsible, :createdBy, :comment, :eventDate, :createdAt, NOW())',
             TaskNormalizer::serialize($task));
 
         $cmd->execute();
@@ -271,7 +271,7 @@ class DbTaskRepository extends AbstractDbRepository implements TaskRepositoryInt
                        comment = :comment,
                        eventDate = :eventDate,
                        createdAt = :createdAt,
-                       updatedAt = :updatedAt
+                       updatedAt = NOW()
                  WHERE id = :id',
                  TaskNormalizer::serialize($task));
 

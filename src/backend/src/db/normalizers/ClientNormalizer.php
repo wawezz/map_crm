@@ -41,7 +41,6 @@ class ClientNormalizer extends BaseNormalizer
             'createdBy' => $object->createdBy,
             'responsible' => $object->responsible,
             'createdAt' => static::serializeDateTime($object->createdAt),
-            'updatedAt' => static::serializeDateTime($object->updatedAt),
             'zip' => $object->zip,
             'skype' => $object->skype
         ];

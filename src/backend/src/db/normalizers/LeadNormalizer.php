@@ -32,7 +32,6 @@ class LeadNormalizer extends BaseNormalizer
             'createdBy' => $object->createdBy,
             'status' => $object->status,
             'createdAt' => static::serializeDateTime($object->createdAt),
-            'updatedAt' => static::serializeDateTime($object->updatedAt),
             'completedAt' => static::serializeDateTime($object->completedAt),
             'budget' => $object->budget,
             'orderId' => $object->orderId,

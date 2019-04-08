@@ -45,8 +45,8 @@ class DbLeadRepository extends AbstractDbRepository implements LeadRepositoryInt
                 if (\is_string($field)) {
                     if($conditionValue!="NULL"){
                         if($condition == "BETWEEN"){
-                            $from = $i."1";
-                            $to = $i."2";
+                            $from = $i."from";
+                            $to = $i."to";
                             $where[] = "(app_leads.$field $condition :value$from AND :value$to)";
                             $params[":value$from"] = $value[1];
                             $params[":value$to"] = $value[2];
@@ -63,8 +63,8 @@ class DbLeadRepository extends AbstractDbRepository implements LeadRepositoryInt
                     foreach ($field as $f) {
                         if($conditionValue!="NULL"){
                             if($condition == "BETWEEN"){
-                                $from = $i."1";
-                                $to = $i."2";
+                                $from = $i."from";
+                                $to = $i."to";
                                 $w[] = "(app_leads.$f $condition :value$from AND :value$to)";
                                 $params[":value$from"] = $value[1];
                                 $params[":value$to"] = $value[2];
@@ -154,8 +154,8 @@ class DbLeadRepository extends AbstractDbRepository implements LeadRepositoryInt
                 if (\is_string($field)) {
                     if($conditionValue!="NULL"){
                         if($condition == "BETWEEN"){
-                            $from = $i."1";
-                            $to = $i."2";
+                            $from = $i."from";
+                            $to = $i."to";
                             $where[] = "(app_leads.$field $condition :value$from AND :value$to)";
                             $params[":value$from"] = $value[1];
                             $params[":value$to"] = $value[2];
@@ -172,8 +172,8 @@ class DbLeadRepository extends AbstractDbRepository implements LeadRepositoryInt
                     foreach ($field as $f) {
                         if($conditionValue!="NULL"){
                             if($condition == "BETWEEN"){
-                                $from = $i."1";
-                                $to = $i."2";
+                                $from = $i."from";
+                                $to = $i."to";
                                 $w[] = "(app_leads.$f $condition :value$from AND :value$to)";
                                 $params[":value$from"] = $value[1];
                                 $params[":value$to"] = $value[2];
@@ -243,7 +243,7 @@ class DbLeadRepository extends AbstractDbRepository implements LeadRepositoryInt
         $cmd = $this->db->createCommand('INSERT INTO app_leads
                             ( id, name, client, responsible, createdBy, status, createdAt,  updatedAt, completedAt, budget, orderId,
                             firstCallAt, countryId, currency, product, productCount, productPrice, shippingPrice, postOrder, rejectionReason)
-                     VALUES (:id, :name, :client, :responsible, :createdBy, :status, :createdAt, :updatedAt, :completedAt, :budget, :orderId,
+                     VALUES (:id, :name, :client, :responsible, :createdBy, :status, :createdAt, NOW(), :completedAt, :budget, :orderId,
                             :firstCallAt, :countryId, :currency, :product, :productCount, :productPrice, :shippingPrice, :postOrder, :rejectionReason)',
             LeadNormalizer::serialize($lead));
 
@@ -263,7 +263,7 @@ class DbLeadRepository extends AbstractDbRepository implements LeadRepositoryInt
                        createdBy = :createdBy,
                        status = :status,
                        createdAt = :createdAt,
-                       updatedAt = :updatedAt,
+                       updatedAt = NOW(),
                        completedAt = :completedAt, 
                        budget = :budget, 
                        orderId = :orderId,

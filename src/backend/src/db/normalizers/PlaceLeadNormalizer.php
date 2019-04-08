@@ -56,7 +56,6 @@ class PlaceLeadNormalizer extends BaseNormalizer
             'rn' => $object->rn,
             'createdBy' => $object->createdBy,
             'createdAt' => static::serializeDateTime($object->createdAt),
-            'updatedAt' => static::serializeDateTime($object->updatedAt),
             'contractAt' => static::serializeDateTime($object->contractAt),
             'nextFollowupDate' => static::serializeDateTime($object->nextFollowupDate)
         ];

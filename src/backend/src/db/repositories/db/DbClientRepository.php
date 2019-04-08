@@ -45,8 +45,8 @@ class DbClientRepository extends AbstractDbRepository implements ClientRepositor
                 if (\is_string($field)) {
                     if($conditionValue!="NULL"){
                         if($condition == "BETWEEN"){
-                            $from = $i."1";
-                            $to = $i."2";
+                            $from = $i."from";
+                            $to = $i."to";
                             $where[] = "(app_clients.$field $condition :value$from AND :value$to)";
                             $params[":value$from"] = $value[1];
                             $params[":value$to"] = $value[2];
@@ -63,8 +63,8 @@ class DbClientRepository extends AbstractDbRepository implements ClientRepositor
                     foreach ($field as $f) {
                         if($conditionValue!="NULL"){
                             if($condition == "BETWEEN"){
-                                $from = $i."1";
-                                $to = $i."2";
+                                $from = $i."from";
+                                $to = $i."to";
                                 $w[] = "(app_clients.$f $condition :value$from AND :value$to)";
                                 $params[":value$from"] = $value[1];
                                 $params[":value$to"] = $value[2];
@@ -146,8 +146,8 @@ class DbClientRepository extends AbstractDbRepository implements ClientRepositor
                 if (\is_string($field)) {
                     if($conditionValue!="NULL"){
                         if($condition == "BETWEEN"){
-                            $from = $i."1";
-                            $to = $i."2";
+                            $from = $i."from";
+                            $to = $i."to";
                             $where[] = "(app_clients.$field $condition :value$from AND :value$to)";
                             $params[":value$from"] = $value[1];
                             $params[":value$to"] = $value[2];
@@ -164,8 +164,8 @@ class DbClientRepository extends AbstractDbRepository implements ClientRepositor
                     foreach ($field as $f) {
                         if($conditionValue!="NULL"){
                             if($condition == "BETWEEN"){
-                                $from = $i."1";
-                                $to = $i."2";
+                                $from = $i."from";
+                                $to = $i."to";
                                 $w[] = "(app_clients.$f $condition :value$from AND :value$to)";
                                 $params[":value$from"] = $value[1];
                                 $params[":value$to"] = $value[2];
@@ -250,7 +250,7 @@ class DbClientRepository extends AbstractDbRepository implements ClientRepositor
     {
         $cmd = $this->db->createCommand('INSERT INTO app_clients
                             ( id,  email, emailVerified, name, surname, phone, phoneVerified, workPhone, otherPhone, countryId, state, city, street, building, flat, createdBy, responsible, createdAt,  updatedAt, zip, skype)
-                     VALUES (:id, :email, :emailVerified, :name, :surname, :phone, :phoneVerified, :workPhone, :otherPhone, :countryId, :state, :city, :street, :building, :flat, :createdBy, :responsible, :createdAt, :updatedAt, :zip, :skype)',
+                     VALUES (:id, :email, :emailVerified, :name, :surname, :phone, :phoneVerified, :workPhone, :otherPhone, :countryId, :state, :city, :street, :building, :flat, :createdBy, :responsible, :createdAt, NOW(), :zip, :skype)',
             ClientNormalizer::serialize($client));
 
         $cmd->execute();
@@ -280,7 +280,7 @@ class DbClientRepository extends AbstractDbRepository implements ClientRepositor
                        createdBy = :createdBy,
                        responsible = :responsible,
                        createdAt = :createdAt,
-                       updatedAt = :updatedAt,
+                       updatedAt = NOW(),
                        zip = :zip,
                        skype = :skype
                  WHERE id = :id',

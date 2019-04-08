@@ -50,8 +50,8 @@ class DbPlaceLeadRepository extends AbstractDbRepository implements PlaceLeadRep
                 if (\is_string($field)) {
                     if($conditionValue!="NULL"){
                         if($condition == "BETWEEN"){
-                            $from = $i."1";
-                            $to = $i."2";
+                            $from = $i."from";
+                            $to = $i."to";
                             $where[] = "(app_place_leads.$field $condition :value$from AND :value$to)";
                             $params[":value$from"] = $value[1];
                             $params[":value$to"] = $value[2];
@@ -68,8 +68,8 @@ class DbPlaceLeadRepository extends AbstractDbRepository implements PlaceLeadRep
                     foreach ($field as $f) {
                         if($conditionValue!="NULL"){
                             if($condition == "BETWEEN"){
-                                $from = $i."1";
-                                $to = $i."2";
+                                $from = $i."from";
+                                $to = $i."to";
                                 $w[] = "(app_place_leads.$f $condition :value$from AND :value$to)";
                                 $params[":value$from"] = $value[1];
                                 $params[":value$to"] = $value[2];
@@ -166,8 +166,8 @@ class DbPlaceLeadRepository extends AbstractDbRepository implements PlaceLeadRep
                 if (\is_string($field)) {
                     if($conditionValue!="NULL"){
                         if($condition == "BETWEEN"){
-                            $from = $i."1";
-                            $to = $i."2";
+                            $from = $i."from";
+                            $to = $i."to";
                             $where[] = "(app_place_leads.$field $condition :value$from AND :value$to)";
                             $params[":value$from"] = $value[1];
                             $params[":value$to"] = $value[2];
@@ -184,8 +184,8 @@ class DbPlaceLeadRepository extends AbstractDbRepository implements PlaceLeadRep
                     foreach ($field as $f) {
                         if($conditionValue!="NULL"){
                             if($condition == "BETWEEN"){
-                                $from = $i."1";
-                                $to = $i."2";
+                                $from = $i."from";
+                                $to = $i."to";
                                 $w[] = "(app_place_leads.$f $condition :value$from AND :value$to)";
                                 $params[":value$from"] = $value[1];
                                 $params[":value$to"] = $value[2];
@@ -278,7 +278,7 @@ class DbPlaceLeadRepository extends AbstractDbRepository implements PlaceLeadRep
                             dataScore, carrier, callerIdName, rn, createdBy, createdAt, updatedAt, contractAt, nextFollowupDate)
                      VALUES (:id, :placeId, :name, :address, :phone, :type, :status, :price, :rating, :review, :website, ST_GeomFromText(:geo), :data, :toSync, :campaignCode,
                             :isImportant, :zipCode, :city, :alexaRank, :onlineSince, :ypReviews, :multiLocation, :lastRemark, :bbbRating, :ypRating, 
-                            :dataScore, :carrier, :callerIdName, :rn, :createdBy, :createdAt, :updatedAt, :contractAt, :nextFollowupDate)',
+                            :dataScore, :carrier, :callerIdName, :rn, :createdBy, :createdAt, NOW(), :contractAt, :nextFollowupDate)',
             PlaceLeadNormalizer::serialize($placeLead));
 
         $cmd->execute();
@@ -321,7 +321,7 @@ class DbPlaceLeadRepository extends AbstractDbRepository implements PlaceLeadRep
                        rn = :rn,
                        createdBy = :createdBy, 
                        createdAt = :createdAt, 
-                       updatedAt = :updatedAt, 
+                       updatedAt = NOW(), 
                        contractAt = :contractAt, 
                        nextFollowupDate = :nextFollowupDate
                  WHERE id = :id',

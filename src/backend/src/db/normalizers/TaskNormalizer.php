@@ -31,8 +31,7 @@ class TaskNormalizer extends BaseNormalizer
             'createdBy' => $object->createdBy,
             'comment' => $object->comment,
             'eventDate' => static::serializeDateTime($object->eventDate),
-            'createdAt' => static::serializeDateTime($object->createdAt),
-            'updatedAt' => static::serializeDateTime($object->updatedAt)
+            'createdAt' => static::serializeDateTime($object->createdAt)
         ];
     }
 }
